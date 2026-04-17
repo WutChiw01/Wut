@@ -24,11 +24,12 @@ export const LOAD_STANDARDS = {
   },
   // ความสามารถรับน้ำหนัก แป ไม้/เหล็ก (อ้างอิงเบื้องต้น)
   purlinCapacity: {
- * @param {number} panelCount     - เธเธณเธเธงเธเนเธเธ
- * @param {number} panelWeightKg  - เธเนเธณเธซเธเธฑเธเธ•เนเธญเนเธเธ (kg)
- * @param {number} roofAreaM2     - เธเธทเนเธเธ—เธตเนเธซเธฅเธฑเธเธเธฒเธ”เนเธฒเธเธ—เธตเนเธ•เธดเธ”เธ•เธฑเนเธ (เธ•เธฃ.เธก.)
- * @returns {object}
- */
+    'steel_c100': { label: 'Steel C-100', maxSpanM: 2.5,  loadKgM: 40 },
+    'steel_c75':  { label: 'Steel C-75',  maxSpanM: 1.8,  loadKgM: 30 },
+    'wood_2x4':   { label: 'Wood 2"x4"',  maxSpanM: 1.5,  loadKgM: 25 },
+    'other':      { label: 'Other',       maxSpanM: 1.0,  loadKgM: 15 }
+  }
+};
 export function calcSolarLoad(panelCount, panelWeightKg, roofAreaM2) {
   const totalWeight = panelCount * panelWeightKg;
   const loadPerM2 = roofAreaM2 > 0 ? totalWeight / roofAreaM2 : 0;

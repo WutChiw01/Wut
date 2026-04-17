@@ -1,0 +1,500 @@
+﻿  const nextStep = p.steps.find(s => !State.wizard.data[s.id]);
+  
+  if (nextStep) {
+    State.wizard.activePart = nextStep.id;
+  } else {
+    showToast('เธงเธฑเธ”เธเธฃเธเธ—เธธเธเธเธธเธ”เนเธฅเนเธง! เธเธณเธฅเธฑเธเธเธฃเธฐเน€เธกเธดเธเธเธฅ...', 'success');
+    finishVisualSurvey();
+  }
+  
+  renderBlueprint();
+}
+
+function finishVisualSurvey() {
+  // Sync logic similar to finishWizard
+  const data = State.wizard.data;
+  if (data.span) document.getElementById('truss-span').value = data.span;
+  if (data.height) document.getElementById('truss-depth').value = data.height;
+
+  structMeasurements.push({
+    time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }),
+    label: `${TRUSS_PATTERNS[State.wizard.pattern].label} (Visual)`,
+    value: data.span,
+    details: data
+  });
+  renderStructList();
+  persistState();
+}
+
+// Update Bluetooth callback to route to Visual Input
+const originalBTCallback = State.bluetooth?.onMeasurement;
+if (State.bluetooth) {
+  State.bluetooth.onMeasurement = (data) => {
+     if (originalBTCallback) originalBTCallback(data);
+     if (State.wizard.active && State.wizard.activePart) {
+        const input = document.getElementById('visual-input');
+        if (input) {
+          input.value = data.distance;
+          confirmVisualMeasurement();
+        }
+     }
+  };
+}
+
+// โ”€โ”€โ”€ Purlin Preset Quick-select โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+
+window.setPurlinPreset = function (type, label, widthMm, depthMm) {
+  // Set dropdown
+  const sel = document.getElementById('purlin-type');
+  if (sel) sel.value = type;
+
+  // Set dimension fields
+  const depthEl = document.getElementById('purlin-depth');
+  const widthEl = document.getElementById('purlin-width');
+  if (depthEl) depthEl.value = depthMm;
+  if (widthEl) widthEl.value = widthMm;
+
+  showToast(`เน€เธฅเธทเธญเธ "${label}" โ€” H ${depthMm} เธกเธก. ร— B ${widthMm} เธกเธก.`, 'success', 2000);
+};
+
+// โ”€โ”€โ”€ Canvas Wrapper (v3.2) โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+function drawCanvas() {
+  const canvas = document.getElementById('layout-canvas');
+  if (!canvas || !State.layoutResult) return;
+  
+  const engine = new SolarLayoutEngine(
+    State.roofResult,
+    State.panel,
+    State.margins,
+    State.panelGap
+  );
+  engine.drawCanvas(canvas, State.layoutResult);
+}
+
+// โ”€โ”€โ”€ BOT CALLBACK (v2.0) โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+
+function initBotMode() {
+  const params = new URLSearchParams(window.location.search);
+  const chatId = params.get('chatId');
+  const step   = params.get('step');
+
+  if (chatId && step) {
+    State.botMode.active = true;
+    State.botMode.chatId = chatId;
+    State.botMode.step   = step;
+    
+    // UI: เธเธฃเธฑเธเนเธซเนเน€เธซเธกเธฒเธฐเธเธฑเธเนเธซเธกเธ”เธเธญเธ—
+    document.body.classList.add('is-bot-mode');
+
+    if (step === 'REVIEW') {
+      loadStateFromBot(chatId);
+    } else {
+      showToast(`เนเธซเธกเธ”เน€เธฅเน€เธเธญเธฃเน: เธขเธดเธเธฃเธฐเธขเธฐ ${step}`, 'info');
+      // เธเนเธญเธเธชเนเธงเธเธซเธฑเธงเนเธฅเธฐเนเธ–เธเธเธณเธ—เธฒเธ
+      const h = document.querySelector('.header'); if (h) h.style.display = 'none';
+      const t = document.querySelector('.bottom-nav'); if (t) t.style.display = 'none';
+    }
+  }
+}
+
+async function loadStateFromBot(chatId) {
+  try {
+    showToast('เธเธณเธฅเธฑเธเนเธซเธฅเธ”เธเนเธญเธกเธนเธฅเธงเธดเธจเธงเธเธฃเธฃเธก...', 'info');
+    const res = await fetch(`send_telegram.php?chatId=${chatId}`);
+    const state = await res.json();
+    
+    if (state && state.data) {
+      const d = state.data;
+      State.project.name = d.projectName || '';
+      
+      // เธญเธฑเธเน€เธ”เธ•เธเนเธญเธกเธนเธฅเธซเธฅเธฑเธเธเธฒ
+      State.roofResult = {
+        span: d.MEASURE_SPAN,
+        height: d.MEASURE_HEIGHT,
+        trueArea: d.MEASURE_SPAN * 10, // Mock area for display
+        totalArea: d.MEASURE_SPAN * 10,
+        slopeAngle: 30, // Default estimate
+        pitchLabel: '1:1.7'
+      };
+      
+      // เธญเธฑเธเน€เธ”เธ• BoQ เน€เธเธทเนเธญเธเธ•เนเธ
+      State.boqResult = { panels: 10, rails: { count: 4, length: 4 } };
+      
+      // เธชเธฅเธฑเธเธซเธเนเธฒเธเธญเนเธเธ—เธตเน Report เธญเธฑเธ•เนเธเธกเธฑเธ•เธด
+      document.querySelector('.nav-tab[data-page="report"]')?.click();
+      updateReportSummary();
+      showToast('เธเนเธญเธกเธนเธฅเธเธฃเนเธญเธกเนเธฅเนเธง! เนเธเธฃเธ”เธ•เธฃเธงเธเธชเธญเธเธฃเธฒเธขเธเธฒเธเนเธฅเธฐเธเธ”เธชเธฃเนเธฒเธ PDF', 'success');
+    }
+  } catch (err) {
+    showToast('เนเธซเธฅเธ”เธเนเธญเธกเธนเธฅเนเธกเนเธชเธณเน€เธฃเนเธ', 'error');
+  }
+}
+
+async function sendDataToBot(value) {
+  const { chatId, step } = State.botMode;
+  try {
+    const payload = { chatId, step, value };
+    const res = await fetch(`send_telegram.php?chatId=${chatId}`, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    
+    if (res.ok) {
+      showToast('เธชเนเธเธเนเธญเธกเธนเธฅเธเธฅเธฑเธเธเธญเธ—เธชเธณเน€เธฃเนเธ! โ…', 'success');
+      setTimeout(() => {
+        // เธญเธฒเธเธเธฐเธเธดเธ”เธซเธเนเธฒเธ•เนเธฒเธเธซเธฃเธทเธญเนเธชเธ”เธเธเนเธญเธเธงเธฒเธกเธเธ
+      }, 2000);
+    }
+  } catch (err) {
+    showToast('เธฅเนเธกเน€เธซเธฅเธงเนเธเธเธฒเธฃเธชเนเธเธเนเธญเธกเธนเธฅเธเธฅเธฑเธเธเธญเธ—', 'error');
+  }
+}
+
+// เนเธเนเนเธเธเธฑเธเธเนเธเธฑเธเธเธฑเธเธ—เธถเธเน€เธ”เธดเธกเนเธซเนเน€เธฃเธตเธขเธ Bot Callback
+const originalOnMeasure = window.saveMeasurement || (() => {});
+window.saveMeasurement = function() {
+  const val = parseFloat(document.getElementById('live-distance').textContent);
+  if (State.botMode.active) {
+    sendDataToBot(val);
+  }
+  // เน€เธฃเธตเธขเธเธเธฑเธเธเนเธเธฑเธเน€เธ”เธดเธก
+  if (typeof originalOnMeasure === 'function') originalOnMeasure();
+};
+
+// โ”€โ”€โ”€ Init โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+function init() {
+  console.log('[Disto] Bootstrapping App...');
+  initNavigation();
+  initBluetooth();
+  initBotMode(); // เธ•เธฃเธงเธเธชเธญเธเนเธซเธกเธ”เธเธญเธ—
+  loadPersistedState();
+
+  // Set default project date if not already set
+  const dateEl = document.getElementById('proj-date');
+  if (dateEl && !dateEl.value) {
+    dateEl.value = new Date().toISOString().split('T')[0];
+  }
+
+  // Update settings fields with state values
+  const setW = document.getElementById('set-panel-w');
+  const setH = document.getElementById('set-panel-h');
+  const setWatt = document.getElementById('set-panel-watt');
+  if (setW) setW.value = State.panel.width;
+  if (setH) setH.value = State.panel.height;
+  if (setWatt) setWatt.value = State.panelWatt;
+
+  updateCalcButton();
+  selectPoint(State.activePoint || 'A');
+  checkStandalone();
+
+  // BT status header click
+  const btStatus = document.getElementById('bt-status');
+  if (btStatus) {
+    btStatus.addEventListener('click', () => {
+      if (State.connected) disconnectBT(); else connectBLE();
+    });
+  }
+
+  persistState();
+  console.log('[Disto Survey App] v3.2 Nav Fix Ready');
+}
+
+// โ”€โ”€โ”€ Global Exposure for index.html โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+window.State = State;
+window.showToast = showToast;
+window.initNavigation = initNavigation;
+window.assessStructure = assessStructure;
+window.renderStructList = renderStructList;
+window.deleteStructMeasurement = deleteStructMeasurement;
+window.clearStructMeasurements = clearStructMeasurements;
+window.recordStructMeasurement = recordStructMeasurement;
+window.setPurlinPreset = setPurlinPreset;
+window.updateReportSummary // โ”€โ”€โ”€ Global Exposure for index.html โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+window.State = State;
+window.showToast = showToast;
+window.initNavigation = initNavigation;
+window.assessStructure = assessStructure;
+window.renderStructList = renderStructList;
+window.deleteStructMeasurement = deleteStructMeasurement;
+window.clearStructMeasurements = clearStructMeasurements;
+window.recordStructMeasurement = recordStructMeasurement;
+window.setPurlinPreset = setPurlinPreset;
+window.updateReportSummary = updateReportSummary;
+window.selectBlueprintPart = selectBlueprintPart;
+window.openTrussSelector = openTrussSelector;
+window.closeTrussSelector = closeTrussSelector;
+window.selectTrussPattern = selectTrussPattern;
+window.confirmVisualMeasurement = confirmVisualMeasurement;
+window.drawCanvas = drawCanvas;
+
+// New Exposures v3.2
+window.showInstallGuide = showInstallGuide;
+window.toggleVoice = toggleVoice;
+window.openHidGuide = openHidGuide;
+window.closeHidGuide = closeHidGuide;
+window.connectBLE = connectBLE;
+window.connectKeyboard = connectKeyboard;
+window.disconnectBT = disconnectBT;
+window.saveProject = saveProject;
+window.setManualDist = setManualDist;
+window.selectPoint = selectPoint;
+window.recordMeasurement = recordMeasurement;
+window.undoLastPoint = undoLastPoint;
+window.resetAll = resetAll;
+window.calculateRoof = calculateRoof;
+window.calculateLayout = calculateLayout;
+window.captureShot = captureShot;
+window.calcMemberHeight = calcMemberHeight;
+window.resetShots = resetShots;
+window.saveMemberHeight = saveMemberHeight;
+window.undoLastMember = undoLastMember;
+window.clearMemberSizes = clearMemberSizes;
+window.structSetDist = structSetDist;
+window.toggleTwoFace = toggleTwoFace;
+window.updatePanelSettings = updatePanelSettings;
+window.testTelegram = testTelegram;
+window.sendToTelegram = sendToTelegram;
+
+// Robust Init Check
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+
+window.testTelegram = async function() {
+  updateTelegramState();
+  const config = State.telegram;
+  
+  if (!config.chatId && !config.token && !config.useProxy) {
+    showToast('เธเธฃเธธเธ“เธฒเธเธฃเธญเธเธเนเธญเธกเธนเธฅ Telegram เธเนเธญเธเธ—เธ”เธชเธญเธ', 'warning');
+    return;
+  }
+
+  try {
+    showToast('เธเธณเธฅเธฑเธเธชเนเธเธเนเธญเธเธงเธฒเธกเธ—เธ”เธชเธญเธ...', 'info');
+    const res = await TelegramBot.sendMessage(config, `๐€ <b>Disto Survey App</b>\nเธ—เธ”เธชเธญเธเธเธฒเธฃเน€เธเธทเนเธญเธกเธ•เนเธญเธเธฒเธเธซเธเนเธฒเธเธฒเธ\nเน€เธงเธฅเธฒ: ${new Date().toLocaleString()}`);
+    if (res.ok) {
+      showToast('เธชเนเธเธเนเธญเธเธงเธฒเธกเธ—เธ”เธชเธญเธเธชเธณเน€เธฃเนเธ!', 'success');
+    } else {
+      throw new Error(res.description || 'Unknown error');
+    }
+  } catch (err) {
+    showToast(`เธฅเนเธกเน€เธซเธฅเธง: ${err.message}`, 'error', 5000);
+  }
+};
+
+function updateTelegramState() {
+  State.telegram.token = document.getElementById('tg-token')?.value || '';
+  State.telegram.chatId = document.getElementById('tg-chat-id')?.value || '';
+  State.telegram.useProxy = document.getElementById('tg-use-proxy')?.classList.contains('on') || false;
+  persistState();
+}
+
+// เธเธนเธเธเธฑเธเธเนเธเธฑเธเนเธเนเธ persist
+const originalPersist = window.persistState;
+window.persistState = function() {
+  const token = document.getElementById('tg-token')?.value;
+  const chat = document.getElementById('tg-chat-id')?.value;
+  const proxy = document.getElementById('tg-use-proxy')?.classList.contains('on');
+  
+  if (token !== undefined) State.telegram.token = token;
+  if (chat !== undefined) State.telegram.chatId = chat;
+  if (proxy !== undefined) State.telegram.useProxy = proxy;
+  
+  originalPersist();
+};
+
+window.sendToTelegram = async function() {
+  updateTelegramState();
+  const config = State.telegram;
+
+  if (!config.chatId) {
+    showToast('เธขเธฑเธเนเธกเนเนเธ”เนเธ•เธฑเนเธเธเนเธฒ Chat ID เนเธเน€เธกเธเธน Settings', 'warning');
+    return;
+  }
+
+  try {
+    showToast('เธเธณเธฅเธฑเธเน€เธ•เธฃเธตเธขเธกเนเธเธฅเน PDF...', 'info');
+    
+    // Generate PDF Blob
+    const canvas = document.getElementById('layout-canvas');
+    const canvasDataUrl = canvas ? canvas.toDataURL('image/png') : null;
+    const layoutForReport = {
+      ...State.layoutResult,
+      panelWidth: State.panel.width,
+      panelHeight: State.panel.height,
+      estimatedPower: State.boqResult?.estimatedPower,
+    };
+
+    const gen = new ReportGenerator(
+      State.project,
+      State.roofResult,
+      layoutForReport,
+      State.boqResult,
+      canvasDataUrl,
+      State.assessmentResult
+    );
+
+    const doc = await gen.createDoc(); 
+    const pdfBlob = doc.output('blob');
+    const filename = `Report_${State.project.name || 'Survey'}_${new Date().toISOString().split('T')[0]}.pdf`;
+
+    showToast('เธเธณเธฅเธฑเธเธญเธฑเธเนเธซเธฅเธ”เน€เธเนเธฒ Telegram...', 'info');
+    const caption = `๐“ <b>Solar Assessment Report</b>\n๐‘ค เนเธเธฃเธเธเธฒเธฃ: ${State.project.name || '-'}\n๐ข เธชเธ–เธฒเธเธ—เธตเน: ${State.project.address || '-'}\nโ€๏ธ เธเธเธฒเธ”: ${State.layoutResult?.estimatedPower || 0} Wp`;
+    
+    const res = await TelegramBot.sendDocument(config, pdfBlob, filename, caption);
+    
+    if (res.ok) {
+      showToast('เธชเนเธเธฃเธฒเธขเธเธฒเธเน€เธเนเธฒ Telegram เธชเธณเน€เธฃเนเธ! โ…', 'success', 5000);
+    } else {
+      throw new Error(res.description || 'Upload failed');
+    }
+  } catch (err) {
+    showToast(`เธชเนเธเนเธกเนเธชเธณเน€เธฃเนเธ: ${err.message}`, 'error', 5000);
+    console.error(err);
+  }
+};
+
+// โ”€โ”€โ”€ BOT CALLBACK (v2.0) โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+
+function initBotMode() {
+  const params = new URLSearchParams(window.location.search);
+  const chatId = params.get('chatId');
+  const step   = params.get('step');
+
+  if (chatId && step) {
+    State.botMode.active = true;
+    State.botMode.chatId = chatId;
+    State.botMode.step   = step;
+    
+    // UI: เธเธฃเธฑเธเนเธซเนเน€เธซเธกเธฒเธฐเธเธฑเธเนเธซเธกเธ”เธเธญเธ—
+    document.body.classList.add('is-bot-mode');
+
+    if (step === 'REVIEW') {
+      loadStateFromBot(chatId);
+    } else {
+      showToast(`เนเธซเธกเธ”เน€เธฅเน€เธเธญเธฃเน: เธขเธดเธเธฃเธฐเธขเธฐ ${step}`, 'info');
+      // เธเนเธญเธเธชเนเธงเธเธซเธฑเธงเนเธฅเธฐเนเธ–เธเธเธณเธ—เธฒเธ
+      const h = document.querySelector('.header'); if (h) h.style.display = 'none';
+      const t = document.querySelector('.tabs'); if (t) t.style.display = 'none';
+    }
+  }
+}
+
+async function loadStateFromBot(chatId) {
+  try {
+    showToast('เธเธณเธฅเธฑเธเนเธซเธฅเธ”เธเนเธญเธกเธนเธฅเธงเธดเธจเธงเธเธฃเธฃเธก...', 'info');
+    const res = await fetch(`send_telegram.php?chatId=${chatId}`);
+    const state = await res.json();
+    
+    if (state && state.data) {
+      const d = state.data;
+      State.project.name = d.projectName || '';
+      
+      // เธญเธฑเธเน€เธ”เธ•เธเนเธญเธกเธนเธฅเธซเธฅเธฑเธเธเธฒ
+      State.roofResult = {
+        span: d.MEASURE_SPAN,
+        height: d.MEASURE_HEIGHT,
+        trueArea: d.MEASURE_SPAN * 10, // Mock area for display
+        totalArea: d.MEASURE_SPAN * 10,
+        slopeAngle: 30, // Default estimate
+        pitchLabel: '1:1.7'
+      };
+      
+      // เธญเธฑเธเน€เธ”เธ• BoQ เน€เธเธทเนเธญเธเธ•เนเธ
+      State.boqResult = { panels: 10, rails: { count: 4, length: 4 } };
+      
+      // เธชเธฅเธฑเธเธซเธเนเธฒเธเธญเนเธเธ—เธตเน Report เธญเธฑเธ•เนเธเธกเธฑเธ•เธด
+      document.querySelector('.nav-tab[data-page="report"]')?.click();
+      updateReportSummary();
+      showToast('เธเนเธญเธกเธนเธฅเธเธฃเนเธญเธกเนเธฅเนเธง! เนเธเธฃเธ”เธ•เธฃเธงเธเธชเธญเธเธฃเธฒเธขเธเธฒเธเนเธฅเธฐเธเธ”เธชเธฃเนเธฒเธ PDF', 'success');
+    }
+  } catch (err) {
+    showToast('เนเธซเธฅเธ”เธเนเธญเธกเธนเธฅเนเธกเนเธชเธณเน€เธฃเนเธ', 'error');
+  }
+}
+
+async function sendDataToBot(value) {
+  if (!State.botMode.active) return;
+
+  try {
+    showToast('เธเธณเธฅเธฑเธเธชเนเธเธเนเธญเธกเธนเธฅเธเธฅเธฑเธเนเธเธขเธฑเธ Telegram...', 'info');
+    const res = await fetch('send_telegram.php', {
+      method: 'POST',
+      body: JSON.stringify({
+        chatId: State.botMode.chatId,
+        text: String(value) // เธชเนเธเธ•เธฑเธงเน€เธฅเธเธเธฅเธฑเธเนเธเธ—เธตเน Webhook
+      })
+    });
+    const result = await res.json();
+    if (result.ok) {
+      showToast('เธชเนเธเธเนเธญเธกเธนเธฅเธชเธณเน€เธฃเนเธ! เธเธฃเธธเธ“เธฒเธเธฅเธฑเธเนเธเธ—เธตเน Telegram', 'success');
+      // เธเธดเธ”เธซเธเนเธฒเธ•เนเธฒเธเธซเธฃเธทเธญเนเธเนเธเนเธซเนเธเธฅเธฑเธเนเธเนเธเธ—
+      setTimeout(() => {
+        window.close();
+      }, 2000);
+    }
+  } catch (err) {
+    showToast('เธฅเนเธกเน€เธซเธฅเธงเนเธเธเธฒเธฃเธชเนเธเธเนเธญเธกเธนเธฅเธเธฅเธฑเธเธเธญเธ—', 'error');
+  }
+}
+
+// เนเธเนเนเธเธเธฑเธเธเนเธเธฑเธเธเธฑเธเธ—เธถเธเน€เธ”เธดเธกเนเธซเนเน€เธฃเธตเธขเธ Bot Callback
+const originalOnMeasure = window.saveMeasurement || (() => {});
+window.saveMeasurement = function() {
+  const val = parseFloat(document.getElementById('live-distance').textContent);
+  if (State.botMode.active) {
+    sendDataToBot(val);
+  }
+  // เน€เธฃเธตเธขเธเธเธฑเธเธเนเธเธฑเธเน€เธ”เธดเธก
+  if (typeof originalOnMeasure === 'function') originalOnMeasure();
+};
+
+// โ”€โ”€โ”€ Init โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+function init() {
+  initNavigation();
+  initBluetooth();
+  initBotMode(); // เธ•เธฃเธงเธเธชเธญเธเนเธซเธกเธ”เธเธญเธ—
+  loadPersistedState();
+
+  // Set default project date if not already set
+  const dateEl = document.getElementById('proj-date');
+  if (dateEl && !dateEl.value) {
+    dateEl.value = new Date().toISOString().split('T')[0];
+  }
+
+  // Update settings fields with state values
+  document.getElementById('set-panel-w').value = State.panel.width;
+  document.getElementById('set-panel-h').value = State.panel.height;
+  document.getElementById('set-panel-watt').value = State.panelWatt;
+
+  updateCalcButton();
+  selectPoint(State.activePoint || 'A');
+  checkStandalone();
+
+  // BT status header click
+  document.getElementById('bt-status').addEventListener('click', () => {
+    if (State.connected) disconnectBT(); else connectBLE();
+  });
+
+  persistState();
+  console.log('[Disto Survey App] v3.0 Visual Ready');
+}
+
+// โ”€โ”€โ”€ Global Exposure for index.html โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+window.State = State;
+window.showToast = showToast;
+window.initNavigation = initNavigation;
+window.assessStructure = assessStructure;
+window.renderStructList = renderStructList;
+window.deleteStructMeasurement = deleteStructMeasurement;
+window.clearStructMeasurements = clearStructMeasurements;
+window.recordStructMeasurement = recordStructMeasurement;
+window.setPurlinPreset = setPurlinPreset;
+window.updateReportSummary = updateReportSummary;
+window.selectBlueprintPart = selectBlueprintPart;
+window.openTrussSelector = openTrussSelector;
+window.closeTrussSelector = closeTrussSelector;
+window.selectTrussPattern = selectTrussPattern;

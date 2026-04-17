@@ -1,0 +1,298 @@
+﻿window.assessStructure = assessStructure;
+window.renderStructList = renderStructList;
+window.deleteStructMeasurement = deleteStructMeasurement;
+window.clearStructMeasurements = clearStructMeasurements;
+window.recordStructMeasurement = recordStructMeasurement;
+window.setPurlinPreset = setPurlinPreset;
+window.updateReportSummary // เนโ€โฌเนโ€โฌเนโ€โฌ Global Exposure for index.html เนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌ
+window.State = State;
+window.showToast = showToast;
+window.initNavigation = initNavigation;
+window.assessStructure = assessStructure;
+window.renderStructList = renderStructList;
+window.deleteStructMeasurement = deleteStructMeasurement;
+window.clearStructMeasurements = clearStructMeasurements;
+window.recordStructMeasurement = recordStructMeasurement;
+window.setPurlinPreset = setPurlinPreset;
+window.updateReportSummary = updateReportSummary;
+window.selectBlueprintPart = selectBlueprintPart;
+window.openTrussSelector = openTrussSelector;
+window.closeTrussSelector = closeTrussSelector;
+window.selectTrussPattern = selectTrussPattern;
+window.confirmVisualMeasurement = confirmVisualMeasurement;
+window.drawCanvas = drawCanvas;
+
+// New Exposures v3.2
+window.showInstallGuide = showInstallGuide;
+window.toggleVoice = toggleVoice;
+window.openHidGuide = openHidGuide;
+window.closeHidGuide = closeHidGuide;
+window.connectBLE = connectBLE;
+window.connectKeyboard = connectKeyboard;
+window.disconnectBT = disconnectBT;
+window.saveProject = saveProject;
+window.setManualDist = setManualDist;
+window.selectPoint = selectPoint;
+window.recordMeasurement = recordMeasurement;
+window.undoLastPoint = undoLastPoint;
+window.resetAll = resetAll;
+window.calculateRoof = calculateRoof;
+window.calculateLayout = calculateLayout;
+window.captureShot = captureShot;
+window.calcMemberHeight = calcMemberHeight;
+window.resetShots = resetShots;
+window.saveMemberHeight = saveMemberHeight;
+window.undoLastMember = undoLastMember;
+window.clearMemberSizes = clearMemberSizes;
+window.structSetDist = structSetDist;
+window.toggleTwoFace = toggleTwoFace;
+window.updatePanelSettings = updatePanelSettings;
+window.testTelegram = testTelegram;
+window.sendToTelegram = sendToTelegram;
+
+// Robust Init Check
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+โ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌ
+
+window.testTelegram = async function() {
+  updateTelegramState();
+  const config = State.telegram;
+  
+  if (!config.chatId && !config.token && !config.useProxy) {
+    showToast('เน€เธยเน€เธเธเน€เธเธเน€เธโ€เน€เธเธ’เน€เธยเน€เธเธเน€เธเธเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ… Telegram เน€เธยเน€เธยเน€เธเธเน€เธยเน€เธโ€”เน€เธโ€เน€เธเธเน€เธเธเน€เธย', 'warning');
+    return;
+  }
+
+  try {
+    showToast('เน€เธยเน€เธเธ“เน€เธเธ…เน€เธเธ‘เน€เธยเน€เธเธเน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธเธ’เน€เธเธเน€เธโ€”เน€เธโ€เน€เธเธเน€เธเธเน€เธย...', 'info');
+    const res = await TelegramBot.sendMessage(config, `เนยยโฌ <b>Disto Survey App</b>\nเน€เธโ€”เน€เธโ€เน€เธเธเน€เธเธเน€เธยเน€เธยเน€เธเธ’เน€เธเธเน€เธโฌเน€เธยเน€เธเธ—เน€เธยเน€เธเธเน€เธเธเน€เธโ€ขเน€เธยเน€เธเธเน€เธยเน€เธเธ’เน€เธยเน€เธเธเน€เธยเน€เธยเน€เธเธ’เน€เธยเน€เธเธ’เน€เธย\nเน€เธโฌเน€เธเธเน€เธเธ…เน€เธเธ’: ${new Date().toLocaleString()}`);
+    if (res.ok) {
+      showToast('เน€เธเธเน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธเธ’เน€เธเธเน€เธโ€”เน€เธโ€เน€เธเธเน€เธเธเน€เธยเน€เธเธเน€เธเธ“เน€เธโฌเน€เธเธเน€เธยเน€เธย!', 'success');
+    } else {
+      throw new Error(res.description || 'Unknown error');
+    }
+  } catch (err) {
+    showToast(`เน€เธเธ…เน€เธยเน€เธเธเน€เธโฌเน€เธเธเน€เธเธ…เน€เธเธ: ${err.message}`, 'error', 5000);
+  }
+};
+
+function updateTelegramState() {
+  State.telegram.token = document.getElementById('tg-token')?.value || '';
+  State.telegram.chatId = document.getElementById('tg-chat-id')?.value || '';
+  State.telegram.useProxy = document.getElementById('tg-use-proxy')?.classList.contains('on') || false;
+  persistState();
+}
+
+// เน€เธยเน€เธเธเน€เธยเน€เธยเน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธยเน€เธย persist
+const originalPersist = window.persistState;
+window.persistState = function() {
+  const token = document.getElementById('tg-token')?.value;
+  const chat = document.getElementById('tg-chat-id')?.value;
+  const proxy = document.getElementById('tg-use-proxy')?.classList.contains('on');
+  
+  if (token !== undefined) State.telegram.token = token;
+  if (chat !== undefined) State.telegram.chatId = chat;
+  if (proxy !== undefined) State.telegram.useProxy = proxy;
+  
+  originalPersist();
+};
+
+window.sendToTelegram = async function() {
+  updateTelegramState();
+  const config = State.telegram;
+
+  if (!config.chatId) {
+    showToast('เน€เธเธเน€เธเธ‘เน€เธยเน€เธยเน€เธเธเน€เธยเน€เธยเน€เธโ€เน€เธยเน€เธโ€ขเน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธ’ Chat ID เน€เธยเน€เธยเน€เธโฌเน€เธเธเน€เธยเน€เธเธ Settings', 'warning');
+    return;
+  }
+
+  try {
+    showToast('เน€เธยเน€เธเธ“เน€เธเธ…เน€เธเธ‘เน€เธยเน€เธโฌเน€เธโ€ขเน€เธเธเน€เธเธ•เน€เธเธเน€เธเธเน€เธยเน€เธยเน€เธเธ…เน€เธย PDF...', 'info');
+    
+    // Generate PDF Blob
+    const canvas = document.getElementById('layout-canvas');
+    const canvasDataUrl = canvas ? canvas.toDataURL('image/png') : null;
+    const layoutForReport = {
+      ...State.layoutResult,
+      panelWidth: State.panel.width,
+      panelHeight: State.panel.height,
+      estimatedPower: State.boqResult?.estimatedPower,
+    };
+
+    const gen = new ReportGenerator(
+      State.project,
+      State.roofResult,
+      layoutForReport,
+      State.boqResult,
+      canvasDataUrl,
+      State.assessmentResult
+    );
+
+    const doc = await gen.createDoc(); 
+    const pdfBlob = doc.output('blob');
+    const filename = `Report_${State.project.name || 'Survey'}_${new Date().toISOString().split('T')[0]}.pdf`;
+
+    showToast('เน€เธยเน€เธเธ“เน€เธเธ…เน€เธเธ‘เน€เธยเน€เธเธเน€เธเธ‘เน€เธยเน€เธยเน€เธเธเน€เธเธ…เน€เธโ€เน€เธโฌเน€เธยเน€เธยเน€เธเธ’ Telegram...', 'info');
+    const caption = `เนยโ€ย <b>Solar Assessment Report</b>\nเนยโ€เธ เน€เธยเน€เธยเน€เธเธเน€เธยเน€เธยเน€เธเธ’เน€เธเธ: ${State.project.name || '-'}\nเนยยเธ เน€เธเธเน€เธโ€“เน€เธเธ’เน€เธยเน€เธโ€”เน€เธเธ•เน€เธย: ${State.project.address || '-'}\nเนยโฌเนเธย เน€เธยเน€เธยเน€เธเธ’เน€เธโ€: ${State.layoutResult?.estimatedPower || 0} Wp`;
+    
+    const res = await TelegramBot.sendDocument(config, pdfBlob, filename, caption);
+    
+    if (res.ok) {
+      showToast('เน€เธเธเน€เธยเน€เธยเน€เธเธเน€เธเธ’เน€เธเธเน€เธยเน€เธเธ’เน€เธยเน€เธโฌเน€เธยเน€เธยเน€เธเธ’ Telegram เน€เธเธเน€เธเธ“เน€เธโฌเน€เธเธเน€เธยเน€เธย! เนยโ€ฆ', 'success', 5000);
+    } else {
+      throw new Error(res.description || 'Upload failed');
+    }
+  } catch (err) {
+    showToast(`เน€เธเธเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธเธ“เน€เธโฌเน€เธเธเน€เธยเน€เธย: ${err.message}`, 'error', 5000);
+    console.error(err);
+  }
+};
+
+// เนโ€โฌเนโ€โฌเนโ€โฌ BOT CALLBACK (v2.0) เนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌ
+
+function initBotMode() {
+  const params = new URLSearchParams(window.location.search);
+  const chatId = params.get('chatId');
+  const step   = params.get('step');
+
+  if (chatId && step) {
+    State.botMode.active = true;
+    State.botMode.chatId = chatId;
+    State.botMode.step   = step;
+    
+    // UI: เน€เธยเน€เธเธเน€เธเธ‘เน€เธยเน€เธยเน€เธเธเน€เธยเน€เธโฌเน€เธเธเน€เธเธเน€เธเธ’เน€เธเธเน€เธยเน€เธเธ‘เน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธโ€เน€เธยเน€เธเธเน€เธโ€”
+    document.body.classList.add('is-bot-mode');
+
+    if (step === 'REVIEW') {
+      loadStateFromBot(chatId);
+    } else {
+      showToast(`เน€เธยเน€เธเธเน€เธเธเน€เธโ€เน€เธโฌเน€เธเธ…เน€เธโฌเน€เธยเน€เธเธเน€เธเธเน€เธย: เน€เธเธเน€เธเธ”เน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ ${step}`, 'info');
+      // เน€เธยเน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธเธ‘เน€เธเธเน€เธยเน€เธเธ…เน€เธเธเน€เธยเน€เธโ€“เน€เธยเน€เธยเน€เธเธ“เน€เธโ€”เน€เธเธ’เน€เธย
+      const h = document.querySelector('.header'); if (h) h.style.display = 'none';
+      const t = document.querySelector('.tabs'); if (t) t.style.display = 'none';
+    }
+  }
+}
+
+async function loadStateFromBot(chatId) {
+  try {
+    showToast('เน€เธยเน€เธเธ“เน€เธเธ…เน€เธเธ‘เน€เธยเน€เธยเน€เธเธเน€เธเธ…เน€เธโ€เน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ…เน€เธเธเน€เธเธ”เน€เธเธเน€เธเธเน€เธยเน€เธเธเน€เธเธเน€เธเธ...', 'info');
+    const res = await fetch(`send_telegram.php?chatId=${chatId}`);
+    const state = await res.json();
+    
+    if (state && state.data) {
+      const d = state.data;
+      State.project.name = d.projectName || '';
+      
+      // เน€เธเธเน€เธเธ‘เน€เธยเน€เธโฌเน€เธโ€เน€เธโ€ขเน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ…เน€เธเธเน€เธเธ…เน€เธเธ‘เน€เธยเน€เธยเน€เธเธ’
+      State.roofResult = {
+        span: d.MEASURE_SPAN,
+        height: d.MEASURE_HEIGHT,
+        trueArea: d.MEASURE_SPAN * 10, // Mock area for display
+        totalArea: d.MEASURE_SPAN * 10,
+        slopeAngle: 30, // Default estimate
+        pitchLabel: '1:1.7'
+      };
+      
+      // เน€เธเธเน€เธเธ‘เน€เธยเน€เธโฌเน€เธโ€เน€เธโ€ข BoQ เน€เธโฌเน€เธยเน€เธเธ—เน€เธยเน€เธเธเน€เธยเน€เธโ€ขเน€เธยเน€เธย
+      State.boqResult = { panels: 10, rails: { count: 4, length: 4 } };
+      
+      // เน€เธเธเน€เธเธ…เน€เธเธ‘เน€เธยเน€เธเธเน€เธยเน€เธยเน€เธเธ’เน€เธยเน€เธเธเน€เธยเน€เธยเน€เธโ€”เน€เธเธ•เน€เธย Report เน€เธเธเน€เธเธ‘เน€เธโ€ขเน€เธยเน€เธยเน€เธเธเน€เธเธ‘เน€เธโ€ขเน€เธเธ”
+      document.querySelector('.nav-tab[data-page="report"]')?.click();
+      updateReportSummary();
+      showToast('เน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ…เน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธเธเน€เธยเน€เธเธ…เน€เธยเน€เธเธ! เน€เธยเน€เธยเน€เธเธเน€เธโ€เน€เธโ€ขเน€เธเธเน€เธเธเน€เธยเน€เธเธเน€เธเธเน€เธยเน€เธเธเน€เธเธ’เน€เธเธเน€เธยเน€เธเธ’เน€เธยเน€เธยเน€เธเธ…เน€เธเธเน€เธยเน€เธโ€เน€เธเธเน€เธเธเน€เธยเน€เธเธ’เน€เธย PDF', 'success');
+    }
+  } catch (err) {
+    showToast('เน€เธยเน€เธเธเน€เธเธ…เน€เธโ€เน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ…เน€เธยเน€เธเธเน€เธยเน€เธเธเน€เธเธ“เน€เธโฌเน€เธเธเน€เธยเน€เธย', 'error');
+  }
+}
+
+async function sendDataToBot(value) {
+  if (!State.botMode.active) return;
+
+  try {
+    showToast('เน€เธยเน€เธเธ“เน€เธเธ…เน€เธเธ‘เน€เธยเน€เธเธเน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ…เน€เธยเน€เธเธ…เน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธเธเน€เธเธ‘เน€เธย Telegram...', 'info');
+    const res = await fetch('send_telegram.php', {
+      method: 'POST',
+      body: JSON.stringify({
+        chatId: State.botMode.chatId,
+        text: String(value) // เน€เธเธเน€เธยเน€เธยเน€เธโ€ขเน€เธเธ‘เน€เธเธเน€เธโฌเน€เธเธ…เน€เธยเน€เธยเน€เธเธ…เน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธโ€”เน€เธเธ•เน€เธย Webhook
+      })
+    });
+    const result = await res.json();
+    if (result.ok) {
+      showToast('เน€เธเธเน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ…เน€เธเธเน€เธเธ“เน€เธโฌเน€เธเธเน€เธยเน€เธย! เน€เธยเน€เธเธเน€เธเธเน€เธโ€เน€เธเธ’เน€เธยเน€เธเธ…เน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธโ€”เน€เธเธ•เน€เธย Telegram', 'success');
+      // เน€เธยเน€เธเธ”เน€เธโ€เน€เธเธเน€เธยเน€เธยเน€เธเธ’เน€เธโ€ขเน€เธยเน€เธเธ’เน€เธยเน€เธเธเน€เธเธเน€เธเธ—เน€เธเธเน€เธยเน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธยเน€เธยเน€เธเธ…เน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธยเน€เธยเน€เธโ€”
+      setTimeout(() => {
+        window.close();
+      }, 2000);
+    }
+  } catch (err) {
+    showToast('เน€เธเธ…เน€เธยเน€เธเธเน€เธโฌเน€เธเธเน€เธเธ…เน€เธเธเน€เธยเน€เธยเน€เธยเน€เธเธ’เน€เธเธเน€เธเธเน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธเธเน€เธเธ…เน€เธยเน€เธเธ…เน€เธเธ‘เน€เธยเน€เธยเน€เธเธเน€เธโ€”', 'error');
+  }
+}
+
+// เน€เธยเน€เธยเน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธ‘เน€เธยเน€เธยเน€เธเธ‘เน€เธยเน€เธโ€”เน€เธเธ–เน€เธยเน€เธโฌเน€เธโ€เน€เธเธ”เน€เธเธเน€เธยเน€เธเธเน€เธยเน€เธโฌเน€เธเธเน€เธเธ•เน€เธเธเน€เธย Bot Callback
+const originalOnMeasure = window.saveMeasurement || (() => {});
+window.saveMeasurement = function() {
+  const val = parseFloat(document.getElementById('live-distance').textContent);
+  if (State.botMode.active) {
+    sendDataToBot(val);
+  }
+  // เน€เธโฌเน€เธเธเน€เธเธ•เน€เธเธเน€เธยเน€เธยเน€เธเธ‘เน€เธยเน€เธยเน€เธยเน€เธยเน€เธเธ‘เน€เธยเน€เธโฌเน€เธโ€เน€เธเธ”เน€เธเธ
+  if (typeof originalOnMeasure === 'function') originalOnMeasure();
+};
+
+// เนโ€โฌเนโ€โฌเนโ€โฌ Init เนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌ
+function init() {
+  initNavigation();
+  initBluetooth();
+  initBotMode(); // เน€เธโ€ขเน€เธเธเน€เธเธเน€เธยเน€เธเธเน€เธเธเน€เธยเน€เธยเน€เธเธเน€เธเธเน€เธโ€เน€เธยเน€เธเธเน€เธโ€”
+  loadPersistedState();
+
+  // Set default project date if not already set
+  const dateEl = document.getElementById('proj-date');
+  if (dateEl && !dateEl.value) {
+    dateEl.value = new Date().toISOString().split('T')[0];
+  }
+
+  // Update settings fields with state values
+  document.getElementById('set-panel-w').value = State.panel.width;
+  document.getElementById('set-panel-h').value = State.panel.height;
+  document.getElementById('set-panel-watt').value = State.panelWatt;
+
+  updateCalcButton();
+  selectPoint(State.activePoint || 'A');
+  checkStandalone();
+
+  // BT status header click
+  document.getElementById('bt-status').addEventListener('click', () => {
+    if (State.connected) disconnectBT(); else connectBLE();
+  });
+
+  persistState();
+  console.log('[Disto Survey App] v3.0 Visual Ready');
+}
+
+// เนโ€โฌเนโ€โฌเนโ€โฌ Global Exposure for index.html เนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌเนโ€โฌ
+window.State = State;
+window.showToast = showToast;
+window.initNavigation = initNavigation;
+window.assessStructure = assessStructure;
+window.renderStructList = renderStructList;
+window.deleteStructMeasurement = deleteStructMeasurement;
+window.clearStructMeasurements = clearStructMeasurements;
+window.recordStructMeasurement = recordStructMeasurement;
+window.setPurlinPreset = setPurlinPreset;
+window.updateReportSummary = updateReportSummary;
+window.selectBlueprintPart = selectBlueprintPart;
+window.openTrussSelector = openTrussSelector;
+window.closeTrussSelector = closeTrussSelector;
+window.selectTrussPattern = selectTrussPattern;
+window.confirmVisualMeasurement = confirmVisualMeasurement;
+
+document.addEventListener('DOMContentLoaded', init);

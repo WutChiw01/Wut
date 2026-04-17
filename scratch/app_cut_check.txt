@@ -1,0 +1,100 @@
+﻿}
+
+// เนเธเนเนเธเธเธฑเธเธเนเธเธฑเธเธเธฑเธเธ—เธถเธเน€เธ”เธดเธกเนเธซเนเน€เธฃเธตเธขเธ Bot Callback
+const originalOnMeasure = window.saveMeasurement || (() => {});
+window.saveMeasurement = function() {
+  const val = parseFloat(document.getElementById('live-distance').textContent);
+  if (State.botMode.active) {
+    sendDataToBot(val);
+  }
+  // เน€เธฃเธตเธขเธเธเธฑเธเธเนเธเธฑเธเน€เธ”เธดเธก
+  if (typeof originalOnMeasure === 'function') originalOnMeasure();
+};
+
+// โ”€โ”€โ”€ Init โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+function init() {
+  console.log('[Disto] Bootstrapping App...');
+  initNavigation();
+  initBluetooth();
+  initBotMode(); // เธ•เธฃเธงเธเธชเธญเธเนเธซเธกเธ”เธเธญเธ—
+  loadPersistedState();
+
+  // Set default project date if not already set
+  const dateEl = document.getElementById('proj-date');
+  if (dateEl && !dateEl.value) {
+    dateEl.value = new Date().toISOString().split('T')[0];
+  }
+
+  // Update settings fields with state values
+  const setW = document.getElementById('set-panel-w');
+  const setH = document.getElementById('set-panel-h');
+  const setWatt = document.getElementById('set-panel-watt');
+  if (setW) setW.value = State.panel.width;
+  if (setH) setH.value = State.panel.height;
+  if (setWatt) setWatt.value = State.panelWatt;
+
+  updateCalcButton();
+  selectPoint(State.activePoint || 'A');
+  checkStandalone();
+
+  // BT status header click
+  const btStatus = document.getElementById('bt-status');
+  if (btStatus) {
+    btStatus.addEventListener('click', () => {
+      if (State.connected) disconnectBT(); else connectBLE();
+    });
+  }
+
+  persistState();
+  console.log('[Disto Survey App] v3.2 Nav Fix Ready');
+}
+
+// โ”€โ”€โ”€ Global Exposure for index.html โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+window.State = State;
+window.showToast = showToast;
+window.initNavigation = initNavigation;
+window.assessStructure = assessStructure;
+window.renderStructList = renderStructList;
+window.deleteStructMeasurement = deleteStructMeasurement;
+window.clearStructMeasurements = clearStructMeasurements;
+window.recordStructMeasurement = recordStructMeasurement;
+window.setPurlinPreset = setPurlinPreset;
+window.updateReportSummary // โ”€โ”€โ”€ Global Exposure for index.html โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€โ”€
+window.State = State;
+window.showToast = showToast;
+window.initNavigation = initNavigation;
+window.assessStructure = assessStructure;
+window.renderStructList = renderStructList;
+window.deleteStructMeasurement = deleteStructMeasurement;
+window.clearStructMeasurements = clearStructMeasurements;
+window.recordStructMeasurement = recordStructMeasurement;
+window.setPurlinPreset = setPurlinPreset;
+window.updateReportSummary = updateReportSummary;
+window.selectBlueprintPart = selectBlueprintPart;
+window.openTrussSelector = openTrussSelector;
+window.closeTrussSelector = closeTrussSelector;
+window.selectTrussPattern = selectTrussPattern;
+window.confirmVisualMeasurement = confirmVisualMeasurement;
+window.drawCanvas = drawCanvas;
+
+// New Exposures v3.2
+window.showInstallGuide = showInstallGuide;
+window.toggleVoice = toggleVoice;
+window.openHidGuide = openHidGuide;
+window.closeHidGuide = closeHidGuide;
+window.connectBLE = connectBLE;
+window.connectKeyboard = connectKeyboard;
+window.disconnectBT = disconnectBT;
+window.saveProject = saveProject;
+window.setManualDist = setManualDist;
+window.selectPoint = selectPoint;
+window.recordMeasurement = recordMeasurement;
+window.undoLastPoint = undoLastPoint;
+window.resetAll = resetAll;
+window.calculateRoof = calculateRoof;
+window.calculateLayout = calculateLayout;
+window.captureShot = captureShot;
+window.calcMemberHeight = calcMemberHeight;
+window.resetShots = resetShots;
+window.saveMemberHeight = saveMemberHeight;
+window.undoLastMember = undoLastMember;

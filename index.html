@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#080e1a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Disto Survey v3.8 — Final Diamond Hardened</title>
+  <meta name="description" content="แอปสำรวจหลังคาด้วย Leica Disto เพื่อประเมินติดตั้งโซล่าเซลล์ (v3.8 Final Diamond Hardened)" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- PWA & Mobile Meta -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3105/3105555.png" />
+  <meta name="apple-mobile-web-app-title" content="Disto Survey" />
+  
+  <!-- jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ HEADER ══════ -->
+<header class="app-header">
+  <div class="logo">
+    <div class="logo-icon">⚡</div>
+    <h1>Disto Survey <span>v3.8 Final Diamond Hardened</span></h1>
+  </div>
+  <div class="header-actions">
+    <button id="install-btn" class="shortcut-pill" aria-label="Add shortcut" onclick="showInstallGuide()" style="display:none">
+      <span class="btn-icon">➕</span>
+    </button>
+    <button id="voice-toggle" class="voice-pill" aria-label="Toggle Voice feedback" onclick="toggleVoice()">
+      <span class="voice-icon">🔈</span>
+    </button>
+    <button id="bt-status" class="bt-status-pill" aria-label="Bluetooth status">
+      <span class="dot"></span>
+      <span class="bt-label">BT</span>
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════ TOAST ════════ -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- ═══════════════════════════════════════════ PAGE: CONNECT ═ -->
+<section id="page-connect" class="page active">
+
+  <!-- BLE Connection -->
+  <div class="card ble-panel" style="position:relative; overflow:hidden">
+    <div id="ios-badge" style="display:none; position:absolute; top:0; right:0; background:var(--accent-l); color:#000; font-size:10px; font-weight:800; padding:4px 10px; border-bottom-left-radius:8px; animation: slideDown 0.5s ease">IPHONE DETECTED</div>
+    
+    <div class="ble-icon">📡</div>
+    <div class="ble-title">เชื่อมต่อเครื่องวัดเลเซอร์</div>
+    <div id="ble-instructions" class="ble-desc">
+      เปิด Bluetooth บนมือถือ แล้วเลือกวิธีเชื่อมต่อด้านล่าง:
+    </div>
+
+    <!-- iPhone Specific Warning -->
+    <div id="ios-warning" style="display:none; background:rgba(245,158,11,0.1); border:1px solid var(--accent-l); border-radius:8px; padding:10px; margin-bottom:12px; animation: fadeIn 0.5s ease">
+      <div style="font-size:12px; color:var(--accent-l); font-weight:700; margin-bottom:4px">💡 คำแนะนำสำหรับ iPhone</div>
+      <div style="font-size:11px; color:var(--text3); line-height:1.4">
+        Safari/iPhone ไม่รองรับการเชื่อมต่อ BLE โดยตรง<br/>
+        <b>กรุณาใช้ Keyboard Mode (HID) แทน</b>
+      </div>
+      <button class="btn btn-ghost btn-xs" style="margin-top:8px; color:var(--accent-l); text-decoration:underline" onclick="openHidGuide()">
+        ดูวิธีตั้งค่าเครื่อง X310 สำหรับ iPhone →
+      </button>
+    </div>
+
+    <div style="display:grid; gap:10px">
+      <button id="btn-connect-ble" class="btn btn-primary" onclick="connectBLE()">
+        <span class="btn-icon">🔵</span> เชื่อมต่อ App Mode (BLE)
+      </button>
+      <button id="btn-connect-hid" class="btn btn-accent" onclick="connectKeyboard()">
+        <span class="btn-icon">⌨️</span> เชื่อมต่อ Keyboard Mode (HID)
+      </button>
+    </div>
+    <p id="bt-status-msg" style="font-size:10px; color:var(--text3); margin-top:10px; text-align:center">แนะนำ Keyboard Mode สำหรับความเสถียรสูงสุด</p>
+  </div>
+
+  <!-- HID Guide Modal -->
+  <div id="modal-hid-guide" class="modal" style="display:none">
+    <div class="modal-content" style="max-width:420px; text-align:center">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+        <h3 style="margin:0; font-size:18px">การตั้งค่า X310 สำหรับ iPhone</h3>
+        <button class="btn btn-ghost" onclick="closeHidGuide()" style="width:40px; height:40px; font-size:24px; padding:0">×</button>
+      </div>
+      
+      <div style="text-align:left; font-size:13px; line-height:1.6">
+        <div style="background:var(--bg3); padding:12px; border-radius:8px; margin-bottom:15px">
+          <b style="color:var(--accent-l)">1. ที่เครื่อง Leica X310:</b><br/>
+          กดปุ่ม <b>Bluetooth</b> แช่ไว้ หรือกด 2 ครั้ง จนเห็นไอคอน <b>คีย์บอร์ด</b> เล็กๆ ปรากฏบนหน้าจอเครื่อง
+        </div>
+        <div style="background:var(--bg3); padding:12px; border-radius:8px; margin-bottom:15px">
+          <b style="color:var(--accent-l)">2. ที่ iPhone ของคุณ:</b><br/>
+          ไปที่ Settings > Bluetooth แล้วเลือกเชื่อมต่อกับ <b>"DISTO X310"</b> (มันจะถามรหัสผ่านถ้าจำเป็น ให้ใส่ 000000)
+        </div>
+        <div style="background:var(--bg3); padding:12px; border-radius:8px">
+          <b style="color:var(--accent-l)">3. กลับมาที่แอปนี้:</b><br/>
+          กดปุ่ม <b>"⌨️ Keyboard Mode"</b> แล้วเริ่มยิงเลเซอร์ได้เลย!
+        </div>
+      </div>
+      
+      <button class="btn btn-primary" style="margin-top:20px" onclick="closeHidGuide()">เข้าใจแล้ว</button>
+    </div>
+  </div>
+
+  <div class="card" style="padding:12px 14px">
+    <p class="text-sm" style="margin-bottom:8px;font-weight:600;color:var(--text2)">วิธีใช้งาน</p>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:18px">1️⃣</span>
+        <span class="text-sm">ตั้งขาตั้งกล้อง + เลเซอร์ในตำแหน่งที่มองเห็นหลังคาได้ครบ</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:18px">2️⃣</span>
+        <span class="text-sm">เชื่อมต่อบลูทูธ กดเลือกจุด A→B→C→D แล้วกดยิงเลเซอร์</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:18px">3️⃣</span>
+        <span class="text-sm">กรอกมุมราบแต่ละจุด (ถ้าไม่มี DST 360)</span>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:18px">4️⃣</span>
+        <span class="text-sm">กด "คำนวณ" → ระบบออกรายงาน PDF ทันที</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Info -->
+  <!-- ─── TELEGRAM BOT SETTINGS (v1.5) ─────────────────────── -->
+  <p class="section-title">ตั้งค่าบอท Telegram (Hostinger Link)</p>
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label">Telegram Bot Token</label>
+      <input id="tg-token" type="password" class="form-input" placeholder="123456789:ABCDEF..." />
+      <p class="text-xs" style="margin-top:4px">ได้มาจาก @BotFather (เว้นว่างไว้หากใช้ PHP Proxy)</p>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Target Chat ID</label>
+      <input id="tg-chat-id" type="text" class="form-input" placeholder="-123456789" />
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">ใช้ PHP Proxy (แนะนำสำหรับ Hostinger)</span>
+      <div id="tg-use-proxy" class="toggle on" onclick="this.classList.toggle('on')"></div>
+    </div>
+    <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="testTelegram()">
+      🚀 ทดสอบส่งข้อความ
+    </button>
+  </div>
+
+  <p class="section-title">ข้อมูลโครงการ</p>
+
+  <div class="card">
+    <div class="form-group">
+      <label class="form-label" for="proj-name">ชื่อโครงการ / บ้าน</label>
+      <input id="proj-name" type="text" class="form-input" placeholder="เช่น บ้านคุณสมชาย ซอย 5" />
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="proj-addr">ที่อยู่</label>
+      <input id="proj-addr" type="text" class="form-input" placeholder="เลขที่ / ถนน / ตำบล" />
+    </div>
+    <div class="input-row">
+      <div class="form-group">
+        <label class="form-label" for="proj-surveyor">ผู้สำรวจ</label>
+        <input id="proj-surveyor" type="text" class="form-input" placeholder="ชื่อ-สกุล" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="proj-date">วันที่</label>
+        <input id="proj-date" type="date" class="form-input" />
+      </div>
+    </div>
+    <button class="btn btn-outline btn-sm" onclick="saveProject()" style="width:100%">
+      💾 บันทึกข้อมูลโครงการ
+    </button>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ PAGE: MEASURE ═ -->
+<section id="page-measure" class="page">
+
+  <!-- Live Measurement Display -->
+  <div class="measurement-display">
+    <div>
+      <span class="measure-value" id="live-distance">--.-—</span>
+      <span class="measure-unit">ม.</span>
+    </div>
+    <div id="tilt-section" class="measure-tilt" style="display:none">
+      📐 <span id="live-tilt">มุมเงย: --°</span>
+    </div>
+    <div class="measure-meta">กดปุ่มยิงบนเครื่องเลเซอร์ หรือกรอกด้านล่าง</div>
+  </div>
+
+  <!-- Manual distance input (fallback) -->
+  <div class="card">
+    <p class="form-label">กรอกระยะทางด้วยตนเอง (ถ้ายังไม่ได้เชื่อมต่อ)</p>
+    <div class="input-row" style="margin-bottom:10px">
+      <div class="input-unit">
+        <input id="manual-dist" type="number" class="form-input large" placeholder="0.000"
+               step="0.001" min="0" max="120" inputmode="decimal"
+               oninput="setManualDist(this.value)" />
+        <span class="unit-label">ม.</span>
+      </div>
+      <div class="input-unit">
+        <input id="input-tilt" type="number" class="form-input" placeholder="0.0"
+               step="0.1" min="-90" max="90" inputmode="decimal" />
+        <span class="unit-label">°</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">มุมราบ Bearing ของจุดนี้ (0°=เหนือ, ตามเข็มนาฬิกา)</label>
+      <div class="input-unit">
+        <input id="input-bearing" type="number" class="form-input" placeholder="0"
+               step="0.5" min="0" max="360" inputmode="decimal" value="0" />
+        <span class="unit-label">°</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Roof diagram guide -->
+  <div class="roof-diagram">
+    <div style="color:var(--accent-l);font-weight:bold;margin-bottom:4px">📍 แผนผังจุดวัด (มองจากด้านหน้า)</div>
+    <div>B ●────────────────● D</div>
+    <div>&nbsp;&nbsp;│ &nbsp;&nbsp;&nbsp;สันหลังคา&nbsp;&nbsp;&nbsp; │</div>
+    <div>&nbsp;&nbsp;│ &nbsp;&nbsp;&nbsp;(Ridge)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; │</div>
+    <div>A ●────────────────● C</div>
+    <div style="color:var(--primary-l);margin-top:4px">A,C = เชิงชาย | B,D = สันหลังคา</div>
+  </div>
+
+  <!-- Points Grid -->
+  <p class="section-title">เลือกจุดที่จะวัด</p>
+
+  <div class="points-grid">
+    <div class="point-card active" data-point="A" onclick="selectPoint('A')">
+      <div class="point-label">จุด A</div>
+      <div class="point-desc">มุมล่างซ้าย<br>(เชิงชาย)</div>
+      <div class="point-value" id="val-A"></div>
+    </div>
+    <div class="point-card" data-point="B" onclick="selectPoint('B')">
+      <div class="point-label">จุด B</div>
+      <div class="point-desc">สันซ้าย<br>(ยอดหลังคา)</div>
+      <div class="point-value" id="val-B"></div>
+    </div>
+    <div class="point-card" data-point="C" onclick="selectPoint('C')">
+      <div class="point-label">จุด C</div>
+      <div class="point-desc">มุมล่างขวา<br>(เชิงชาย)</div>
+      <div class="point-value" id="val-C"></div>
+    </div>
+    <div class="point-card" data-point="D" onclick="selectPoint('D')">
+      <div class="point-label">จุด D</div>
+      <div class="point-desc">สันขวา<br>(ยอดหลังคา)</div>
+      <div class="point-value" id="val-D"></div>
+    </div>
+  </div>
+
+  <!-- Record button -->
+  <div class="btn-row" style="margin-bottom:10px">
+    <button class="btn btn-accent" onclick="recordMeasurement()" style="flex:2">
+      <span class="btn-icon">📌</span> บันทึกจุดที่เลือก
+    </button>
+    <button id="btn-undo-point" class="btn btn-outline" style="flex:1" onclick="undoLastPoint()" disabled>
+      <span class="btn-icon">↩️</span> แก้ไข
+    </button>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-ghost btn-sm" onclick="resetAll()">
+      <span class="btn-icon">🗑️</span> รีเซ็ตจุดทั้งหมด
+    </button>
+    <button class="btn btn-primary btn-sm" id="btn-calculate" onclick="calculateRoof()" disabled>
+      <span class="btn-icon">📐</span> คำนวณ
+    </button>
+  </div>
+
+  <!-- Results Section -->
+  <div id="results-section" style="display:none">
+    <p class="section-title">ผลคำนวณมิติหลังคา</p>
+
+    <div class="result-grid">
+      <div class="result-item">
+        <div class="result-label">เชิงชาย (Eave)</div>
+        <div class="result-value" id="res-eave">-</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">สันหลังคา (Ridge)</div>
+        <div class="result-value" id="res-ridge">-</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">แนวเมตร (Rafter)</div>
+        <div class="result-value" id="res-rafter">-</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">มุมลาดชัน</div>
+        <div class="result-value" id="res-slope">-</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">Pitch (X:12)</div>
+        <div class="result-value" id="res-pitch">-</div>
+      </div>
+      <div class="result-item highlight-green">
+        <div class="result-label">พื้นที่ 1 ด้าน</div>
+        <div class="result-value" id="res-area1">-</div>
+      </div>
+    </div>
+
+    <div class="card-highlight">
+      <div class="result-label">พื้นที่หลังคารวม (2 ด้าน)</div>
+      <div class="result-value" id="res-area2" style="font-size:28px;color:var(--accent-l)">-</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ PAGE: LAYOUT ══ -->
+<section id="page-layout" class="page">
+
+  <p class="section-title">ผังการวางแผงโซล่าเซลล์</p>
+
+  <!-- Canvas Layout -->
+  <div class="canvas-wrap">
+    <canvas id="layout-canvas"></canvas>
+  </div>
+
+  <!-- Summary -->
+  <div class="result-grid">
+    <div class="result-item highlight">
+      <div class="result-label">จำนวนแผงรวม</div>
+      <div class="result-value" id="layout-count">-</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">รูปแบบ</div>
+      <div class="result-value" id="layout-orient" style="font-size:14px">-</div>
+    </div>
+    <div class="result-item">
+      <div class="result-label">แถว × คอลัมน์</div>
+      <div class="result-value" id="layout-cols-rows">-</div>
+    </div>
+    <div class="result-item highlight-green">
+      <div class="result-label">กำลังผลิต (kWp)</div>
+      <div class="result-value" id="layout-power">-</div>
+    </div>
+    <div class="result-item" style="grid-column: span 2;">
+      <div class="result-label">พื้นที่แผง (Coverage Area)</div>
+      <div class="result-value" id="layout-area-cover">-</div>
+    </div>
+  </div>
+
+  <!-- BOQ -->
+  <p class="section-title">ประมาณการวัสดุ (BOQ)</p>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="boq-table">
+      <thead>
+        <tr>
+          <th>รายการ</th>
+          <th style="text-align:right">จำนวน</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>แผงโซล่าเซลล์</td><td class="num" id="boq-panels">-</td></tr>
+        <tr><td>ราง Aluminium Rail</td><td class="num" id="boq-rails">-</td></tr>
+        <tr><td>L-feet / Roof Hook</td><td class="num" id="boq-lfeet">-</td></tr>
+        <tr><td>Mid Clamp</td><td class="num" id="boq-midclamp">-</td></tr>
+        <tr><td>End Clamp</td><td class="num" id="boq-endclamp">-</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Recalculate button -->
+  <button class="btn btn-outline" onclick="calculateLayout()">
+    <span class="btn-icon">🔄</span> คำนวณ Layout ใหม่
+  </button>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ PAGE: STRUCTURE ═ -->
+<section id="page-structure" class="page">
+
+  <p class="section-title">วัดโครงสร้างหลังคา</p>
+
+  <!-- ═══ 2-SHOT HEIGHT CALCULATOR ═══════════════════════════════ -->
+  <div class="card" style="border:2px solid var(--primary-d);background:linear-gradient(160deg,#0f1d40,#162036)">
+    <div style="font-size:13px;font-weight:700;color:var(--primary-l);margin-bottom:10px">
+      📏 วัดขนาดความสูงชิ้นส่วน (2-Shot Method)
+    </div>
+
+    <!-- Diagram -->
+    <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:12px;font-family:monospace;font-size:11px;color:var(--text2);line-height:1.8;text-align:center">
+      <div style="color:var(--text3)">แผ่นหลังคา / ด้านบนชิ้นส่วน</div>
+      <div style="color:var(--accent-l);font-weight:bold">━━━━━━━━━━━━━━━━━━━━</div>
+      <div style="color:var(--text3);font-size:10px">↕ H = Z₂ − Z₁ (สิ่งที่ต้องการ)</div>
+      <div style="color:var(--primary-l);font-weight:bold">━━━━━━━━━━━━━━━━━━━━</div>
+      <div style="color:var(--text3)">ใต้แป / ด้านล่างชิ้นส่วน</div>
+      <div style="margin-top:6px;color:var(--text3)">⬆ ยิงตรงขึ้น 2 ครั้ง</div>
+      <div style="font-size:16px;margin-top:2px">📍</div>
+      <div style="color:var(--text2);font-size:10px">จุดยืน (กล้องตั้งกล้อง)</div>
+    </div>
+
+    <!-- Shot 1: Bottom face -->
+    <div id="panel-shot1" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;padding:4px;border-radius:6px;transition:0.3s">
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0">1</div>
+      <div style="flex:1">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:4px">ยิงไปที่ <strong style="color:var(--text)">ใต้แป / ด้านล่างชิ้นส่วน</strong></div>
+        <div class="input-row" style="gap:6px">
+          <div class="input-unit" style="flex:2">
+            <input id="shot1-dist" type="number" class="form-input" placeholder="ระยะ d₁ (ม.)"
+                   step="0.001" inputmode="decimal" oninput="calcMemberHeight()" />
+            <span class="unit-label">ม.</span>
+          </div>
+          <div class="input-unit" style="flex:1">
+            <input id="shot1-tilt" type="number" class="form-input" placeholder="มุม α₁"
+                   step="0.1" inputmode="decimal" value="88" oninput="calcMemberHeight()" />
+            <span class="unit-label">°</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="width:auto;flex-shrink:0;padding:0 8px"
+              onclick="captureShot(1)">📌</button>
+    </div>
+
+    <!-- Shot 2: Top face -->
+    <div id="panel-shot2" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:4px;border-radius:6px;transition:0.3s">
+      <div style="width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;color:#000">2</div>
+      <div style="flex:1">
+        <div style="font-size:11px;color:var(--text2);margin-bottom:4px">ยิงไปที่ <strong style="color:var(--text)">ใต้แผ่นหลังคา / ด้านบนชิ้นส่วน</strong></div>
+        <div class="input-row" style="gap:6px">
+          <div class="input-unit" style="flex:2">
+            <input id="shot2-dist" type="number" class="form-input" placeholder="ระยะ d₂ (ม.)"
+                   step="0.001" inputmode="decimal" oninput="calcMemberHeight()" />
+            <span class="unit-label">ม.</span>
+          </div>
+          <div class="input-unit" style="flex:1">
+            <input id="shot2-tilt" type="number" class="form-input" placeholder="มุม α₂"
+                   step="0.1" inputmode="decimal" value="89" oninput="calcMemberHeight()" />
+            <span class="unit-label">°</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="width:auto;flex-shrink:0;padding:0 8px"
+              onclick="captureShot(2)">📌</button>
+    </div>
+
+    <!-- Result -->
+    <div id="height-result" style="display:none;background:var(--bg);border-radius:8px;padding:12px;margin-bottom:10px;text-align:center">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px">ขนาดความสูงชิ้นส่วน (H)</div>
+      <div style="font-size:40px;font-weight:800;color:var(--green-l);font-variant-numeric:tabular-nums" id="calc-height-mm">--</div>
+      <div style="font-size:13px;color:var(--text2)" id="calc-height-m">-- ม.</div>
+      <div style="font-size:10px;color:var(--text3);margin-top:4px" id="calc-height-formula"></div>
+    </div>
+
+    <!-- Target selector -->
+    <div class="form-group" style="margin-bottom:8px">
+      <label class="form-label">บันทึกค่านี้เป็น</label>
+      <select id="height-save-as" class="form-input">
+        <option value="purlin_depth">ความลึกแป (Purlin H)</option>
+        <option value="truss_top_chord">ความสูงโครงทรัสส่วนบน (Top Chord H)</option>
+        <option value="truss_bottom_chord">ความสูงโครงทรัสส่วนล่าง (Bottom Chord H)</option>
+        <option value="rafter_depth">ความลึกแป้นรอด (Rafter H)</option>
+        <option value="other_member">ชิ้นส่วนอื่นๆ</option>
+      </select>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost btn-sm" onclick="resetShots()">🔄 รีเซ็ต</button>
+      <button class="btn btn-green" id="btn-save-height" onclick="saveMemberHeight()" disabled>
+        💾 บันทึกขนาด
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ ตารางผลวัดขนาดชิ้นส่วน ════════════════════════════════ -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:10px 0 8px">
+    <p class="section-title" style="margin:0">ขนาดชิ้นส่วนที่วัดได้</p>
+    <div style="display:flex;gap:4px">
+      <button class="btn btn-outline btn-xs" onclick="undoLastMember()" style="width:auto;padding:2px 8px;font-size:10px">↩️ เลิกทำ</button>
+      <button class="btn btn-ghost btn-xs" onclick="clearMemberSizes()" style="width:auto;padding:2px 8px;font-size:10px">🗑️ ล้าง</button>
+    </div>
+  </div>
+  <div id="member-size-list" class="card" style="padding:0;overflow:hidden;margin-bottom:10px">
+    <div style="padding:16px;text-align:center;color:var(--text3);font-size:13px">
+      ยังไม่มีข้อมูล<br>ใช้ <strong>2-Shot Method</strong> วัดด้านบน
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Quick P2P Measurement for structural elements -->
+  <div class="card" style="background:var(--bg2);border:1.5px solid var(--border2)">
+    <div style="font-size:12px;font-weight:600;color:var(--accent-l);margin-bottom:10px">⚡ วัดระยะด่วน (Quick Laser Distance)</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px">
+      <div style="text-align:center">
+        <div style="font-size:36px;font-weight:800;color:var(--accent-l);font-variant-numeric:tabular-nums" id="struct-live-dist">--.-—</div>
+        <div style="font-size:11px;color:var(--text3)">ม. (ค่าล่าสุดจากเลเซอร์)</div>
+      </div>
+    </div>
+    <div class="input-unit" style="margin-bottom:8px">
+      <input id="struct-manual" type="number" class="form-input" placeholder="หรือกรอกระยะ" step="0.001" min="0" max="100" inputmode="decimal" oninput="structSetDist(this.value)" />
+      <span class="unit-label">ม.</span>
+    </div>
+    <select id="struct-target" class="form-input" style="margin-bottom:8px">
+      <option value="purlin_spacing">ระยะห่างระหว่างแป (Purlin Spacing)</option>
+      <option value="truss_spacing">ระยะห่างโครงถัก (Truss Spacing)</option>
+      <option value="truss_span">ช่วงพาดโครงถัก (Truss Span)</option>
+      <option value="purlin_span">ช่วงพาดแป (Purlin Span)</option>
+      <option value="ridge_height">ความสูงสัน (Ridge Height)</option>
+      <option value="eave_height">ความสูงเชิงชาย (Eave Height)</option>
+      <option value="overhang">ระยะยื่นเชิงชาย (Overhang)</option>
+      <option value="other">อื่นๆ (ระบุชื่อ)</option>
+    </select>
+    <input id="struct-custom-label" type="text" class="form-input" placeholder="ชื่อรายการที่วัด" style="margin-bottom:8px;display:none" />
+    <button class="btn btn-accent" onclick="recordStructMeasurement()">
+      <span class="btn-icon">📌</span> บันทึกค่าวัด
+    </button>
+  </div>
+
+  <!-- Measurement History -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px">
+    <p class="section-title" style="margin:0">รายการวัดโครงสร้าง</p>
+    <button class="btn btn-ghost btn-sm" onclick="clearStructMeasurements()" style="width:auto">🗑️ ล้าง</button>
+  </div>
+
+  <div id="struct-list" class="card" style="padding:0;overflow:hidden">
+    <div style="padding:20px;text-align:center;color:var(--text3);font-size:13px">
+      ยังไม่มีรายการวัด<br>กดยิงเลเซอร์แล้วกด "บันทึกค่าวัด"
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── PURLIN ASSESSMENT ─────────────────────────────── -->
+  <p class="section-title">ประเมินแป (Purlin)</p>
+
+  <!-- how-to tip -->
+  <div class="card" style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.25);padding:12px;margin-bottom:10px">
+    <div style="font-size:12px;font-weight:700;color:var(--accent-l);margin-bottom:8px">💡 วิธีหาขนาดแปในสนาม</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.7;display:flex;flex-direction:column;gap:5px">
+      <div><strong style="color:var(--text)">1. วิธีง่ายที่สุด — อ่านสแตมป์บนเหล็ก</strong><br>เหล็กรูปซีทุกเส้นจะปั๊มขนาดไว้ เช่น <span style="color:var(--accent-l);font-weight:700">C100×50×20 t=2.3</span> = ลึก 100 มม. × หน้า 50 × พับ 20 มม. หนา 2.3 มม.</div>
+      <div><strong style="color:var(--text)">2. วัดด้วยตลับเมตร (แม่นยำสุด)</strong><br>วัดหน้าตัดที่ปลายแป — H (ความลึก) × B (ความกว้างหน้า)</div>
+      <div><strong style="color:var(--text)">3. วัดด้วย Disto — ใช้ Min Mode</strong><br>กดค้างปุ่ม Measure ขณะขยับเลเซอร์ผ่านหน้าตัดอย่างช้าๆ ค่าน้อยสุดที่ปรากฏคือความลึก H</div>
+    </div>
+  </div>
+
+  <!-- cross-section diagram + quick presets -->
+  <div class="card">
+    <div class="roof-diagram" style="margin-bottom:12px;font-size:12px">
+      <div style="color:var(--accent-l);font-weight:bold;margin-bottom:6px">📀 หน้าตัดแปเหล็กรูปซี (C-Section)</div>
+      <div style="font-family:monospace;line-height:1.6;font-size:11px">
+        <div>├─── B (หน้า) ───┤</div>
+        <div>┌───────────────┐ ─┐</div>
+        <div>│               │  │</div>
+        <div>│               │  H (ลึก)</div>
+        <div>│               │  │</div>
+        <div>└───────────────┘ ─┘</div>
+      </div>
+      <div style="margin-top:6px;color:var(--primary-l)">C100 = H 100 มม. | C75 = H 75 มม.</div>
+    </div>
+
+    <!-- Quick-select presets -->
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px">⚡ เลือกขนาดที่พบบ่อยได้เลย</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px">
+      <button class="btn btn-ghost btn-sm" onclick="setPurlinPreset('wood_2x4','2×4','50','100')">ไม้ 2×4</button>
+      <button class="btn btn-ghost btn-sm" onclick="setPurlinPreset('wood_2x6','2×6','50','150')">ไม้ 2×6</button>
+      <button class="btn btn-ghost btn-sm" onclick="setPurlinPreset('wood_3x4','3×4','75','100')">ไม้ 3×4</button>
+      <button class="btn btn-ghost btn-sm" onclick="setPurlinPreset('steel_c75','C75','45','75')">เหล็ก C75</button>
+      <button class="btn btn-ghost btn-sm" onclick="setPurlinPreset('steel_c100','C100','50','100')" style="border-color:var(--primary)">เหล็ก C100</button>
+      <button class="btn btn-ghost btn-sm" onclick="setPurlinPreset('steel_z75','Z75','50','75')">เหล็ก Z75</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">ชนิดแป (เลือกหรือกดเพรสเซ็ทด้านบน)</label>
+      <select id="purlin-type" class="form-input">
+        <option value="wood_2x4">ไม้ 2×4 นิ้ว (50×100 มม.)</option>
+        <option value="wood_2x6">ไม้ 2×6 นิ้ว (50×150 มม.)</option>
+        <option value="wood_3x4">ไม้ 3×4 นิ้ว (75×100 มม.)</option>
+        <option value="steel_c75">เหล็กรูปซี C75 (ลึก 75 มม.)</option>
+        <option value="steel_c100" selected>เหล็กรูปซี C100 (ลึก 100 มม.)</option>
+        <option value="steel_z75">เหล็กรูปซี Z75 (ลึก 75 มม.)</option>
+      </select>
+    </div>
+
+    <!-- Measured / entered cross section -->
+    <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;margin-top:4px">ขนาดหน้าตัดที่วัดได้จริง (ไม่บังคับ)</div>
+    <div class="input-row" style="margin-bottom:10px">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">H ความลึก (มม.)</label>
+        <div class="input-unit">
+          <input id="purlin-depth" type="number" class="form-input" placeholder="เช่น 100"
+                 step="1" min="20" max="300" inputmode="numeric" />
+          <span class="unit-label">มม.</span>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">B กว้างหน้า (มม.)</label>
+        <div class="input-unit">
+          <input id="purlin-width" type="number" class="form-input" placeholder="เช่น 50"
+                 step="1" min="20" max="200" inputmode="numeric" />
+          <span class="unit-label">มม.</span>
+        </div>
+      </div>
+    </div>
+    <div class="input-row">
+      <div class="form-group">
+        <label class="form-label">ระยะห่างแป (ม.)</label>
+        <div class="input-unit">
+          <input id="purlin-spacing" type="number" class="form-input" value="1.0" step="0.05" inputmode="decimal" />
+          <span class="unit-label">ม.</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ช่วงพาดแป (ม.)</label>
+        <div class="input-unit">
+          <input id="purlin-span" type="number" class="form-input" value="1.5" step="0.05" inputmode="decimal" />
+          <span class="unit-label">ม.</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">จำนวนแปที่นับได้ (เส้น)</label>
+      <input id="purlin-count" type="number" class="form-input" value="" placeholder="นับจากหน้างาน" inputmode="numeric" />
+    </div>
+    <button class="btn btn-primary" onclick="assessStructure()">
+      <span class="btn-icon">🔍</span> ประเมินโครงสร้าง
+    </button>
+  </div>
+
+  <!-- ─── BLUEPRINT VISUAL MEASUREMENT (v3.0) ──────────── -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin:15px 0 5px">
+    <p class="section-title" style="margin:0">เครื่องมือเจาะลึก: แผนผังโต้ตอบได้</p>
+    <div style="font-size:10px; font-weight:800; padding:2px 6px; background:var(--accent-l); color:#000; border-radius:4px">v3.0 VISUAL</div>
+  </div>
+
+  <div class="card" style="background: linear-gradient(135deg, #0a1128 0%, #1e293b 100%); border: 2px solid var(--primary); padding:5px; position:relative; overflow:hidden">
+    <!-- Blueprint Hub -->
+    <div id="blueprint-hub" style="min-height:220px; display:flex; align-items:center; justify-content:center; position:relative">
+       <div id="blueprint-placeholder" style="text-align:center; color:var(--text3); padding:40px 0">
+         <div style="font-size:48px; margin-bottom:15px">📐</div>
+         <div style="font-size:14px; margin-bottom:15px; font-weight:600">จิ้มที่รูปทรัสเพื่อระบุจุดที่ต้องการวัด</div>
+         <button class="btn btn-primary" style="width:auto" onclick="openTrussSelector()">กดเลือกรูปแบบ (Choose Pattern)</button>
+       </div>
+       <div id="blueprint-svg-container" style="width:100%; display:none; animation: fadeIn 0.5s ease"></div>
+    </div>
+
+    <!-- Active Part Overlay (Command Center) -->
+    <div id="active-part-card" style="display:none; margin-top:5px; background:rgba(15, 23, 42, 0.8); backdrop-filter:blur(8px); border-radius:8px; padding:15px; border:1px solid var(--accent-l); animation: slideUp 0.3s ease">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <div style="flex:1">
+          <div id="active-part-label" style="font-size:12px; color:var(--accent-l); font-weight:800; text-transform:uppercase; letter-spacing:1px">กำลังวัด: ช่วงพาด (SPAN)</div>
+          <div id="active-part-desc" style="font-size:10px; color:var(--text3)">เล็งเลเซอร์ X310 แล้วกดยิง ค่าจะเข้าทันที</div>
+        </div>
+        <div style="text-align:right">
+          <div style="display:flex; align-items:baseline; justify-content:flex-end; gap:5px">
+             <input id="visual-input" type="number" step="0.001" class="form-input" style="font-size:32px; font-weight:900; color:var(--green-l); width:140px; text-align:right; background:transparent; border:none; padding:0" placeholder="0.000" />
+             <span style="font-size:16px; color:var(--text3); font-weight:800">ม.</span>
+          </div>
+        </div>
+      </div>
+      <div class="progress-bar" style="height:4px; margin-top:10px; background:rgba(255,255,255,0.1)">
+        <div id="visual-progress-fill" class="progress-fill" style="width: 0%; box-shadow:0 0 10px var(--accent-l)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pattern Selector Modal -->
+  <div id="modal-truss-selector" class="modal" style="display:none">
+    <div class="modal-content" style="max-width:400px; background:var(--bg3); border-color:var(--primary)">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
+        <h3 style="margin:0; font-size:18px; color:var(--text)">เลือกรูปแบบโครงทรัส</h3>
+        <button class="btn btn-ghost" onclick="closeTrussSelector()" style="width:40px; height:40px; font-size:24px; padding:0">×</button>
+      </div>
+      <div id="truss-pattern-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── DETAILED TRUSS ASSESSMENT ──────────────────────── -->
+  <p class="section-title">สรุปผลวิเคราะห์ (Overall Truss Analysis)</p>
+
+  <div class="card" style="border-left: 4px solid var(--accent-l)">
+    <div class="form-group">
+      <label class="form-label">ประเภทโครงถัก</label>
+      <select id="truss-type" class="form-input" style="font-weight: 600">
+        <option value="main">โครงหลัก (Main Truss / Main Beam)</option>
+        <option value="sub">โครงรอง (Sub Truss / Rafter)</option>
+        <option value="support">โครงยึด/ซัพพอร์ต (Support / Bracing)</option>
+      </select>
+    </div>
+
+    <div class="input-row">
+      <div class="form-group">
+        <label class="form-label">ระยะห่าง (ม.)</label>
+        <div class="input-unit">
+          <input id="truss-spacing" type="number" class="form-input" value="1.0" step="0.1" inputmode="decimal" />
+          <span class="unit-label">ม.</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ช่วงพาด Span (ม.)</label>
+        <div class="input-unit">
+          <input id="truss-span" type="number" class="form-input" value="6.0" step="0.5" inputmode="decimal" />
+          <span class="unit-label">ม.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">ความลึกโครง Truss Depth (ม.) <span style="font-weight:normal;font-size:10px;color:var(--text3)">*ใช้ 2-Shot วัดได้</span></label>
+      <div class="input-unit">
+        <input id="truss-depth" type="number" class="form-input" value="0.5" step="0.05" placeholder="H" inputmode="decimal" />
+        <span class="unit-label">ม. (H)</span>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="form-group">
+        <label class="form-label">เหล็กบน (Top Chord)</label>
+        <select id="truss-top" class="form-input">
+          <option value="C75x45x15x2.3">C-Channel 75mm</option>
+          <option value="C100x50x20x2.3">C-Channel 100mm</option>
+          <option value="L50x50x5">เหล็กฉาก (Angle) 2"</option>
+          <option value="Other">อื่นๆ</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">เหล็กล่าง (Bottom Chord)</label>
+        <select id="truss-bottom" class="form-input">
+          <option value="C75x45x15x2.3">C-Channel 75mm</option>
+          <option value="C100x50x20x2.3">C-Channel 100mm</option>
+          <option value="L50x50x5">เหล็กฉาก (Angle) 2"</option>
+          <option value="Other">อื่นๆ</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.05); border-radius: 6px">
+      <p style="font-size:11px; font-weight:700; color:var(--text3); margin-bottom:8px">Visual Health Inspection</p>
+      <div style="display:flex; gap:15px">
+        <label style="display:flex; align-items:center; gap:6px; font-size:13px; cursor:pointer">
+          <input id="truss-rust" type="checkbox" style="width:16px; height:16px"> พบสนิม/การผุกร่อน
+        </label>
+        <label style="display:flex; align-items:center; gap:6px; font-size:13px; cursor:pointer">
+          <input id="truss-bend" type="checkbox" style="width:16px; height:16px"> ตกท้องช้าง/คดงอ
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── LOAD INPUTS ───────────────────────────────────── -->
+  <p class="section-title">ข้อมูลแผงโซล่า (สำหรับคำนวณโหลด)</p>
+
+  <div class="card">
+    <div class="input-row">
+      <div class="form-group">
+        <label class="form-label">จำนวนแผง</label>
+        <input id="load-panel-count" type="number" class="form-input" placeholder="จาก Layout" inputmode="numeric" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">น้ำหนักต่อแผง (kg)</label>
+        <input id="load-panel-kg" type="number" class="form-input" value="25" step="0.5" inputmode="decimal" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">พื้นที่ติดตั้ง (ตร.ม.)</label>
+      <div class="input-unit">
+        <input id="load-area" type="number" class="form-input" placeholder="จากผลคำนวณ" step="0.1" inputmode="decimal" />
+        <span class="unit-label">ตร.ม.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ASSESSMENT RESULT ─────────────────────────────── -->
+  <div id="struct-result" style="display:none">
+    <p class="section-title">ผลการประเมิน</p>
+
+    <!-- Overall verdict -->
+    <div id="struct-verdict" class="card-highlight" style="margin-bottom:12px;text-align:center">
+      <div id="struct-verdict-icon" style="font-size:40px;margin-bottom:6px">⏳</div>
+      <div id="struct-verdict-text" style="font-size:15px;font-weight:700">กำลังประเมิน...</div>
+      <div id="struct-verdict-sub" style="font-size:12px;color:var(--text2);margin-top:4px"></div>
+    </div>
+
+    <!-- Detail cards -->
+    <div class="result-grid">
+      <div class="result-item" id="struct-res-purlin">
+        <div class="result-label">ผลแป</div>
+        <div class="result-value" style="font-size:14px" id="struct-purlin-status">-</div>
+      </div>
+      <div class="result-item" id="struct-res-truss">
+        <div class="result-label">ผลโครงถัก</div>
+        <div class="result-value" style="font-size:14px" id="struct-truss-status">-</div>
+      </div>
+      <div class="result-item" id="struct-res-load">
+        <div class="result-label">น้ำหนักรวม</div>
+        <div class="result-value" id="struct-load-total">-</div>
+      </div>
+      <div class="result-item" id="struct-res-load2">
+        <div class="result-label">โหลด (kg/ตร.ม.)</div>
+        <div class="result-value" id="struct-load-m2">-</div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:12px">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">💡 คำแนะนำ</div>
+      <div id="struct-recommendation" style="font-size:13px;color:var(--text);line-height:1.6"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-outline" onclick="assessStructure()" style="margin-top:4px">
+    <span class="btn-icon">🔄</span> ประเมินใหม่
+  </button>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ PAGE: REPORT ══ -->
+<section id="page-report" class="page">
+
+  <p class="section-title">สร้างรายงาน PDF</p>
+
+  <!-- Summary before export -->
+  <div class="card-highlight" style="margin-bottom:12px">
+    <div style="font-size:13px;color:var(--text2);margin-bottom:8px">สรุปข้อมูลก่อนออกรายงาน</div>
+    <div style="display:flex;flex-direction:column;gap:6px;font-size:14px">
+      <div style="display:flex;justify-content:space-between">
+        <span style="color:var(--text2)">พื้นที่หลังคารวม</span>
+        <span id="rep-area" style="font-weight:700;color:var(--accent-l)">-</span>
+      </div>
+      <div style="display:flex;justify-content:space-between">
+        <span style="color:var(--text2)">จำนวนแผง</span>
+        <span id="rep-panels" style="font-weight:700;color:var(--green-l)">-</span>
+      </div>
+      <div style="display:flex;justify-content:space-between">
+        <span style="color:var(--text2)">กำลังผลิต</span>
+        <span id="rep-power" style="font-weight:700;color:var(--primary-l)">-</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="text-sm" style="margin-bottom:8px;font-weight:600">รายงานจะประกอบด้วย</p>
+    <div style="display:flex;flex-direction:column;gap:7px">
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:15px">📋</span>
+        <span class="text-sm">ข้อมูลโครงการและผู้สำรวจ</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:15px">📐</span>
+        <span class="text-sm">มิติหลังคาพร้อมมุมลาดชัน</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:15px">☀️</span>
+        <span class="text-sm">ผังจัดวางแผงโซล่าเซลล์</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:15px">📦</span>
+        <span class="text-sm">ประมาณการวัสดุ BOQ</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:15px">✍️</span>
+        <span class="text-sm">ลายเซ็นผู้สำรวจ + วันที่</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-accent" id="btn-pdf" onclick="generatePDF()">
+    <span class="btn-icon">📄</span> สร้างรายงาน PDF
+  </button>
+
+  <div class="divider"></div>
+
+    <p class="text-sm" style="margin-bottom:10px;font-weight:600;color:var(--text2)">แชร์รายงาน</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+      <button class="btn btn-ghost btn-sm" onclick="shareResults()">
+        <span class="btn-icon">📤</span> Share
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="sendToTelegram()">
+        <span class="btn-icon">✈️</span> ส่งเข้า Telegram
+      </button>
+    </div>
+    <div class="mt-2">
+      <button class="btn btn-ghost btn-sm" style="width:100%" onclick="copyResults()">
+        <span class="btn-icon">📋</span> Copy ข้อความสรุป
+      </button>
+    </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ PAGE: SETTINGS ═ -->
+<section id="page-settings" class="page">
+
+  <p class="section-title">ตั้งค่าแผงโซล่าเซลล์</p>
+
+  <div class="card">
+    <div class="input-row">
+      <div class="form-group">
+        <label class="form-label">ความกว้างแผง (ม.)</label>
+        <div class="input-unit">
+          <input id="set-panel-w" type="number" class="form-input" value="1.13"
+                 step="0.01" inputmode="decimal" />
+          <span class="unit-label">ม.</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ความยาวแผง (ม.)</label>
+        <div class="input-unit">
+          <input id="set-panel-h" type="number" class="form-input" value="2.28"
+                 step="0.01" inputmode="decimal" />
+          <span class="unit-label">ม.</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">กำลังไฟต่อแผง (Wp)</label>
+      <div class="input-unit">
+        <input id="set-panel-watt" type="number" class="form-input" value="570"
+               step="5" inputmode="decimal" />
+        <span class="unit-label">W</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-title">ระยะร่นขอบหลังคา</p>
+
+  <div class="card">
+    <div class="input-row">
+      <div class="form-group">
+        <label class="form-label">บน (ม.)</label>
+        <input id="set-margin-top" type="number" class="form-input" value="0.30"
+               step="0.05" inputmode="decimal" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">ล่าง (ม.)</label>
+        <input id="set-margin-bot" type="number" class="form-input" value="0.30"
+               step="0.05" inputmode="decimal" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">ซ้าย-ขวา (ม.)</label>
+      <input id="set-margin-lr" type="number" class="form-input" value="0.30"
+             step="0.05" inputmode="decimal" />
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">หลังคา 2 ด้าน (Gable/Hip)</div>
+        <div class="text-xs">เปิด = คูณ 2 ทั้งสองด้าน</div>
+      </div>
+      <div class="toggle on" id="toggle-twoface" onclick="toggleTwoFace()"></div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" onclick="updatePanelSettings()">
+    <span class="btn-icon">💾</span> บันทึกการตั้งค่า
+  </button>
+
+  <div class="divider"></div>
+
+  <p class="section-title">เกี่ยวกับแอป</p>
+
+  <div class="card">
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--text2)">
+      <div>🔵 <strong style="color:var(--text)">Disto Survey App v3.8 Final Hardened</strong></div>
+      <div>📡 เชื่อมต่อ Leica Disto via Web Bluetooth API</div>
+      <div>📐 คำนวณมิติ 3 มิติ (P2P) จากพิกัดทรงกลม</div>
+      <div>☀️ ออกแบบจัดวางแผงโซล่าเซลล์อัตโนมัติ</div>
+      <div>📄 สร้างรายงาน PDF พร้อม BOQ วัสดุ</div>
+      <div style="margin-top:4px;padding-top:8px;border-top:1px solid var(--border);color:var(--text3)">
+        ⚠️ ข้อแนะนำ: ใช้ Google Chrome บน Android<br/>
+        หรือ Chrome/Edge บน Windows<br/>
+        (Web Bluetooth ไม่รองรับ iOS Safari)
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ BOTTOM NAV ════ -->
+  <!-- ═══════════════════════════════════════════ INSTALL MODAL ══ -->
+  <div id="install-modal" class="modal" style="display:none">
+    <div class="modal-content" style="max-width:340px; text-align:center">
+      <div style="font-size:42px; margin-bottom:15px">📲</div>
+      <h3 style="margin-bottom:10px">เพิ่มทางลัดบนหน้าจอโฮม</h3>
+      <p style="font-size:14px; color:var(--text2); line-height:1.6; margin-bottom:20px">
+        เพื่อให้ใช้งานได้เหมือนแอปจริงและรองรับ Bluetooth เต็มรูปแบบ กรุณาทำตามขั้นตอนนี้:
+      </p>
+      
+      <div style="background:var(--bg2); border-radius:12px; padding:15px; text-align:left; font-size:13px; margin-bottom:20px">
+        <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px">
+          <div style="width:24px; height:24px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700">1</div>
+          <div>กดปุ่ม **แชร์ (Share)** ที่แถบด้านล่าง</div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px">
+          <div style="width:24px; height:24px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700">2</div>
+          <div>เลือก **"Add to Home Screen"**</div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center">
+          <div style="width:24px; height:24px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700">3</div>
+          <div>กด **"Add"** ที่มุมขวาบน</div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="closeInstallGuide()">ตกลง, เข้าใจแล้ว</button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav" role="tablist">
+  <button class="nav-tab active" data-page="connect" role="tab" aria-label="เชื่อมต่อ">
+    <span class="nav-icon">📡</span>
+    <span>เชื่อมต่อ</span>
+  </button>
+  <button class="nav-tab" data-page="measure" role="tab" aria-label="วัดระยะ">
+    <span class="nav-icon">🎯</span>
+    <span>วัดระยะ</span>
+  </button>
+  <button class="nav-tab" data-page="structure" role="tab" aria-label="โครงสร้าง">
+    <span class="nav-icon">🏗️</span>
+    <span>โครงสร้าง</span>
+  </button>
+  <button class="nav-tab" data-page="layout" role="tab" aria-label="Layout">
+    <span class="nav-icon">☀️</span>
+    <span>Layout</span>
+  </button>
+  <button class="nav-tab" data-page="report" role="tab" aria-label="รายงาน">
+    <span class="nav-icon">📄</span>
+    <span>รายงาน</span>
+  </button>
+  <button class="nav-tab" data-page="settings" role="tab" aria-label="ตั้งค่า">
+    <span class="nav-icon">⚙️</span>
+    <span>ตั้งค่า</span>
+  </button>
+</nav>
+
+<script>
+// Share & Copy helpers
+window.shareResults = async function () {
+  const R = window.__state?.roofResult;
+  const L = window.__state?.layoutResult;
+  const text = R
+    ? `🏠 Solar Roof Survey\nพื้นที่: ${R.totalArea} ตร.ม. | Slope: ${R.slopeAngle}° (${R.pitchLabel})\n☀️ แผง: ${L?.count ?? '-'} แผง | ${((L?.count ?? 0) * 570 / 1000).toFixed(2)} kWp`
+    : 'ยังไม่มีข้อมูลหลังคา';
+  if (navigator.share) {
+    try { await navigator.share({ title: 'Solar Roof Report', text }); } catch {}
+  } else {
+    navigator.clipboard?.writeText(text);
+    showToast('คัดลอกข้อมูลแล้ว', 'success', 2000);
+  }
+};
+
+window.copyResults = function () {
+  const els = ['res-eave','res-rafter','res-slope','res-area2','layout-count','layout-power'];
+  const labels = ['Eave','Rafter','Slope','Area','Panels','Power'];
+  const lines = els.map((id, i) => `${labels[i]}: ${document.getElementById(id)?.textContent || '-'}`);
+  navigator.clipboard?.writeText(lines.join('\n'));
+  showToast('คัดลอกผลลัพธ์แล้ว', 'success', 2000);
+};
+
+// Auto-update report summary is now handled by app.js directly after calculations
+
+</script>
+
+  <!-- App Initialization -->
+  <script type="module" src="app.js"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('SW Registered', reg))
+          .catch(err => console.error('SW Error', err));
+      });
+    }
+  </script>
+</body>
+</html>

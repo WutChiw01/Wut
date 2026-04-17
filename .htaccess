@@ -1,0 +1,15 @@
+# Protect the projects directory
+<IfModule mod_authz_core.c>
+    <Files ~ "state_.*\.json">
+        Require all denied
+    </Files>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <Files ~ "state_.*\.json">
+        Order allow,deny
+        Deny from all
+    </Files>
+</IfModule>
+
+# Disable directory listing
+Options -Indexes

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1220" />
+  <title>Disto X3 Receiver</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #18243b;
+      --card2: #0f1829;
+      --text: #eaf2ff;
+      --muted: #9fb2d1;
+      --blue: #2f6df6;
+      --blue2: #1e4ed8;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --border: #314766;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      max-width: 500px;
+      margin-inline: auto;
+      padding: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      color: var(--text);
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .card.soft {
+      background: var(--card2);
+    }
+    label {
+      display: block;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    input, textarea, button, select {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card2);
+      color: var(--text);
+      padding: 16px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    button {
+      background: linear-gradient(135deg, var(--blue), var(--blue2));
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    button.secondary {
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+    .status {
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--card2);
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    .status.ok { color: var(--green); }
+    .status.warn { color: var(--amber); }
+    .status.bad { color: #f87171; }
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 13px;
+      line-height: 1.5;
+      background: rgba(0,0,0,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      overflow: auto;
+      max-height: 300px;
+    }
+    .log-entry {
+      margin-bottom: 8px;
+      padding: 8px;
+      border-left: 3px solid var(--blue);
+      background: rgba(255,255,255,0.03);
+    }
+    .log-entry.distance { border-left-color: var(--green); }
+    .log-entry.angle { border-left-color: var(--amber); }
+    .log-entry.raw { border-left-color: var(--muted); }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #22314e;
+      color: var(--muted);
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Disto X3 Receiver</h1>
+    <div class="sub">โปรแกรมง่าย ๆ สำหรับรับข้อมูลจาก Leica Disto X3 บน iPhone</div>
+  </header>
+
+  <div class="card">
+    <div class="status ok" id="connection-status">
+      <strong>สถานะ:</strong> พร้อมรับข้อมูลจาก Disto X3 (Keyboard Mode)
+    </div>
+    <p style="margin: 0 0 16px 0; color: var(--muted); font-size: 14px;">
+      <strong>วิธีใช้:</strong><br>
+      1. เปิด Keyboard Mode / HID บน Disto X3<br>
+      2. แตะช่องรับค่าด้านล่างเพื่อเลือกช่อง (หรือปล่อยไว้ที่ช่องอัตโนมัติ)<br>
+      3. ยิงเลเซอร์จาก Disto X3<br>
+      4. ระบบจะตรวจจับและแสดงค่าที่ได้รับ พร้อมระบุประเภท (ระยะ/มุม/อื่น ๆ)
+    </p>
+  </div>
+
+  <div class="card soft">
+    <label for="active-field">เลือกช่องรับค่า</label>
+    <select id="active-field" onchange="setActiveField(this.value)">
+      <option value="auto">อัตโนมัติ (รับทุกค่า)</option>
+      <option value="distance">ระยะ (เมตร)</option>
+      <option value="angle-horizontal">มุมราบ (องศา)</option>
+      <option value="angle-vertical">มุมดิ่ง (องศา)</option>
+      <option value="area">พื้นที่ (ตร.ม.)</option>
+      <option value="volume">ปริมาตร (ลบ.ม.)</option>
+    </select>
+
+    <label for="input-field" style="margin-top: 16px;">ช่องรับค่าจาก Disto</label>
+    <textarea id="input-field" placeholder="ค่าจะปรากฏที่นี่เมื่อ Disto ส่งข้อมูลผ่าน Keyboard Mode..." readonly></textarea>
+
+    <button onclick="startReceiving()" id="start-btn">🎯 เริ่มรับค่าจาก Disto</button>
+    <button class="secondary" onclick="clearLog()">🗑️ ล้าง Log</button>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top: 0;">ข้อมูลที่ได้รับจาก Disto X3</h3>
+    <div id="log-container">
+      <div class="log-entry raw">
+        <strong>[เริ่มต้น]</strong> ระบบพร้อมรับข้อมูลจาก Disto X3
+      </div>
+    </div>
+  </div>
+
+  <div class="card soft">
+    <h3 style="margin-top: 0;">ข้อมูลที่สามารถเรียกดูจาก Disto X3 ได้</h3>
+    <p style="margin: 0 0 12px 0; color: var(--muted);">
+      Disto X3 สามารถส่งข้อมูลต่อไปนี้ผ่าน Keyboard Mode (ขึ้นกับการตั้งค่าบนเครื่อง):
+    </p>
+    <div>
+      <span class="pill">ระยะตรง</span>
+      <span class="pill">ระยะแนวนอน</span>
+      <span class="pill">ระยะแนวตั้ง</span>
+      <span class="pill">มุมราบ</span>
+      <span class="pill">มุมดิ่ง</span>
+      <span class="pill">พื้นที่</span>
+      <span class="pill">ปริมาตร</span>
+      <span class="pill">ค่าติดลบ</span>
+      <span class="pill">หน่วย (ม./ฟุต)</span>
+    </div>
+    <p style="margin: 12px 0 0 0; color: var(--muted); font-size: 13px;">
+      <strong>หมายเหตุ:</strong> รูปแบบข้อมูลที่ได้รับขึ้นกับโหมดการทำงานของ Disto X3 และการตั้งค่า Output Format ในเครื่อง
+    </p>
+  </div>
+
+  <script>
+    const state = {
+      activeField: 'auto',
+      isReceiving: false,
+      lastRawValue: '',
+      logEntries: []
+    };
+
+    const connectionStatus = document.getElementById('connection-status');
+    const inputField = document.getElementById('input-field');
+    const logContainer = document.getElementById('log-container');
+    const startBtn = document.getElementById('start-btn');
+
+    function logMessage(message, type = 'raw') {
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      const time = new Date().toLocaleTimeString('th-TH', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      entry.innerHTML = `<strong>[${time}]</strong> ${message}`;
+      logContainer.prepend(entry);
+      state.logEntries.unshift({ time, message, type });
+      
+      // จำกัดจำนวน log entries
+      if (state.logEntries.length > 20) {
+        state.logEntries.pop();
+        if (logContainer.children.length > 20) {
+          logContainer.removeChild(logContainer.lastChild);
+        }
+      }
+    }
+
+    function setActiveField(value) {
+      state.activeField = value;
+      logMessage(`เปลี่ยนช่องรับค่าเป็น: ${getFieldName(value)}`, 'raw');
+    }
+
+    function getFieldName(value) {
+      const names = {
+        'auto': 'อัตโนมัติ',
+        'distance': 'ระยะ',
+        'angle-horizontal': 'มุมราบ',
+        'angle-vertical': 'มุมดิ่ง',
+        'area': 'พื้นที่',
+        'volume': 'ปริมาตร'
+      };
+      return names[value] || value;
+    }
+
+    function startReceiving() {
+      if (state.isReceiving) {
+        state.isReceiving = false;
+        startBtn.textContent = '🎯 เริ่มรับค่าจาก Disto';
+        connectionStatus.textContent = 'หยุดรับข้อมูลแล้ว';
+        connectionStatus.className = 'status warn';
+        logMessage('หยุดรับข้อมูลจาก Disto', 'raw');
+        inputField.removeEventListener('input', handleInput);
+      } else {
+        state.isReceiving = true;
+        startBtn.textContent = '⏸️ หยุดรับค่า';
+        connectionStatus.textContent = 'กำลังรับข้อมูลจาก Disto X3...';
+        connectionStatus.className = 'status ok';
+        logMessage('เริ่มรับข้อมูลจาก Disto X3', 'raw');
+        inputField.value = '';
+        inputField.focus();
+        
+        // ตรวจจับการเปลี่ยนแปลงในช่อง input (ค่าจาก Disto จะเข้ามาที่นี่)
+        inputField.addEventListener('input', handleInput);
+      }
+    }
+
+    function handleInput(event) {
+      const rawValue = event.target.value;
+      
+      // ตรวจสอบว่าค่าเปลี่ยนแปลงจริงหรือไม่
+      if (rawValue === state.lastRawValue) return;
+      
+      state.lastRawValue = rawValue;
+      
+      // พยายามตีความค่า
+      interpretValue(rawValue);
+    }
+
+    function interpretValue(raw) {
+      // ลบช่องว่างและอักขระพิเศษ
+      const clean = raw.trim();
+      
+      // พยายามแยกประเภทข้อมูล
+      let type = 'raw';
+      let message = `รับข้อมูลดิบ: "${clean}"`;
+      
+      // ตรวจสอบว่าเป็นตัวเลข (อาจมีหน่วย)
+      const numMatch = clean.match(/[-+]?\d*\.?\d+/);
+      if (numMatch) {
+        const num = parseFloat(numMatch[0]);
+        
+        // ตรวจสอบหน่วย (ถ้ามี)
+        if (clean.includes('m') || clean.includes('เมตร') || clean.includes('meter')) {
+          type = 'distance';
+          message = `ระยะ: ${num} ม.`;
+        } else if (clean.includes('°') || clean.includes('deg') || clean.includes('องศา')) {
+          type = 'angle';
+          message = `มุม: ${num}°`;
+          
+          // พยายามแยกว่าเป็นมุมราบหรือมุมดิ่งจากค่า
+          if (Math.abs(num) <= 90) {
+            message += ` (${num >= 0 ? 'มุมราบ' : 'มุมดิ่ง'})`;
+          }
+        } else if (clean.includes('m²') || clean.includes('ตร.ม.') || clean.includes('sqm')) {
+          type = 'area';
+          message = `พื้นที่: ${num} ตร.ม.`;
+        } else if (clean.includes('m³') || clean.includes('ลบ.ม.') || clean.includes('cubic')) {
+          type = 'volume';
+          message = `ปริมาตร: ${num} ลบ.ม.`;
+        } else {
+          // ถ้าไม่มีหน่วย ให้เดาว่าเป็นระยะ (เมตร)
+          type = 'distance';
+          message = `ระยะ (ประมาณ): ${num} ม.`;
+        }
+      }
+      
+      logMessage(message, type);
+      
+      // ถ้าไม่ได้ตั้งค่าเป็น auto ให้ตรวจสอบว่า matched กับช่องที่เลือกไหม
+      if (state.activeField !== 'auto') {
+        const expectedTypes = {
+          'distance': 'distance',
+          'angle-horizontal': 'angle',
+          'angle-vertical': 'angle',
+          'area': 'area',
+          'volume': 'volume'
+        };
+        
+        if (expectedTypes[state.activeField] === type) {
+          logMessage(`✓ ค่านี้ตรงกับช่อง "${getFieldName(state.activeField)}"`, 'raw');
+        }
+      }
+    }
+
+    function clearLog() {
+      logContainer.innerHTML = '';
+      state.logEntries = [];
+      logMessage('ล้าง Log เรียบร้อย', 'raw');
+    }
+
+    // เริ่มต้น
+    window.addEventListener('load', () => {
+      logMessage('ระบบพร้อมใช้งานสำหรับ Disto X3 บน iPhone', 'raw');
+      logMessage('เปิด Keyboard Mode / HID บน Disto X3 แล้วยิงเลเซอร์', 'raw');
+    });
+
+    // สำหรับการทดสอบโดยไม่ต้องมี Disto จริง
+    window.testDistance = () => {
+      const testValues = ['12.34 m', '45.0°', '25.6 m²', '8.5'];
+      const randomValue = testValues[Math.floor(Math.random() * testValues.length)];
+      inputField.value = randomValue;
+      interpretValue(randomValue);
+    };
+  </script>
+</body>
+</html>

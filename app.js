@@ -815,15 +815,7 @@ async function sendDataToBot(value) {
 }
 
 async function testTelegram() {
-  const config = State.telegram;
-  if (!config.chatId) return showToast('ระบุ Chat ID ก่อนทดสอบ', 'warning');
-  try {
-    showToast('กำลังส่งข้อความทดสอบ...', 'info');
-    const res = await TelegramBot.sendMessage(config, `🚀 <b>Disto Survey App</b>\nทดสอบการเชื่อมต่อ\nเวลา: ${new Date().toLocaleString()}`);
-    if (res.ok) showToast('ส่งสำเร็จ!', 'success'); else throw new Error(res.description);
-  } catch (err) {
-    showToast(`ผิดพลาด: ${err.message}`, 'error');
-  }
+  showToast('No-bot production: ปิด Telegram/PHP proxy ไว้ในเวอร์ชันนี้', 'info', 5000);
 }
 
 async function sendToTelegram() {

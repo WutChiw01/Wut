@@ -106,6 +106,7 @@ function goPage(target) {
   const pages = document.querySelectorAll('.page');
   tabs.forEach(t => t.classList.toggle('active', t.dataset.page === target));
   pages.forEach(p => p.classList.toggle('active', p.id === `page-${target}`));
+  console.log('goPage', target);
 
   if (target === 'layout' && State.layoutResult) {
     if (State._lastCanvasLayout !== State.layoutResult) {
@@ -1042,8 +1043,8 @@ window.saveProject = () => {
     State.project.surveyor = document.getElementById('proj-surveyor')?.value || '';
     State.project.date = document.getElementById('proj-date')?.value || '';
     persistState();
-    showToast('บันทึกข้อมูลโครงการแล้ว', 'success');
-    setTimeout(() => goPage('measure'), 150);
+    alert('บันทึกข้อมูลโครงการแล้ว');
+    goPage('measure');
   } catch (e) {
     console.error('saveProject failed', e);
     alert('บันทึกข้อมูลโครงการไม่สำเร็จ');

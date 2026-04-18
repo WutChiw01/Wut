@@ -950,7 +950,7 @@
         ถ้าหน้างานมีปัญหา ให้กดปุ่มนี้เพื่อสร้างสรุปสถานะล่าสุดของแอป พร้อมข้อมูลที่ผมใช้ช่วยวิเคราะห์ได้เร็วขึ้น
       </div>
       <div class="btn-row" style="grid-template-columns:1fr 1fr">
-        <button class="btn btn-primary" onclick="openAssistantModal()">
+        <button class="btn btn-primary" onclick="copyAssistantPayload()">
           <span class="btn-icon">👻</span> เรียกผู้ช่วย
         </button>
         <button class="btn btn-ghost" onclick="copyAssistantPayload()">
@@ -984,49 +984,6 @@
 </section>
 
 <!-- ═══════════════════════════════════════════ BOTTOM NAV ════ -->
-  <div id="install-modal" class="modal">
-    <div class="modal-content" style="max-width:340px; text-align:center">
-      <div style="font-size:42px; margin-bottom:15px">📲</div>
-      <h3 style="margin-bottom:10px">เพิ่มทางลัดบนหน้าจอโฮม</h3>
-      <p style="font-size:14px; color:var(--text2); line-height:1.6; margin-bottom:20px">
-        เพื่อให้ใช้งานได้เหมือนแอปจริงและรองรับ Bluetooth เต็มรูปแบบ กรุณาทำตามขั้นตอนนี้:
-      </p>
-      
-      <div style="background:var(--bg2); border-radius:12px; padding:15px; text-align:left; font-size:13px; margin-bottom:20px">
-        <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px">
-          <div style="width:24px; height:24px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700">1</div>
-          <div>กดปุ่ม **แชร์ (Share)** ที่แถบด้านล่าง</div>
-        </div>
-        <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px">
-          <div style="width:24px; height:24px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700">2</div>
-          <div>เลือก **"Add to Home Screen"**</div>
-        </div>
-        <div style="display:flex; gap:12px; align-items:center">
-          <div style="width:24px; height:24px; border-radius:50%; background:var(--primary); display:flex; align-items:center; justify-content:center; font-weight:700">3</div>
-          <div>กด **"Add"** ที่มุมขวาบน</div>
-        </div>
-      </div>
-
-      <button class="btn btn-primary" onclick="closeInstallGuide()">ตกลง, เข้าใจแล้ว</button>
-    </div>
-  </div>
-
-  <div id="assistant-modal" class="modal">
-    <div class="modal-content" style="max-width:520px; max-height:85vh; overflow:auto">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px">
-        <h3 style="margin:0; font-size:18px">👻 ผู้ช่วยวิเคราะห์หน้างาน</h3>
-        <button class="btn btn-ghost" onclick="closeAssistantModal()" style="width:40px; height:40px; font-size:24px; padding:0">×</button>
-      </div>
-      <div class="text-sm" style="color:var(--text2); line-height:1.6; margin-bottom:12px">
-        คัดลอกข้อความด้านล่างแล้วส่งมาหาผมได้เลย ข้างในจะมีข้อมูลโครงการ, จุดที่วัด, ผลคำนวณ, ค่าตั้งค่า, สถานะออนไลน์ และจุดที่น่าจะมีปัญหา
-      </div>
-      <textarea id="assistant-payload" class="form-input" style="min-height:280px; padding:12px; font-size:13px; line-height:1.5"></textarea>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px">
-        <button class="btn btn-primary" onclick="copyAssistantPayload(true)"><span class="btn-icon">📋</span> คัดลอกข้อความ</button>
-        <button class="btn btn-ghost" onclick="closeAssistantModal()">ปิด</button>
-      </div>
-    </div>
-  </div>
 
   <nav class="bottom-nav" role="tablist">
   <button class="nav-tab active" data-page="connect" role="tab" aria-label="เชื่อมต่อ">

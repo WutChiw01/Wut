@@ -982,25 +982,18 @@ function buildAssistantPayload() {
 }
 
 function openAssistantModal() {
-  const el = document.getElementById('assistant-payload');
-  if (el) el.value = buildAssistantPayload();
-  document.getElementById('assistant-modal').style.display = 'flex';
+  copyAssistantPayload();
 }
 
-function closeAssistantModal() {
-  document.getElementById('assistant-modal').style.display = 'none';
-}
+function closeAssistantModal() {}
 
 async function copyAssistantPayload(fromModal = false) {
   const payload = buildAssistantPayload();
-  const el = document.getElementById('assistant-payload');
-  if (el) el.value = payload;
   try {
     await navigator.clipboard.writeText(payload);
     showToast(fromModal ? 'คัดลอกข้อความส่งหาผู้ช่วยแล้ว' : 'คัดลอกสถานะล่าสุดแล้ว', 'success');
   } catch {
-    showToast('คัดลอกอัตโนมัติไม่สำเร็จ ลองคัดลอกจากกล่องข้อความแทน', 'warning');
-    openAssistantModal();
+    showToast('คัดลอกอัตโนมัติไม่สำเร็จ กรุณาคัดลอกจากข้อความที่ผมจะช่วยจัดให้อีกครั้ง', 'warning');
   }
 }
 
@@ -1084,8 +1077,8 @@ window.showNoBotNotice = () => showToast('No-bot production: ใช้ PDF / Sha
 window.openAssistantModal = openAssistantModal;
 window.closeAssistantModal = closeAssistantModal;
 window.copyAssistantPayload = copyAssistantPayload;
-window.showInstallGuide = () => document.getElementById('install-modal').style.display = 'flex';
-window.closeInstallGuide = () => document.getElementById('install-modal').style.display = 'none';
+window.showInstallGuide = () => showToast('แนะนำให้ Add to Home Screen เมื่อต้องการใช้งานภาคสนาม', 'info', 5000);
+window.closeInstallGuide = () => {};
 window.generatePDF = generatePDF;
 window.setPurlinPreset = (type, label, width, depth) => {
   const sel = document.getElementById('purlin-type'); if (sel) sel.value = type;

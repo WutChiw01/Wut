@@ -946,6 +946,78 @@ function loadPersistedState() {
 }
 
 // ─── Initialization ────────────────────────────────────────────────────────────────────────
+
+function buildAssistantPayload() {
+  const measuredPoints = Object.entries(State.points)
+    .filter(([, pt]) => pt.measured)
+    .map(([key, pt]) => `${key}: d=${pt.d ?? '-'}m, tilt=${pt.alpha ?? '-'}°, bearing=${pt.beta ?? '-'}°`)
+    .join('
+');
+
+  const issues = [];
+  if (!navigator.onLine) issues.push('อุปกรณ์ออฟไลน์อยู่');
+  if (!State.roofResult) issues.push('ยังไม่ได้คำนวณมิติหลังคา');
+  if (Object.values(State.points).filter(p => p.measured).length < 3) issues.push('จุดวัดยังไม่ครบขั้นต่ำ 3 จุด');
+  if (!State.layoutResult && State.roofResult) issues.push('ยังไม่มีผล layout');
+
+  const payload = [
+    'FIELD ASSIST REQUEST',
+    `เวลา: ${new Date().toLocaleString('th-TH')}`,
+    `ออนไลน์: ${navigator.onLine ? 'yes' : 'no'}`,
+    '',
+    `โครงการ: ${State.project.name || '-'}`,
+    `ที่อยู่: ${State.project.address || '-'}`,
+    `ผู้สำรวจ: ${State.project.surveyor || '-'}`,
+    `วันที่: ${State.project.date || '-'}`,
+    '',
+    'จุดที่วัดแล้ว:',
+    measuredPoints || '-',
+    '',
+    'ผลหลังคา:',
+    State.roofResult ? JSON.stringify(State.roofResult, null, 2) : '-',
+    '',
+    'ผล layout:',
+    State.layoutResult ? JSON.stringify(State.layoutResult, null, 2) : '-',
+    '',
+    'ผลโครงสร้าง:',
+    State.assessmentResult ? JSON.stringify(State.assessmentResult, null, 2) : '-',
+    '',
+    'ค่าตั้งค่าแผง:',
+    JSON.stringify({ panel: State.panel, panelWatt: State.panelWatt, margins: State.margins, panelGap: State.panelGap, isTwoFace: State.isTwoFace }, null, 2),
+    '',
+    'ประเด็นที่น่าตรวจ:',
+    issues.length ? issues.map((x, i) => `${i+1}. ${x}`).join('
+') : 'ไม่มีประเด็นเด่นจากการตรวจอัตโนมัติ',
+    '',
+    'สิ่งที่ต้องการให้ผู้ช่วยช่วย: [พิมพ์เพิ่มตรงนี้]'
+  ].join('
+');
+  return payload;
+}
+
+function openAssistantModal() {
+  const el = document.getElementById('assistant-payload');
+  if (el) el.value = buildAssistantPayload();
+  document.getElementById('assistant-modal').style.display = 'flex';
+}
+
+function closeAssistantModal() {
+  document.getElementById('assistant-modal').style.display = 'none';
+}
+
+async function copyAssistantPayload(fromModal = false) {
+  const payload = buildAssistantPayload();
+  const el = document.getElementById('assistant-payload');
+  if (el) el.value = payload;
+  try {
+    await navigator.clipboard.writeText(payload);
+    showToast(fromModal ? 'คัดลอกข้อความส่งหาผู้ช่วยแล้ว' : 'คัดลอกสถานะล่าสุดแล้ว', 'success');
+  } catch {
+    showToast('คัดลอกอัตโนมัติไม่สำเร็จ ลองคัดลอกจากกล่องข้อความแทน', 'warning');
+    openAssistantModal();
+  }
+}
+
 function updateReportSummary() {
   set('rep-proj-name', State.project.name || '-');
   set('rep-date', State.project.date || '-');
@@ -1037,6 +1109,9 @@ window.closeHidGuide = () => document.getElementById('modal-hid-guide').style.di
 window.testTelegram = testTelegram;
 window.sendToTelegram = sendToTelegram;
 window.showNoBotNotice = () => showToast('No-bot production: ใช้ PDF / Share / Copy แทน Telegram ครับ', 'info', 5000);
+window.openAssistantModal = openAssistantModal;
+window.closeAssistantModal = closeAssistantModal;
+window.copyAssistantPayload = copyAssistantPayload;
 window.showInstallGuide = () => document.getElementById('install-modal').style.display = 'flex';
 window.closeInstallGuide = () => document.getElementById('install-modal').style.display = 'none';
 window.generatePDF = generatePDF;

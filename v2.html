@@ -78,7 +78,7 @@
   <section id="page-measure" class="page">
     <div class="card soft">
       <div style="font-weight:700; margin-bottom:8px">Disto X3 Test</div>
-      <div style="color:var(--muted); margin-bottom:10px">สำหรับ iPhone ให้ลองใช้ Keyboard Mode / HID แล้วแตะเลือกช่องที่จะรับค่าก่อนยิงเลเซอร์</div>
+      <div style="color:var(--muted); margin-bottom:10px"><strong>ขั้นตอนทดสอบ Disto X3 บน iPhone:</strong><br>1. เปิด Keyboard Mode / HID บน Disto X3<br>2. เลือกช่องรับค่าด้านล่าง<br>3. กดปุ่ม "🎯 แตะเพื่อรอรับค่าลงช่องนี้"<br>4. ยิงเลเซอร์จาก Disto (ค่าจะเข้ามาเหมือนพิมพ์จากแป้นพิมพ์)<br>5. ดูผลในช่องและ log ด้านล่าง</div>
       <label>ช่องรับค่าปัจจุบัน</label>
       <select id="active-field" onchange="setActiveField(this.value)">
         <option value="m-eave">ระยะเชิงชาย</option>
@@ -195,17 +195,20 @@
       logDisto('เปลี่ยนช่องรับค่าเป็น ' + id);
     }
     function armField() {
-      state.disto.armed = true;
-      persist();
       const id = state.disto.activeField;
       const el = document.getElementById(id);
-      if (el) {
-        el.focus();
-        el.select?.();
+      if (!el) {
+        alert('ไม่พบช่อง input ' + id);
+        return;
       }
+      state.disto.armed = true;
+      persist();
+      el.focus();
+      el.select?.();
       const status = document.getElementById('field-status');
       if (status) status.textContent = `พร้อมรับค่าจาก Disto ลงช่อง ${id}`;
       logDisto('armed field ' + id);
+      alert('ช่อง ' + id + ' พร้อมรับค่าจาก Disto แล้ว\n\nให้เปิดแป้นพิมพ์บน Disto X3 (Keyboard Mode) แล้วยิงเลเซอร์\nค่าจะเข้ามาในช่องนี้อัตโนมัติ');
     }
     function handleDistoLikeInput(value) {
       const num = parseFloat(String(value).replace(/[^0-9.\-]/g, ''));

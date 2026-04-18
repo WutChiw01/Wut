@@ -90,10 +90,29 @@
     </div>
 
     <div class="card">
-      <div style="font-weight:700; margin-bottom:10px">วัดระยะแบบ manual</div>
-      <label>ระยะเชิงชาย (ม.)</label>
+      <div style="font-weight:700; margin-bottom:10px">วัดระยะแบบ manual <span style="color: #f59e0b;">(ใช้ค่าจาก Disto Plan)</span></div>
+<div style="color: #9fb2d1; font-size: 13px; margin-bottom: 10px;">
+  วัดระยะด้วย <strong>Disto Plan</strong> → คัดลอกค่า → กรอกลงในช่องด้านล่าง
+</div>
+      
+<div style="display: flex; justify-content: space-between; align-items: center;">
+  <label>ระยะเชิงชาย (ม.) <span style="color: #f59e0b;">(คัดลอกจาก Disto Plan)</span></label>
+  <button class="pill" onclick="showDistoPlanHelp('eave')" style="margin: 0;">📋 วิธีคัดลอก</button>
+</div>
+<div id="help-eave" style="display: none; color: #9fb2d1; font-size: 12px; margin-top: 4px;">
+  วิธีคัดลอก: วัดระยะใน Disto Plan → คัดลอกค่า (เช่น "12.34 m") → กรอกเฉพาะตัวเลข (12.34) ลงในช่องนี้
+</div>
+
       <input id="m-eave" type="number" step="0.01" placeholder="เช่น 8.50" />
-      <label style="margin-top:10px">ระยะจันทัน / ลาดเอียง (ม.)</label>
+      
+<div style="display: flex; justify-content: space-between; align-items: center;">
+  <label>ระยะจันทัน / ลาดเอียง (ม.) <span style="color: #f59e0b;">(คัดลอกจาก Disto Plan)</span></label>
+  <button class="pill" onclick="showDistoPlanHelp('rafter')" style="margin: 0;">📋 วิธีคัดลอก</button>
+</div>
+<div id="help-rafter" style="display: none; color: #9fb2d1; font-size: 12px; margin-top: 4px;">
+  วิธีคัดลอก: วัดระยะใน Disto Plan → คัดลอกค่า (เช่น "4.20 m") → กรอกเฉพาะตัวเลข (4.20) ลงในช่องนี้
+</div>
+
       <input id="m-rafter" type="number" step="0.01" placeholder="เช่น 4.20" />
       <button class="btn" style="margin-top:12px" onclick="saveMeasure()">📏 บันทึกและคำนวณ</button>
     </div>
@@ -228,7 +247,15 @@
       }
     }
 
-    function goPage(page) {
+    function showDistoPlanHelp(field) {
+  const helpId = `help-${field}`;
+  const helpEl = document.getElementById(helpId);
+  if (helpEl) {
+    helpEl.style.display = helpEl.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function goPage(page) {
       document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + page));
       document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
     }

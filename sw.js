@@ -1,4 +1,4 @@
-const CACHE_NAME = 'disto-survey-v4.3';
+const CACHE_NAME = 'disto-survey-v4.4';
 const ASSETS = [
   './',
   './index.html',
@@ -13,6 +13,7 @@ const ASSETS = [
   './modules/truss_svgs.js',
   './modules/telegram.js',
   './modules/voice.js',
+  './vendor/jspdf.umd.min.js',
   './truss_blueprints.png'
 ];
 

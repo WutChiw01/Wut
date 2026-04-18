@@ -37,3 +37,7 @@ GitHub Pages เป็น static hosting จึง **ไม่รองรับ
 ## Production mode on main
 This `main` branch is now the **no-bot production** variant for GitHub Pages.
 The previous bot/PHP-capable line is preserved in branch `bot-experimental-no-preserve-20260418`.
+
+
+## Offline field use
+Critical PDF dependency (`jsPDF`) is vendored locally in `vendor/jspdf.umd.min.js` and cached by the service worker so the app is more reliable in no-internet field conditions after the first online load.

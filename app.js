@@ -1054,6 +1054,7 @@ window.setManualDist = (v) => {
   const liveDistEl = document.getElementById('live-distance');
   if (liveDistEl && !Number.isNaN(State.lastMeasurement.d)) liveDistEl.textContent = State.lastMeasurement.d.toFixed(3);
 };
+window.tapDebug = () => { alert('ปุ่มทำงาน'); };
 window.goPage = goPage;
 window.selectPoint = selectPoint;
 window.recordMeasurement = recordMeasurement;

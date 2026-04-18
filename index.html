@@ -157,8 +157,11 @@
         <input id="proj-date" type="date" class="form-input" />
       </div>
     </div>
-    <button class="btn btn-outline btn-sm" onclick="saveProject()" style="width:100%">
+    <button class="btn btn-outline btn-sm" onclick="saveProject()" ontouchend="saveProject()" style="width:100%">
       💾 บันทึกข้อมูลโครงการ
+    </button>
+    <button class="btn btn-ghost btn-sm" onclick="tapDebug()" ontouchend="tapDebug()" style="width:100%;margin-top:8px">
+      🧪 ทดสอบการกดปุ่ม
     </button>
   </div>
 

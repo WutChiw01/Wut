@@ -422,7 +422,7 @@ function calculateLayout() {
 
   const { best } = engine.getBestLayout();
   State._engine = engine;
-  State.layoutResult = best;
+  State.layoutResult = { ...best, panelWidth: State.panel.width, panelHeight: State.panel.height, estimatedPower: estPower };
 
   const estPower = best.count * State.panelWatt;
   const boq = engine.calcBOQ(best);
@@ -629,6 +629,13 @@ function renderMemberSizeList() {
   container.innerHTML = `<table class="boq-table"><tbody>${rows}</tbody></table>`;
 }
 
+
+function deleteMemberSize(i) {
+  memberSizes.splice(i, 1);
+  renderMemberSizeList();
+  persistState();
+}
+
 function resetShots() {
   ['shot1-dist', 'shot1-tilt', 'shot2-dist', 'shot2-tilt'].forEach(id => {
     const el = document.getElementById(id);
@@ -645,7 +652,7 @@ function openTrussSelector() {
   if (!container) return;
   container.innerHTML = Object.values(TRUSS_PATTERNS).map(p => `
     <div class="truss-pattern-item" onclick="selectTrussPattern('${p.id}')">
-      <div class="truss-svg-thumb">${TrussSVG[p.svgKey] ? TrussSVG[p.svgKey]('none') : '📐'}</div>
+      <div class="truss-svg-thumb">${TrussSVG[p.id] ? TrussSVG[p.id]('none') : '📐'}</div>
       <div class="name">${p.label}</div>
     </div>
   `).join('');
@@ -1034,6 +1041,7 @@ window.calculateLayout = calculateLayout;
 window.resetAll = () => { if (confirm('รีเซ็ตข้อมูลทั้งหมด?')) { localStorage.removeItem(STORAGE_KEY); location.reload(); } };
 window.recordStructMeasurement = recordStructMeasurement;
 window.deleteStructEntry = deleteStructEntry;
+window.deleteMemberSize = deleteMemberSize;
 window.clearStructMeasurements = () => { structMeasurements.length = 0; renderStructList(); };
 window.captureShot = captureShot;
 window.calcMemberHeight = calcMemberHeight;

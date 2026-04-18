@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Disto Shell</title>
+  <style>
+    :root { --bg:#0b1220; --card:#18243b; --text:#eaf2ff; --muted:#9fb2d1; --blue:#2f6df6; --border:#314766; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,sans-serif; background:var(--bg); color:var(--text); max-width:500px; margin-inline:auto; padding-bottom:90px; }
+    header { position:sticky; top:0; background:#101a2c; padding:14px 16px; border-bottom:1px solid var(--border); z-index:10; }
+    h1 { margin:0; font-size:18px; }
+    .sub { color:var(--muted); font-size:12px; margin-top:2px; }
+    .page { display:none; padding:16px; }
+    .page.active { display:block; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:14px; margin-bottom:14px; }
+    label { display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
+    input, textarea, button { width:100%; border-radius:12px; border:1px solid var(--border); background:#0f1829; color:var(--text); padding:14px; font-size:16px; }
+    textarea { min-height:180px; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .btn { background:var(--blue); border:none; font-weight:700; }
+    .ghost { background:#23314b; }
+    nav { position:fixed; bottom:0; left:0; right:0; max-width:500px; margin:auto; background:#101a2c; border-top:1px solid var(--border); display:flex; z-index:20; }
+    nav button { border:none; border-radius:0; background:none; color:var(--muted); padding:10px 6px; font-size:12px; }
+    nav button.active { color:#fff; }
+    .ok { color:#86efac; }
+    .warn { color:#fbbf24; }
+    pre { white-space:pre-wrap; word-break:break-word; font-size:13px; line-height:1.5; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Disto Shell</h1>
+    <div class="sub">minimal working shell for Safari/iPhone validation</div>
+  </header>
+
+  <section id="page-connect" class="page active">
+    <div class="card">
+      <div><strong>สถานะ</strong></div>
+      <div id="shell-status" class="ok" style="margin-top:8px">พร้อมใช้งาน</div>
+    </div>
+    <div class="card">
+      <div><strong>Production note</strong></div>
+      <div style="margin-top:8px;color:var(--muted)">หน้านี้เอาไว้ยืนยันว่า save / nav / helper ทำงานบน Safari ได้จริงก่อนเอาของทั้งหมดกลับเข้าแอปหลัก</div>
+    </div>
+    <form class="card" onsubmit="saveProject(); return false;">
+      <label>ชื่อโครงการ / บ้าน</label>
+      <input id="proj-name" placeholder="เช่น บ้านคุณสมชาย ซอย 5" />
+      <label style="margin-top:10px">ที่อยู่</label>
+      <input id="proj-addr" placeholder="เลขที่ / ถนน / ตำบล" />
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label>ผู้สำรวจ</label>
+          <input id="proj-surveyor" placeholder="ชื่อ-สกุล" />
+        </div>
+        <div>
+          <label>วันที่</label>
+          <input id="proj-date" type="date" />
+        </div>
+      </div>
+      <button type="submit" class="btn" style="margin-top:12px">💾 บันทึกข้อมูลโครงการ</button>
+      <button type="button" class="ghost" onclick="copyAssistant()" style="margin-top:8px">👻 คัดลอกข้อมูลส่งผู้ช่วย</button>
+    </form>
+  </section>
+
+  <section id="page-measure" class="page">
+    <div class="card">
+      <strong>หน้าวัดระยะ</strong>
+      <div style="margin-top:8px;color:var(--muted)">ถ้าคุณมาถึงหน้านี้ได้ แปลว่า bottom nav ทำงานแล้ว</div>
+    </div>
+  </section>
+
+  <section id="page-report" class="page">
+    <div class="card">
+      <strong>ข้อมูลที่บันทึกล่าสุด</strong>
+      <pre id="saved-data">(ยังไม่มี)</pre>
+    </div>
+  </section>
+
+  <section id="page-settings" class="page">
+    <div class="card">
+      <strong>เรียกผู้ช่วย</strong>
+      <div style="margin-top:8px;color:var(--muted)">กดปุ่มด้านล่างเพื่อคัดลอกข้อมูลสถานะล่าสุดส่งมาหาผม</div>
+      <button class="btn" onclick="copyAssistant()" style="margin-top:12px">📋 คัดลอกสถานะ</button>
+    </div>
+  </section>
+
+  <nav>
+    <button data-page="connect" class="active" onclick="goPage('connect')">เชื่อมต่อ</button>
+    <button data-page="measure" onclick="goPage('measure')">วัดระยะ</button>
+    <button data-page="report" onclick="goPage('report')">รายงาน</button>
+    <button data-page="settings" onclick="goPage('settings')">ตั้งค่า</button>
+  </nav>
+
+  <script>
+    const KEY = 'disto_shell_project_v1';
+    function goPage(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + page));
+      document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+      if (page === 'report') renderSaved();
+    }
+    function saveProject() {
+      const data = {
+        name: document.getElementById('proj-name').value || '',
+        address: document.getElementById('proj-addr').value || '',
+        surveyor: document.getElementById('proj-surveyor').value || '',
+        date: document.getElementById('proj-date').value || '',
+        savedAt: new Date().toLocaleString('th-TH')
+      };
+      localStorage.setItem(KEY, JSON.stringify(data));
+      alert('บันทึกข้อมูลโครงการแล้ว');
+      goPage('measure');
+    }
+    function renderSaved() {
+      const raw = localStorage.getItem(KEY);
+      document.getElementById('saved-data').textContent = raw ? JSON.stringify(JSON.parse(raw), null, 2) : '(ยังไม่มี)';
+    }
+    function copyAssistant() {
+      const raw = localStorage.getItem(KEY);
+      const text = [
+        'DISTO SHELL ASSIST REQUEST',
+        'เวลา: ' + new Date().toLocaleString('th-TH'),
+        'ออนไลน์: ' + (navigator.onLine ? 'yes' : 'no'),
+        'ข้อมูลโครงการ:',
+        raw ? JSON.stringify(JSON.parse(raw), null, 2) : '(ยังไม่มี)'
+      ].join('\n');
+      navigator.clipboard.writeText(text).then(() => {
+        alert('คัดลอกสถานะแล้ว');
+      }).catch(() => {
+        alert(text);
+      });
+    }
+    window.addEventListener('load', () => {
+      document.getElementById('proj-date').value = new Date().toISOString().split('T')[0];
+      renderSaved();
+    });
+  </script>
+</body>
+</html>

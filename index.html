@@ -130,26 +130,10 @@
     </div>
   </div>
 
-  <!-- Project Info -->
-  <!-- ─── TELEGRAM BOT SETTINGS (v1.5) ─────────────────────── -->
-  <p class="section-title">ตั้งค่าบอท Telegram (Hostinger Link)</p>
-  <div class="card">
-    <div class="form-group">
-      <label class="form-label">Telegram Bot Token</label>
-      <input id="tg-token" type="password" class="form-input" placeholder="123456789:ABCDEF..." />
-      <p class="text-xs" style="margin-top:4px">ได้มาจาก @BotFather (เว้นว่างไว้หากใช้ PHP Proxy)</p>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Target Chat ID</label>
-      <input id="tg-chat-id" type="text" class="form-input" placeholder="-123456789" />
-    </div>
-    <div class="toggle-row">
-      <span class="toggle-label">ใช้ PHP Proxy (แนะนำสำหรับ Hostinger)</span>
-      <div id="tg-use-proxy" class="toggle on" onclick="this.classList.toggle('on')"></div>
-    </div>
-    <button class="btn btn-ghost btn-sm" style="margin-top:10px" onclick="testTelegram()">
-      🚀 ทดสอบส่งข้อความ
-    </button>
+
+  <div class="card" style="border-color:var(--border);background:var(--bg2)">
+    <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:6px">Production mode (No Bot)</div>
+    <div class="text-sm" style="line-height:1.6;color:var(--text3)">เวอร์ชันนี้ตัด Telegram bot / PHP proxy ออก เพื่อให้ใช้งานบน GitHub Pages ได้เสถียรที่สุด</div>
   </div>
 
   <p class="section-title">ข้อมูลโครงการ</p>
@@ -876,8 +860,8 @@
       <button class="btn btn-ghost btn-sm" onclick="shareResults()">
         <span class="btn-icon">📤</span> Share
       </button>
-      <button class="btn btn-primary btn-sm" onclick="sendToTelegram()">
-        <span class="btn-icon">✈️</span> ส่งเข้า Telegram
+      <button class="btn btn-primary btn-sm" onclick="showNoBotNotice()">
+        <span class="btn-icon">ℹ️</span> No Bot Version
       </button>
     </div>
     <div class="mt-2">

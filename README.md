@@ -32,3 +32,8 @@ GitHub Pages เป็น static hosting จึง **ไม่รองรับ
 - Android/Chrome รองรับ Web Bluetooth ได้ดีกว่า
 - iPhone/Safari ควรใช้ Keyboard Mode (HID)
 - หากเว็บไม่อัปเดตหลัง deploy ให้ hard refresh หรือล้าง cache service worker 1 ครั้ง
+
+
+## Production mode on main
+This `main` branch is now the **no-bot production** variant for GitHub Pages.
+The previous bot/PHP-capable line is preserved in branch `bot-experimental-no-preserve-20260418`.

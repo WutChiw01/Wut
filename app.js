@@ -713,27 +713,16 @@ function confirmVisualMeasurement() {
 
 // ─── Telegram Bot & Bot Mode ─────────────────────────────────────────────────────────────
 function initBotMode() {
-  const params = new URLSearchParams(window.location.search);
-  const chatId = params.get('chatId');
-  const step   = params.get('step');
-
-  if (chatId && step) {
-    State.botMode.active = true;
-    State.botMode.chatId = chatId;
-    State.botMode.step   = step;
-    document.body.classList.add('is-bot-mode');
-
-    if (step === 'REVIEW') {
-      loadStateFromBot(chatId);
-    } else {
-      showToast(`โหมดเลเซอร์: ยิงระยะ ${step}`, 'info');
-      const h = document.querySelector('.app-header'); if (h) h.style.display = 'none';
-      const n = document.querySelector('.bottom-nav'); if (n) n.style.display = 'none';
-    }
-  }
+  State.botMode.active = false;
 }
 
+
 async function loadStateFromBot(chatId) {
+  showToast('No-bot production: ปิดการเชื่อมต่อ bot ไว้ในเวอร์ชันนี้', 'info');
+  return;
+}
+
+async function _loadStateFromBotDisabled(chatId) {
   try {
     const res = await fetch(`send_telegram.php?chatId=${chatId}`);
     const state = await res.json();
@@ -804,6 +793,8 @@ async function loadStateFromBot(chatId) {
 }
 
 async function sendDataToBot(value) {
+  showToast('No-bot production: ฟีเจอร์ bot ถูกปิดไว้', 'info');
+  return;
   if (!State.botMode.active) return;
   try {
     const { chatId, step } = State.botMode;
@@ -835,23 +826,10 @@ async function testTelegram() {
   }
 }
 
-async function sendToTelegram() {
-  if (!State.roofResult || !State.layoutResult) return showToast('คำนวณผลลัพธ์ก่อนส่งครับ', 'warning');
-  try {
-    showToast('กำลังเตรียม PDF...', 'info');
-    const canvas = document.getElementById('layout-canvas');
-    const gen = new ReportGenerator(State.project, State.roofResult, State.layoutResult, State.boqResult, canvas?.toDataURL(), State.assessmentResult);
-    const doc = await gen.createDoc();
-    const pdfBlob = doc.output('blob');
-    const filename = `Report_${(State.project.name || 'Survey').replace(/\W/g, '_')}.pdf`;
-    
-    showToast('กำลังอัปโหลด...', 'info');
-    const res = await TelegramBot.sendDocument(State.telegram, pdfBlob, filename, `📋 รายงานสำรวจ: ${State.project.name || '-'}`);
-    if (res.ok) showToast('ส่งรายงานสำเร็จ!', 'success'); else throw new Error(res.description);
-  } catch (err) {
-    showToast(`ส่งไม่สำเร็จ: ${err.message}`, 'error');
-  }
+async async function sendToTelegram() {
+  showToast('No-bot production: เวอร์ชันนี้ส่ง Telegram ไม่ได้ ใช้ PDF / Share / Copy แทนครับ', 'info', 5000);
 }
+
 
 async function generatePDF() {
   if (!State.roofResult || !State.layoutResult) return showToast('กรุณาคำนวณข้อมูลก่อนออกรายงาน', 'warning');
@@ -1058,6 +1036,7 @@ window.openHidGuide = () => document.getElementById('modal-hid-guide').style.dis
 window.closeHidGuide = () => document.getElementById('modal-hid-guide').style.display = 'none';
 window.testTelegram = testTelegram;
 window.sendToTelegram = sendToTelegram;
+window.showNoBotNotice = () => showToast('No-bot production: ใช้ PDF / Share / Copy แทน Telegram ครับ', 'info', 5000);
 window.showInstallGuide = () => document.getElementById('install-modal').style.display = 'flex';
 window.closeInstallGuide = () => document.getElementById('install-modal').style.display = 'none';
 window.generatePDF = generatePDF;

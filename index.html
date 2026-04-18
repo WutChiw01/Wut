@@ -138,7 +138,7 @@
 
   <p class="section-title">ข้อมูลโครงการ</p>
 
-  <div class="card">
+  <form onsubmit="saveProject(); return false;" class="card">
     <div class="form-group">
       <label class="form-label" for="proj-name">ชื่อโครงการ / บ้าน</label>
       <input id="proj-name" type="text" class="form-input" placeholder="เช่น บ้านคุณสมชาย ซอย 5" />
@@ -157,13 +157,13 @@
         <input id="proj-date" type="date" class="form-input" />
       </div>
     </div>
-    <button class="btn btn-outline btn-sm" onclick="saveProject()" ontouchend="saveProject()" style="width:100%">
+    <button type="submit" class="btn btn-outline btn-sm" onclick="saveProject()" ontouchend="saveProject()" style="width:100%">
       💾 บันทึกข้อมูลโครงการ
     </button>
-    <button class="btn btn-ghost btn-sm" onclick="tapDebug()" ontouchend="tapDebug()" style="width:100%;margin-top:8px">
+    <button type="button" class="btn btn-ghost btn-sm" onclick="tapDebug()" ontouchend="tapDebug()" style="width:100%;margin-top:8px">
       🧪 ทดสอบการกดปุ่ม
     </button>
-  </div>
+  </form>
 
 </section>
 

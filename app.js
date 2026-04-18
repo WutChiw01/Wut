@@ -845,9 +845,6 @@ async function generatePDF() {
 }
 
 function updateTelegramState(shouldPersist = true) {
-  State.telegram.token = document.getElementById('tg-token')?.value?.trim() || '';
-  State.telegram.chatId = document.getElementById('tg-chat-id')?.value?.trim() || '';
-  State.telegram.useProxy = document.getElementById('tg-use-proxy')?.classList.contains('on') || false;
   if (shouldPersist) persistState();
 }
 
@@ -912,17 +909,12 @@ function loadPersistedState() {
     setVal('proj-addr', State.project.address);
     setVal('proj-surveyor', State.project.surveyor);
     setVal('proj-date', State.project.date);
-    setVal('tg-token', State.telegram.token);
-    setVal('tg-chat-id', State.telegram.chatId);
     setVal('set-panel-w', State.panel.width);
     setVal('set-panel-h', State.panel.height);
     setVal('set-panel-watt', State.panelWatt);
     setVal('set-margin-top', State.margins.top);
     setVal('set-margin-bot', State.margins.bottom);
     setVal('set-margin-lr', State.margins.left);
-    
-    const proxyToggle = document.getElementById('tg-use-proxy');
-    if (proxyToggle) proxyToggle.classList.toggle('on', !!State.telegram.useProxy);
     
     const twoFaceToggle = document.getElementById('toggle-twoface');
     if (twoFaceToggle) twoFaceToggle.classList.toggle('on', !!State.isTwoFace);
@@ -1046,10 +1038,6 @@ function init() {
 
   const bt = document.getElementById('bt-status');
   if (bt) bt.addEventListener('click', () => State.connected ? window.disconnectBT() : window.connectBLE());
-
-  document.getElementById('tg-token')?.addEventListener('change', () => updateTelegramState());
-  document.getElementById('tg-chat-id')?.addEventListener('change', () => updateTelegramState());
-  document.getElementById('tg-use-proxy')?.addEventListener('click', () => setTimeout(updateTelegramState, 0));
 
   selectPoint(State.activePoint || 'A');
   checkStandalone();

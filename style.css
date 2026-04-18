@@ -305,6 +305,7 @@ body {
   inset: 0;
   background: rgba(255,255,255,0);
   transition: background 0.15s;
+  pointer-events: none;
 }
 .btn:active::after { background: rgba(255,255,255,0.1); }
 

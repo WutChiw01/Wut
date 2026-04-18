@@ -101,27 +101,26 @@ function showToast(msg, type = 'info', duration = 4000) {
   }, duration);
 }
 
-function initNavigation() {
+function goPage(target) {
   const tabs = document.querySelectorAll('.nav-tab');
   const pages = document.querySelectorAll('.page');
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.page === target));
+  pages.forEach(p => p.classList.toggle('active', p.id === `page-${target}`));
 
+  if (target === 'layout' && State.layoutResult) {
+    if (State._lastCanvasLayout !== State.layoutResult) {
+      setTimeout(() => {
+        drawCanvas();
+        State._lastCanvasLayout = State.layoutResult;
+      }, 100);
+    }
+  }
+}
+
+function initNavigation() {
+  const tabs = document.querySelectorAll('.nav-tab');
   tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.page;
-      tabs.forEach(t => t.classList.remove('active'));
-      pages.forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(`page-${target}`)?.classList.add('active');
-
-      if (target === 'layout' && State.layoutResult) {
-        if (State._lastCanvasLayout !== State.layoutResult) {
-          setTimeout(() => {
-            drawCanvas();
-            State._lastCanvasLayout = State.layoutResult;
-          }, 100);
-        }
-      }
-    });
+    tab.addEventListener('click', () => goPage(tab.dataset.page));
   });
 }
 
@@ -1048,6 +1047,7 @@ window.setManualDist = (v) => {
   const liveDistEl = document.getElementById('live-distance');
   if (liveDistEl && !Number.isNaN(State.lastMeasurement.d)) liveDistEl.textContent = State.lastMeasurement.d.toFixed(3);
 };
+window.goPage = goPage;
 window.selectPoint = selectPoint;
 window.recordMeasurement = recordMeasurement;
 window.undoLastPoint = undoLastPoint;

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'disto-survey-v3.9';
+const CACHE_NAME = 'disto-survey-v4.1';
 const ASSETS = [
   './',
   './index.html',

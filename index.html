@@ -1036,8 +1036,9 @@
 <script>
 // Share & Copy helpers
 window.shareResults = async function () {
-  const R = window.__state?.roofResult;
-  const L = window.__state?.layoutResult;
+  const state = window.State || window.__state;
+  const R = state?.roofResult;
+  const L = state?.layoutResult;
   const text = R
     ? `🏠 Solar Roof Survey\nพื้นที่: ${R.totalArea} ตร.ม. | Slope: ${R.slopeAngle}° (${R.pitchLabel})\n☀️ แผง: ${L?.count ?? '-'} แผง | ${((L?.count ?? 0) * 570 / 1000).toFixed(2)} kWp`
     : 'ยังไม่มีข้อมูลหลังคา';

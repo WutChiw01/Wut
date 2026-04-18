@@ -2,11 +2,12 @@
   "name": "Disto Survey — Solar Roof",
   "short_name": "Disto Survey",
   "description": "App สำหรับสำรวจและวัดระยะหลังคาด้วย Leica Disto",
-  "start_url": "./index.html",
+  "start_url": "/Wut/",
   "display": "standalone",
   "background_color": "#080e1a",
   "theme_color": "#080e1a",
   "orientation": "portrait",
+  "scope": "/Wut/",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/3105/3105555.png",

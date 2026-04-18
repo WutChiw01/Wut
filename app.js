@@ -19,7 +19,7 @@ import { VoiceAssistant } from './modules/voice.js';
 import { TrussSVG } from './modules/truss_svgs.js';
 
 // ─── Constants ─────────────────────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'disto_survey_state_v1.2';
+const STORAGE_KEY = 'disto_survey_state_v1.3';
 
 // ─── App State ─────────────────────────────────────────────────────────────────────────────
 const State = {
@@ -138,7 +138,7 @@ function checkStandalone() {
                     || document.referrer.includes('android-app://');
   
   const btn = document.getElementById('install-btn');
-  if (btn) btn.style.display = isStandalone ? 'none' : 'flex';
+  if (btn) btn.style.display = isStandalone || !('BeforeInstallPromptEvent' in window || /iphone|ipad|ipod|android/i.test(navigator.userAgent)) ? 'none' : 'flex';
 }
 
 // ─── Bluetooth & Voice ──────────────────────────────────────────────────────────────────
@@ -949,13 +949,13 @@ function loadPersistedState() {
     if (State.roofResult) {
        document.getElementById('results-section').style.display = 'block';
        const R = State.roofResult;
-       set('res-eave',   R.eaveLength   ? `${R.eaveLength} ม.`   : '-');
-       set('res-ridge',  R.ridgeLength  ? `${R.ridgeLength} ม.`  : '-');
-       set('res-rafter', R.rafterLength ? `${R.rafterLength} ม.` : '-');
-       set('res-slope',  R.slopeAngle   ? `${R.slopeAngle}°`     : '-');
+       set('res-eave',   R.eaveLength   !== null && R.eaveLength !== undefined ? `${R.eaveLength} ม.`   : '-');
+       set('res-ridge',  R.ridgeLength  !== null && R.ridgeLength !== undefined ? `${R.ridgeLength} ม.`  : '-');
+       set('res-rafter', R.rafterLength !== null && R.rafterLength !== undefined ? `${R.rafterLength} ม.` : '-');
+       set('res-slope',  R.slopeAngle   !== null && R.slopeAngle !== undefined ? `${R.slopeAngle}°`     : '-');
        set('res-pitch',  R.pitchLabel   ?? '-');
-       set('res-area1',  R.trueArea     ? `${R.trueArea} ตร.ม.`  : '-');
-       set('res-area2',  R.totalArea    ? `${R.totalArea} ตร.ม.` : '-');
+       set('res-area1',  R.trueArea     !== null && R.trueArea !== undefined ? `${R.trueArea} ตร.ม.`  : '-');
+       set('res-area2',  R.totalArea    !== null && R.totalArea !== undefined ? `${R.totalArea} ตร.ม.` : '-');
     }
   } catch (e) { console.warn('Load failed', e); }
 }
@@ -965,11 +965,15 @@ function updateReportSummary() {
   set('rep-proj-name', State.project.name || '-');
   set('rep-date', State.project.date || '-');
   if (State.roofResult) {
-    set('rep-area', `${State.roofResult.trueArea} ตร.ม.`);
+    set('rep-area', `${State.roofResult.totalArea ?? State.roofResult.trueArea ?? '-'} ตร.ม.`);
   }
   if (State.layoutResult) {
     set('rep-panels', `${State.layoutResult.count} แผง`);
-    set('rep-power', `${(State.boqResult?.estimatedPower / 1000).toFixed(2)} kWp`);
+    const estimatedPower = State.boqResult?.estimatedPower || (State.layoutResult.count * State.panelWatt);
+    set('rep-power', `${(estimatedPower / 1000).toFixed(2)} kWp`);
+  } else {
+    set('rep-panels', '-');
+    set('rep-power', '-');
   }
 }
 
@@ -1138,7 +1142,7 @@ window.assessStructure = function () {
   set('struct-load-m2', `${solarLoad.loadPerM2} kg/m²`);
   
   const recEl = document.getElementById('struct-recommendation');
-  if (recEl) recEl.textContent = overall.recommendation || 'โครงสร้างมีความแข็งแรงเพียงพอ';
+  if (recEl) recEl.textContent = [purlinRes.recommendation, trussRes.recommendation, overall.summary].filter(Boolean).join(' | ') || 'โครงสร้างมีความแข็งแรงเพียงพอ';
 
   State.assessmentResult = { purlinRes, trussRes, solarLoad, overall };
   persistState();

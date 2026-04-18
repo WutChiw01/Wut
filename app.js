@@ -1053,9 +1053,6 @@ function init() {
 
   selectPoint(State.activePoint || 'A');
   checkStandalone();
-<<<<<<< HEAD
-  console.log('[Disto Survey App] v3.5 Ready');
-=======
   console.log('[Disto Survey App] v3.8 Ready');
 }
 

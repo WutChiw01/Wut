@@ -76,6 +76,19 @@
   </section>
 
   <section id="page-measure" class="page">
+    <div class="card soft">
+      <div style="font-weight:700; margin-bottom:8px">Disto X3 Test</div>
+      <div style="color:var(--muted); margin-bottom:10px">สำหรับ iPhone ให้ลองใช้ Keyboard Mode / HID แล้วแตะเลือกช่องที่จะรับค่าก่อนยิงเลเซอร์</div>
+      <label>ช่องรับค่าปัจจุบัน</label>
+      <select id="active-field" onchange="setActiveField(this.value)">
+        <option value="m-eave">ระยะเชิงชาย</option>
+        <option value="m-rafter">ระยะจันทัน / ลาดเอียง</option>
+      </select>
+      <button class="ghost" style="margin-top:10px" onclick="armField()">🎯 แตะเพื่อรอรับค่าลงช่องนี้</button>
+      <div style="margin-top:10px" class="pill" id="field-status">ยังไม่ได้เตรียมช่องรับค่า</div>
+      <pre id="disto-log" style="margin-top:10px">(ยังไม่มี log)</pre>
+    </div>
+
     <div class="card">
       <div style="font-weight:700; margin-bottom:10px">วัดระยะแบบ manual</div>
       <label>ระยะเชิงชาย (ม.)</label>
@@ -137,7 +150,8 @@
     const state = {
       project: { name:'', address:'', surveyor:'', date:'' },
       measure: { eave:null, rafter:null, totalArea:null, panelCount:null, estimatedPower:null },
-      settings: { panelW:1.13, panelH:2.28, panelWatt:570 }
+      settings: { panelW:1.13, panelH:2.28, panelWatt:570 },
+      disto: { activeField: 'm-eave', armed: false, lastRaw: '' }
     };
 
     function persist() { localStorage.setItem(KEY, JSON.stringify(state)); }
@@ -161,8 +175,56 @@
       document.getElementById('panel-watt').value = state.settings.panelWatt;
       document.getElementById('m-eave').value = state.measure.eave ?? '';
       document.getElementById('m-rafter').value = state.measure.rafter ?? '';
+      document.getElementById('active-field').value = state.disto.activeField || 'm-eave';
+      const status = document.getElementById('field-status');
+      if (status) status.textContent = state.disto.armed ? `พร้อมรับค่าจาก Disto ลงช่อง ${state.disto.activeField}` : `ช่องรับค่าปัจจุบัน: ${state.disto.activeField}`;
       renderAll();
     }
+
+    function logDisto(msg) {
+      const el = document.getElementById('disto-log');
+      if (!el) return;
+      el.textContent = `[${new Date().toLocaleTimeString('th-TH')}] ${msg}
+` + el.textContent;
+    }
+    function setActiveField(id) {
+      state.disto.activeField = id;
+      persist();
+      const status = document.getElementById('field-status');
+      if (status) status.textContent = `ช่องรับค่าปัจจุบัน: ${id}`;
+      logDisto('เปลี่ยนช่องรับค่าเป็น ' + id);
+    }
+    function armField() {
+      state.disto.armed = true;
+      persist();
+      const id = state.disto.activeField;
+      const el = document.getElementById(id);
+      if (el) {
+        el.focus();
+        el.select?.();
+      }
+      const status = document.getElementById('field-status');
+      if (status) status.textContent = `พร้อมรับค่าจาก Disto ลงช่อง ${id}`;
+      logDisto('armed field ' + id);
+    }
+    function handleDistoLikeInput(value) {
+      const num = parseFloat(String(value).replace(/[^0-9.\-]/g, ''));
+      if (Number.isNaN(num)) {
+        logDisto('รับค่าไม่ได้: ' + value);
+        return;
+      }
+      const id = state.disto.activeField;
+      const el = document.getElementById(id);
+      if (el) {
+        el.value = num;
+        if (id === 'm-eave') state.measure.eave = num;
+        if (id === 'm-rafter') state.measure.rafter = num;
+        persist();
+        renderAll();
+        logDisto(`รับค่า ${num} ลง ${id}`);
+      }
+    }
+
     function goPage(page) {
       document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + page));
       document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.page === page));

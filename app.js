@@ -1036,11 +1036,18 @@ window.connectKeyboard = () => { State.bluetooth.enableKeyboardMode(); updateBTS
 window.disconnectBT = () => { State.bluetooth.disconnectBLE(); updateBTStatus('disconnected'); };
 window.toggleVoice = () => { State.voice.setEnabled(!State.voice.enabled); document.getElementById('voice-toggle')?.classList.toggle('on'); };
 window.saveProject = () => { 
-  State.project.name = document.getElementById('proj-name').value;
-  State.project.address = document.getElementById('proj-addr').value;
-  State.project.surveyor = document.getElementById('proj-surveyor').value;
-  State.project.date = document.getElementById('proj-date').value;
-  persistState(); showToast('บันทึกข้อมูลโครงการแล้ว', 'success');
+  try {
+    State.project.name = document.getElementById('proj-name')?.value || '';
+    State.project.address = document.getElementById('proj-addr')?.value || '';
+    State.project.surveyor = document.getElementById('proj-surveyor')?.value || '';
+    State.project.date = document.getElementById('proj-date')?.value || '';
+    persistState();
+    showToast('บันทึกข้อมูลโครงการแล้ว', 'success');
+    setTimeout(() => goPage('measure'), 150);
+  } catch (e) {
+    console.error('saveProject failed', e);
+    alert('บันทึกข้อมูลโครงการไม่สำเร็จ');
+  }
 };
 window.setManualDist = (v) => { 
   State.lastMeasurement.d = parseFloat(v); 

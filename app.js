@@ -826,7 +826,7 @@ async function testTelegram() {
   }
 }
 
-async async function sendToTelegram() {
+async function sendToTelegram() {
   showToast('No-bot production: เวอร์ชันนี้ส่ง Telegram ไม่ได้ ใช้ PDF / Share / Copy แทนครับ', 'info', 5000);
 }
 

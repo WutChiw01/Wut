@@ -720,6 +720,8 @@ function initBotMode() {
 async function loadStateFromBot(chatId) {
   showToast('No-bot production: ปิดการเชื่อมต่อ bot ไว้ในเวอร์ชันนี้', 'info');
   return;
+  showToast('No-bot production: ปิดการเชื่อมต่อ bot ไว้ในเวอร์ชันนี้', 'info');
+  return;
 }
 
 async function _loadStateFromBotDisabled(chatId) {
@@ -1003,8 +1005,6 @@ async function copyAssistantPayload(fromModal = false) {
 }
 
 function updateReportSummary() {
-  set('rep-proj-name', State.project.name || '-');
-  set('rep-date', State.project.date || '-');
   if (State.roofResult) {
     set('rep-area', `${State.roofResult.totalArea ?? State.roofResult.trueArea ?? '-'} ตร.ม.`);
   }

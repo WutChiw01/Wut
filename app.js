@@ -1057,7 +1057,6 @@ function init() {
   console.log('[Disto Survey App] v3.5 Ready');
 =======
   console.log('[Disto Survey App] v3.8 Ready');
->>>>>>> 4cf73ce (v3.8 Final deploy)
 }
 
 // ─── Exports ─────────────────────────────────────────────────────────────────────────────
@@ -1074,15 +1073,11 @@ window.saveProject = () => {
   State.project.date = document.getElementById('proj-date').value;
   persistState(); showToast('บันทึกข้อมูลโครงการแล้ว', 'success');
 };
-<<<<<<< HEAD
-window.setManualDist = (v) => { State.lastMeasurement.d = parseFloat(v); document.getElementById('live-distance').textContent = State.lastMeasurement.d.toFixed(3); };
-=======
 window.setManualDist = (v) => { 
-    State.lastMeasurement.d = parseFloat(v); 
-    const liveDistEl = document.getElementById('live-distance');
-    if (liveDistEl) liveDistEl.textContent = State.lastMeasurement.d.toFixed(3);
+  State.lastMeasurement.d = parseFloat(v); 
+  const liveDistEl = document.getElementById('live-distance');
+  if (liveDistEl && !Number.isNaN(State.lastMeasurement.d)) liveDistEl.textContent = State.lastMeasurement.d.toFixed(3);
 };
->>>>>>> 4cf73ce (v3.8 Final deploy)
 window.selectPoint = selectPoint;
 window.recordMeasurement = recordMeasurement;
 window.undoLastPoint = undoLastPoint;

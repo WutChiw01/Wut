@@ -18,3 +18,9 @@ Known deviations from the spec / simplifications
 - C1/C2 tiles now run from the water court to +8.60; each tower stands in a koi pond with a 0.45 m seat coping; ponds, a front bench band and a 2.8 m arrival path sit on one continuous travertine plinth. Recirculation pipes/sump are to run in a new underground trench below the plinth (not drawn).
 - East wall (hall / pickleball): +4.50 m service catwalk 1.20 m wide on outriggers + knee braces to the existing portal columns, steel stair at the north end, sliding wind-block louvre screens (z 4.75–7.25) operated from the deck. The 10.5 m bay y = 2…12.5 has no column: tie rods to the roof eave are shown, to be verified by the structural engineer.
 - New views: `entrance_*`, `catwalk_*`, `left_*`, `rear_*` (incl. orthographic elevations `left_elev`, `rear_elev`, `entrance_front`).
+
+## REV D.8 changes
+- East catwalk (+4.50) is now reached from the rear complex L2 floor (+3.50): glazed door in the L2 east wall → free-standing landing (own posts, existing RC slab untouched) → 6 risers (157 mm) → deck. The ground-level stair was removed; the catwalk also lands on the existing columns at y = 17.5 and 22.0.
+- To make room, the climbing wall + crash pit moved 1.30 m north (pit y 24.90…29.20, tower y 25.60…28.90); the 1.20 m pit stair gap is now at the SE corner as in the spec.
+- Rear: teak sun-fins on L3, eyebrow shade + wall-washers on L2, slat canopy over the clinic door, sauna exhaust risers, downpipes, louvred roof plant screen with condensers, pool steps/ladder/underwater lights, shower, pool plant room, planters.
+- Sides: batten wall sconces and PV on the west wing roof; climbing wall route tapes, auto-belay units, top-out gate; new east elevation.

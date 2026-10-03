@@ -321,7 +321,8 @@ function towerHardware(b, o) {
 }
 
 // ───────────────────────────── model ─────────────────────────────
-export function buildModel() {
+export function buildModel(opts = {}) {
+  const R2 = opts.scheme === 'r2'; // REV R2 'Recovery Courtyard' scheme for the rear zone (see README)
   const root = new THREE.Group();
   root.name = 'MyPlace_Master_vD6';
   const G = {}; // named layers
@@ -345,7 +346,7 @@ export function buildModel() {
       h.moveTo(x0, y0); h.lineTo(x0, y1); h.lineTo(x1, y1); h.lineTo(x1, y0); h.lineTo(x0, y0);
       shape.holes.push(h);
     };
-    hole(22.85, 25.05, 24.9, 29.2);
+    if (R2) hole(25.15, 27.5, 22.2, 27.8); else hole(22.85, 25.05, 24.9, 29.2);
     hole(13.4, 19.4, 31.6, 34.6); // prefab pool pit 6.0 × 3.0
     const gg = new THREE.ShapeGeometry(shape);
     gg.rotateX(-Math.PI / 2);
@@ -743,6 +744,7 @@ export function buildModel() {
         g.translate(x + 0.025, (zb + zt) / 2, -y); b.add(M.louvre, g);
       }
     }
+    if (!R2) {
     // Access from the rear complex L2 floor (+3.50 / finish +3.56): door in the L2 east wall → free-standing landing → 6 risers (157 mm) up to the +4.50 deck.
     // No climb from the ground floor; landing + stair stand on their own posts (the existing RC slab is not touched).
     const LZ = 3.5, lx0 = 22.3, ly0 = 23.4, ly1 = 25.25;
@@ -763,6 +765,7 @@ export function buildModel() {
     for (const x of [dX0 + 0.01, dX1 - 0.01]) { b.member([x, ly0, LZ + 1.15], [x, ly0 - 1.56, DZ + 1.1], 0.022, M.charcoal, 6); for (const t of [0.1, 0.8, 1.5]) b.cbox(x, ly0 - t, (LZ + 1.15 + (DZ + 1.1 - LZ - 1.15) * t / 1.56 + LZ + 0.06 + rise * (t / 0.26 + 1)) / 2, 0.035, 0.035, 1.0, M.charcoal); }
     // "to catwalk" exit-style sign above the L2 door
     b.box(22.28, 22.34, 24.3, 25.0, LZ + 2.2, LZ + 2.5, M.led);
+    }
   }
 
   // ── West wing REV P6 + palms garden — detailed interior (REV D.9) ─────────────
@@ -1110,7 +1113,7 @@ export function buildModel() {
   // (stair block sub-builders are flushed at the end of the wing block)
   // ── Rear complex REV D.5 ──────────────────────────────────────────
   const GFr = layer('rear_GF'), L2r = layer('rear_L2'), L3r = layer('rear_L3'), RFr = layer('rear_roof'), STr = layer('rear_structure');
-  {
+  if (!R2) {
     const xs = [0.2, 5.2, 10.2, 15.2, 20.2];
     // columns, rows A (25.1) and B (28.1)
     const colsAt = (lyr, z0, z1) => { for (const y of [25.1, 28.1]) for (const x of xs) lyr.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, z0, z1, M.concreteDark); };
@@ -1261,7 +1264,7 @@ export function buildModel() {
     for (const x of [15.2, 16.4, 17.6]) GFr.box(x - 0.08, x + 0.08, fN + 0.4, fN + 0.55, 2.88, 2.95, M.led);
     GFr.box(15.4, 17.4, fN + 0.02, fN + 0.2, 0, 0.05, M.steel); // door threshold / drain
     // services on the façade: stainless sauna exhaust risers + rain caps, charcoal downpipes
-    for (const x of [12.9, 14.3]) {
+    for (const x of R2 ? [] : [12.9, 14.3]) {
       R.cyl(x, fN + 0.3, Z2 + 0.4, ZR + 1.6, 0.1, 0.1, M.ss316, 14);
       R.cyl(x, fN + 0.3, ZR + 1.6, ZR + 1.78, 0.18, 0.02, M.ss316, 14);
       for (let z = Z2 + 1.5; z < ZR + 1.5; z += 2.2) R.cyl(x, fN + 0.3, z, z + 0.05, 0.13, 0.13, M.steel, 14);
@@ -1345,6 +1348,7 @@ export function buildModel() {
       b.box(15.4, 17.4, 30.1, 30.5, DECK - 0.02, DECK, M.steel);
     }
 
+    if (!R2) {
     // Outdoor climbing wall: free-standing steel tower 3.30 m wide × 10.50 m tall, x 22.55…22.85, y 25.6…28.9
     // (shifted 1.30 m north vs REV D.5 so the L2 → catwalk door and landing fit at the north-east corner of the hall)
     const cy0 = 25.6, cy1 = 28.9;
@@ -1380,6 +1384,7 @@ export function buildModel() {
     // sump (0.6 × 0.6) + cover
     b.box(23.7, 24.3, 26.7, 27.3, -0.6, -0.55, M.charcoal);
 
+    }
     // pickleball courts PB1, PB2 along the hall's glass wall
     for (const y0 of [-8.0, 6.4]) {
       b.box(24.5, 31.1, y0 - 1.0, y0 + 14.4, 0.0, 0.015, M.pickleOut);
@@ -1397,9 +1402,218 @@ export function buildModel() {
     }
 
     // senior parkour & active-aging garden along the rear fence (grass beds + handrail path)
-    b.box(24.5, 38.0, 29.5, 38.4, 0.0, 0.02, M.turf);
-    b.box(-3.9, 8.0, 30.2, 33.0, 0.0, 0.02, M.turf);
-    for (let x = 0; x < 30; x += 3) b.box(2.0 + x * 0.5, 2.1 + x * 0.5, 32.0, 32.1, 0, 1.0, M.teakLight);
+    if (!R2) b.box(24.5, 38.0, 29.5, 38.4, 0.0, 0.02, M.turf);
+    if (!R2) { b.box(-3.9, 8.0, 30.2, 33.0, 0.0, 0.02, M.turf); for (let x = 0; x < 30; x += 3) b.box(2.0 + x * 0.5, 2.1 + x * 0.5, 32.0, 32.1, 0, 1.0, M.teakLight); }
+  }
+
+  // ════════════════════════════════════════════════════════════════════════════════════════
+  // REV R2 — "RECOVERY COURTYARD" (free re-think of the rear zone)
+  //  • all wet / heavy recovery (sauna, steam, cold plunge, showers, HBOT) on GRADE; the existing
+  //    +3.50 slab only carries light, dry uses (gallery, lounge, lab, massage, staff)
+  //  • a single-loaded "recovery street" corridor on the noisy hall side, every room faces the garden
+  //  • NEW east core = 2nd fire stair (GF → roof) + catwalk access + 12 m climbing wall on its east face
+  //  • NEW single-storey Thermal Pavilion closes the courtyard on the east (changing, sauna, steam, cold plunge)
+  //  • yoga moves to the quiet WEST end of L3 under the palm crowns; L3 services next to the new core
+  // ════════════════════════════════════════════════════════════════════════════════════════
+  if (R2) {
+    const M2r = { sofa: std({ color: 0x3e6b57, roughness: 0.9 }), sofaTan: std({ color: 0xb48a5a, roughness: 0.85 }), cabinet: std({ color: 0x66707b, roughness: 0.5, metalness: 0.4 }), screen: std({ color: 0x0b1020, roughness: 0.2, emissive: 0x24408a, emissiveIntensity: 0.5 }) };
+    const xs = [0.2, 5.2, 10.2, 15.2, 20.2];
+    const colsAt = (lyr, z0, z1) => { for (const y of [25.1, 28.1]) for (const x of xs) lyr.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, z0, z1, M.concreteDark); };
+    colsAt(GFr, 0, Z2); colsAt(L2r, Z2, Z3); colsAt(L3r, Z3, ZR);
+    L2r.box(SLAB.x0, SLAB.x1, SLAB.y0, SLAB.y1, Z2 - 0.28, Z2, M.concreteDark);
+    for (const y of [25.1, 28.1]) L2r.box(SLAB.x0, SLAB.x1, y - 0.15, y + 0.15, Z2 - 0.65, Z2 - 0.28, M.concreteDark);
+    const glassN = (L, z0, z1, x0 = SLAB.x0, x1 = SLAB.x1) => { L.box(x0, x1, 30.05, 30.15, z0, z1, M.glass); for (let x = x0; x <= x1 + 0.01; x += 1.2) L.box(x - 0.03, x + 0.03, 30.0, 30.18, z0, z1, M.charcoal); };
+    const bed = (L, x0, x1, y0, y1, z, mat = M.bedWhite) => { L.box(x0, x1, y0, y1, z + 0.45, z + 0.8, mat); L.box(x0 + 0.05, x1 - 0.05, y0 + 0.05, y1 - 0.05, z, z + 0.45, M.charcoal); };
+    const chairR2 = (L, x, y, z, m = M.charcoal) => { L.box(x - 0.22, x + 0.22, y - 0.22, y + 0.22, z + 0.42, z + 0.47, m); L.box(x - 0.22, x + 0.22, y + 0.19, y + 0.22, z + 0.47, z + 0.9, m); L.cyl(x, y, z, z + 0.42, 0.03, 0.03, M.steel, 6); };
+    const shrub = (L, x, y, z, s = 1) => { for (let k = 0; k < 6; k++) { const a = k * 1.05; const g = new THREE.ConeGeometry(0.08 * s, 0.8 * s, 5); g.rotateZ(0.35); g.rotateY(a); g.translate(x, z + 0.4 * s, -y); L.add(M.hedge, g); } };
+
+    // ── GF (on grade): reception + recovery clinic, single-loaded corridor on the hall side ──
+    {
+      const b = GFr, CY = 26.6; // corridor y 25.2 … 26.6, rooms y 26.65 … 30.0
+      b.box(SLAB.x0, SLAB.x1, 25.1, 30.1, -0.05, 0.0, M.floorInt);
+      b.box(SLAB.x0, 22.1, 25.2, CY, 0.0, 0.01, M.paving); // corridor stone
+      // south façade to the hall aisle: solid acoustic wall 0 … 2.2 + clerestory glazing 2.2 … 3.2 (hall light, no doors onto the run-off)
+      b.box(SLAB.x0, SLAB.x1, 25.0, 25.2, 0, 2.2, M.plaster);
+      b.box(SLAB.x0, SLAB.x1, 25.05, 25.15, 2.2, Z2 - 0.3, M.glassFrost);
+      b.box(6.0, 7.0, 24.98, 25.22, 0, 2.15, M.charcoal); // single emergency door only
+      glassN(b, 0, Z2 - 0.3);
+      b.box(22.1, 22.3, 25.1, 25.25, 0, Z2 - 0.3, M.plaster); b.box(22.1, 22.3, 26.55, 30.1, 0, Z2 - 0.3, M.plaster); b.box(22.1, 22.3, 25.25, 26.55, 2.2, Z2 - 0.3, M.plaster); // east wall with the door to the core
+      // … with the door to the new east core at the end of the corridor (rebuilt as two pieces)
+      // corridor wall (y 26.6) = frosted glass with charcoal door frames; west lobby + reception are open to it
+      b.box(5.2, 22.1, CY - 0.04, CY + 0.04, 0, 2.6, M.glassFrost);
+      for (const [x0] of [[8.5], [11.0], [13.5], [16.0], [20.7]]) { b.box(x0 - 0.05, x0, CY - 0.07, CY + 0.07, 0, 2.2, M.charcoal); b.box(x0 + 1.0, x0 + 1.05, CY - 0.07, CY + 0.07, 0, 2.2, M.charcoal); b.box(x0 - 0.05, x0 + 1.05, CY - 0.07, CY + 0.07, 2.15, 2.2, M.charcoal); }
+      for (const x of [5.2, 10.2, 12.7, 15.2, 20.2]) b.box(x - 0.05, x + 0.05, CY, 30.0, 0, Z2 - 0.3, M.wallInt);
+      // west lobby (lift link) + reception / waiting
+      b.box(2.4, 4.8, 27.6, 28.2, 0, 1.05, M.teak); b.box(2.35, 4.85, 27.55, 28.25, 1.05, 1.1, M.ss316); // front desk
+      for (const x of [-1.2, -0.4, 0.4]) chairR2(b, x, 29.3, 0, M2r.sofa);
+      b.box(-1.5, 1.2, 28.6, 28.75, 0, 0.45, M.teakLight); shrub(b, 1.5, 29.6, 0, 1.3); shrub(b, -1.5, 27.0, 0, 1.1);
+      // HBOT suite (5.0 × 3.35): two monoplace chambers on grade + compressor cabinet
+      for (const cx of [6.5, 8.9]) { const g = new THREE.CylinderGeometry(0.45, 0.45, 2.2, 24); g.rotateZ(Math.PI / 2); g.translate(cx, 0.95, -28.6); b.add(M.hbot, g); b.box(cx - 1.0, cx + 1.0, 28.1, 29.1, 0, 0.5, M.charcoal); }
+      b.box(9.4, 10.1, 29.4, 29.95, 0, 1.6, M2r.cabinet);
+      // treatment rooms 1 + 2 (2.5 × 3.35)
+      bed(b, 10.6, 11.4, 27.7, 29.6, 0); bed(b, 13.1, 13.9, 27.7, 29.6, 0, M.bedBlue);
+      b.box(11.9, 12.4, 29.4, 29.9, 0, 1.25, M.charcoal); b.box(14.4, 14.9, 29.4, 29.9, 0, 1.25, M.charcoal);
+      // rehab gym (5.0 × 3.35): turf, stall bars, parallel bars, door to the pool deck (x 15.4 … 17.4 stays on the pool axis)
+      b.box(15.25, 20.15, CY + 0.05, 30.0, 0.0, 0.02, M.turf);
+      for (let y = 27.0; y < 29.9; y += 0.3) b.box(19.95, 20.05, y, y + 0.05, 0, 2.2, M.teakLight);
+      for (const y of [27.6, 28.3]) { b.box(17.6, 19.6, y - 0.02, y + 0.02, 0.95, 1.0, M.steel); for (const x of [17.6, 19.6]) b.cyl(x, y, 0, 0.95, 0.025, 0.025, M.steel, 6); }
+      b.cyl(16.2, 27.4, 0, 0.6, 0.3, 0.3, M.bedBlue, 16);
+      // red-light / PBM pod (2.0 × 3.35)
+      b.box(20.4, 22.0, 29.85, 29.95, 0.4, 2.2, M.holdR); b.box(20.6, 21.8, 27.4, 29.3, 0.0, 0.5, M.bedWhite);
+    }
+
+    // ── L2 (+3.50, existing slab — light & dry only): spectator gallery, members' lounge, sports-science lab, massage ──
+    {
+      const c = L2r;
+      c.box(SLAB.x0, SLAB.x1, SLAB.y0, SLAB.y1, Z2, Z2 + 0.06, M.floorInt);
+      c.box(SLAB.x0, SLAB.x1, 24.08, 24.12, Z2 + 0.06, Z2 + 1.16, M.glass); c.box(SLAB.x0, SLAB.x1, 24.06, 24.14, Z2 + 1.12, Z2 + 1.18, M.steel);
+      for (let x = SLAB.x0; x <= SLAB.x1 + 0.01; x += 2.0) c.box(x - 0.03, x + 0.03, 24.05, 24.15, Z2, Z2 + 1.18, M.steel);
+      c.box(SLAB.x0, SLAB.x1, 24.0, 24.12, Z2 - 0.5, Z2, M.plaster);
+      // solid acoustic wall between the public gallery and the rooms (privacy), high strip windows, one door per room
+      const doors = [1.6, 8.0, 15.9, 18.4, 20.7];
+      let x = SLAB.x0;
+      for (const d of doors) { c.box(x, d, 25.85, 25.95, Z2 + 0.06, Z3 - 0.3, M.plaster); c.box(d, d + 1.0, 25.85, 25.95, Z2 + 2.2, Z3 - 0.3, M.plaster); c.box(d - 0.04, d + 1.04, 25.84, 25.96, Z2, Z2 + 2.25, M.charcoal); x = d + 1.0; }
+      c.box(x, SLAB.x1, 25.85, 25.95, Z2 + 0.06, Z3 - 0.3, M.plaster);
+      c.box(SLAB.x0, SLAB.x1, 25.84, 25.96, Z2 + 2.5, Z2 + 3.0, M.glassFrost);
+      glassN(c, Z2 + 0.06, Z3 - 0.3);
+      c.box(22.1, 22.3, 25.2, 30.1, Z2, Z3 - 0.3, M.plaster); c.box(22.1, 22.3, 24.1, 25.2, Z2 + 2.2, Z3 - 0.3, M.plaster); // gallery end door → east core
+      for (const xp of [5.2, 15.2, 17.7, 20.2]) c.box(xp - 0.06, xp + 0.06, 25.9, 30.1, Z2 + 0.06, Z3 - 0.3, M.wallInt);
+      const z = Z2 + 0.06;
+      // members' lounge + juice bar (7.0 × 4.2) facing the garden and the palms
+      c.box(-1.6, 1.2, 26.2, 26.75, z, z + 1.05, M.teak); c.box(-1.65, 1.25, 26.15, 26.8, z + 1.05, z + 1.1, M.ss316);
+      c.box(-1.4, 2.0, 29.2, 29.9, z, z + 0.45, M2r.sofa); c.box(-1.4, 2.0, 29.75, 29.95, z + 0.45, z + 0.95, M2r.sofa);
+      for (const [tx, ty] of [[2.8, 27.6], [4.0, 29.0], [0.2, 28.3]]) { c.cyl(tx, ty, z, z + 0.72, 0.04, 0.04, M.charcoal, 8); c.cyl(tx, ty, z + 0.72, z + 0.75, 0.4, 0.4, M.teakLight, 18); chairR2(c, tx + 0.55, ty, z, M2r.sofaTan); chairR2(c, tx - 0.55, ty, z, M2r.sofaTan); }
+      // sports-science lab (10.0 × 4.2): instrumented treadmill, force plates, bike ergometer, VO2 cart, desk with screens
+      c.box(6.0, 8.4, 27.8, 28.8, z, z + 0.35, M.charcoal); c.box(6.0, 6.2, 27.8, 28.8, z + 0.35, z + 1.3, M.charcoal);
+      c.box(9.2, 11.4, 27.4, 28.6, z, z + 0.04, M.ss316); c.box(9.2, 11.4, 28.7, 29.9, z, z + 0.04, M.ss316);
+      c.box(12.0, 13.2, 28.2, 28.8, z, z + 1.0, M.charcoal); c.box(13.6, 14.2, 28.0, 28.6, z, z + 1.4, M2r.cabinet);
+      c.box(9.0, 14.8, 26.2, 26.8, z + 0.72, z + 0.76, M.teakLight); for (const sx of [10.0, 11.6, 13.2]) c.box(sx - 0.4, sx + 0.4, 26.25, 26.3, z + 0.8, z + 1.3, M2r.screen);
+      // massage suites (2.5 × 4.2 each)
+      bed(c, 16.0, 16.8, 27.3, 29.3, z); bed(c, 18.5, 19.3, 27.3, 29.3, z);
+      // staff / linen (2.0 × 4.2)
+      c.box(20.5, 21.9, 26.2, 29.9, z, z + 2.2, M.teakLight);
+      for (const px of [3, 9, 15, 19.5]) c.box(px - 0.3, px + 0.3, 24.3, 24.9, z, z + 0.6, M.hedge);
+    }
+
+    // ── L3 (+7.00): YOGA TERRACE at the quiet west end (palm crowns overhead) · rentable studio · services by the new core ──
+    {
+      const d = L3r;
+      d.box(-1.8, 22.2, 24.1, 30.1, Z3 - 0.25, Z3, M.concrete);
+      d.box(-1.8, 4.1, 24.1, 30.1, Z3, Z3 + 0.05, M.teak); d.box(4.2, 17.2, 24.1, 30.1, Z3, Z3 + 0.04, M.teakLight); d.box(17.2, 22.2, 24.1, 30.1, Z3, Z3 + 0.04, M.floorInt);
+      // studio 13.0 × 6.0 (unchanged area) — now glazed on the west too, opening onto the yoga terrace
+      d.box(4.2, 17.2, 24.06, 24.14, Z3, ZR - 0.2, M.glass); d.box(4.2, 17.2, 30.06, 30.14, Z3, ZR - 0.2, M.glass);
+      for (let x = 4.2; x <= 17.21; x += 1.3) { d.box(x - 0.04, x + 0.04, 24.0, 24.2, Z3, ZR, M.charcoal); d.box(x - 0.04, x + 0.04, 30.0, 30.2, Z3, ZR, M.charcoal); }
+      d.box(4.15, 4.25, 24.1, 30.1, Z3, ZR - 0.2, M.glass); for (let y = 24.1; y <= 30.11; y += 1.5) d.box(4.12, 4.28, y - 0.04, y + 0.04, Z3, ZR, M.charcoal);
+      d.box(17.1, 17.3, 24.1, 30.1, Z3, ZR - 0.2, M.plaster);
+      for (let x = 5.0; x < 10; x += 1.2) d.box(x, x + 0.8, 24.8, 26.4, Z3 + 0.04, Z3 + 1.3, M.charcoal);
+      for (let k = 0; k < 4; k++) d.box(10.8 + k * 1.5, 11.3 + k * 1.5, 26.5, 29.0, Z3 + 0.04, Z3 + 0.45, M.bedWhite);
+      d.box(5.0, 9.0, 27.5, 29.8, Z3 + 0.04, Z3 + 0.06, M.holdB);
+      // yoga terrace (5.9 × 6.0): glass balustrades, pergola, retractable canopy, mats, planters
+      d.box(-1.8, 4.1, 24.0, 24.1, Z3, Z3 + 1.1, M.glass); d.box(-1.8, 4.1, 30.1, 30.2, Z3, Z3 + 1.1, M.glass);
+      for (const px of [-1.4, 3.8]) for (const py of [24.3, 29.9]) d.box(px - 0.08, px + 0.08, py - 0.08, py + 0.08, Z3, ZR - 0.4, M.teak);
+      for (let px = -1.4; px <= 3.8; px += 0.45) d.box(px - 0.05, px + 0.05, 24.3, 29.9, ZR - 0.4, ZR - 0.3, M.teak);
+      d.box(-1.4, 3.8, 26.0, 28.4, ZR - 0.28, ZR - 0.25, M.glassFrost);
+      for (let k = 0; k < 5; k++) d.box(-1.0 + k * 0.95, -1.0 + k * 0.95 + 0.65, 25.4, 27.2, Z3 + 0.05, Z3 + 0.07, M.holdY);
+      for (const [px, py] of [[-1.3, 29.6], [3.6, 29.6], [3.6, 24.5]]) { d.box(px - 0.3, px + 0.3, py - 0.3, py + 0.3, Z3, Z3 + 0.6, M.teak); shrub(d, px, py, Z3 + 0.6, 1.2); }
+      // services by the east core: accessible WC 2.30 × 2.30, tenant store, small lobby
+      d.box(17.3, 19.6, 26.5, 26.6, Z3, ZR - 0.3, M.wallInt); d.box(19.6, 19.7, 24.2, 26.6, Z3, ZR - 0.3, M.wallInt);
+      d.box(17.3, 22.1, 26.6, 26.7, Z3, ZR - 0.3, M.wallInt);
+      d.box(17.6, 18.0, 25.9, 26.4, Z3, Z3 + 0.4, M.bedWhite); d.box(18.6, 19.3, 24.3, 24.7, Z3 + 0.8, Z3 + 0.88, M.bedWhite);
+      for (let k = 0; k < 4; k++) d.box(17.5, 18.0, 27.0 + k * 0.75, 27.6 + k * 0.75, Z3, Z3 + 2.0, M.teakLight);
+      d.box(21.5, 22.05, 27.0, 29.8, Z3, Z3 + 2.0, M.teakLight);
+      d.box(22.1, 22.3, 25.2, 30.1, Z3, ZR - 0.2, M.plaster); d.box(22.1, 22.3, 24.1, 25.2, Z3 + 2.2, ZR - 0.2, M.plaster);
+    }
+    // roof (terrace stays open to the sky; pergola only)
+    RFr.box(4.0, 22.3, 23.95, 30.3, ZR - 0.25, ZR + 0.05, M.concrete);
+    for (let k = 0; k < 6; k++) RFr.quad(M.solar, [4.6 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 27.6, ZR + 0.25], [4.6 + k * 2.1, 27.6, ZR + 0.25], [1, 2]);
+
+    // ── NEW EAST CORE (x 22.30 … 25.10, y 22.00 … 28.00, RC, top +12.00) = 2nd fire stair + catwalk access + CLIMB TOWER ──
+    {
+      const k = layer('r2_core'), X0 = 22.3, X1 = 25.1, Y0 = 22.0, Y1 = 28.0, ZT = 12.0, t = 0.2;
+      const wallYc = (y0, y1, za, zb, holes) => { let x = X0; for (const h of holes) { if (h[0] > x) k.box(x, h[0], y0, y1, za, zb, M.concrete); if (h[2] > za) k.box(h[0], h[1], y0, y1, za, h[2], M.concrete); if (h[3] < zb) k.box(h[0], h[1], y0, y1, h[3], zb, M.concrete); x = h[1]; } if (x < X1) k.box(x, X1, y0, y1, za, zb, M.concrete); };
+      const wallXc = (x0, x1, za, zb, holes) => { let y = Y0; for (const h of holes) { if (h[0] > y) k.box(x0, x1, y, h[0], za, zb, M.concrete); if (h[2] > za) k.box(x0, x1, h[0], h[1], za, h[2], M.concrete); if (h[3] < zb) k.box(x0, x1, h[0], h[1], h[3], zb, M.concrete); y = h[1]; } if (y < Y1) k.box(x0, x1, y, Y1, za, zb, M.concrete); };
+      // west face: doors into the corridor (GF), gallery (L2), L3 lobby
+      k.box(X0, X0 + t, Y0, 24.2, 0, ZT, M.concrete); k.box(X0, X0 + t, 26.55, Y1, 0, ZT, M.concrete);
+      k.box(X0, X0 + t, 25.2, 25.25, 0, ZT, M.concrete); k.box(X0, X0 + t, 25.25, 26.55, 2.2, ZT, M.concrete); // GF door → corridor
+      for (const [za, zb] of [[0, Z2], [Z2 + 2.2, Z3], [Z3 + 2.2, ZT]]) k.box(X0, X0 + t, 24.2, 25.2, za, zb, M.concrete); // L2 + L3 doors
+      // south face: street door from the pickleball path (GF) + door onto the +4.50 catwalk
+      wallYc(Y0, Y0 + t, 0, ZT, [[22.5, 23.7, 4.5, 6.7]]); k.box(23.9, 24.9, Y0 - 0.01, Y0 + t + 0.01, 0, 2.2, M.charcoal);
+      wallYc(Y1 - t, Y1, 0, ZT, [[22.6, 24.8, 0, 2.4]]); // north face: glazed link to the thermal pavilion
+      wallXc(X1 - t, X1, 0, ZT, []); // east face: climbing wall
+      k.box(X0 - 0.05, X1 + 0.05, Y0 - 0.05, Y1 + 0.05, ZT, ZT + 0.2, M.concrete);
+      k.box(X0, X1, Y0, Y1, ZT + 0.2, ZT + 1.2, M.glass); k.box(X0 - 0.03, X1 + 0.03, Y0 - 0.03, Y1 + 0.03, ZT + 1.15, ZT + 1.2, M.steel); // roof top-out deck balustrade
+      for (let z = 1.2; z < ZT - 1; z += 3.5) k.box(X0 + 0.6, X1 - 0.6, Y0 - 0.02, Y0 + 0.02, z, z + 1.6, M.glassFrost); // slot windows on the stair
+      // climbing wall on the east face (5.20 m wide × 11.80 m), route tapes, holds, auto-belays, overhang at the top
+      const CX = X1 + 0.05, cy0 = 22.4, cy1 = 27.6;
+      k.box(X1, CX, cy0, cy1, 0.1, ZT - 0.2, M.climbPanel);
+      k.quad(M.climbPanel, [CX, cy0, 8.5], [CX, cy1, 8.5], [CX + 0.8, cy1, ZT - 0.2], [CX + 0.8, cy0, ZT - 0.2]); // overhang panel
+      let hs = 23; const hr = () => ((hs = (hs * 48271) % 2147483647) / 2147483647);
+      const holds = [M.holdY, M.holdR, M.holdB, M.holdK];
+      for (let i = 0; i < 130; i++) { const zh = 0.4 + hr() * 8.0, yh = cy0 + 0.15 + hr() * (cy1 - cy0 - 0.3); k.cbox(CX + 0.05, yh, zh, 0.1, 0.18, 0.14, holds[i % 4]); }
+      [M.holdY, M.holdR, M.holdB, M.holdK, M.white, M.holdY].forEach((m, i) => k.box(CX, CX + 0.012, cy0 + 0.4 + i * 0.85, cy0 + 0.5 + i * 0.85, 0.2, 8.4, m));
+      for (let i = 0; i < 4; i++) { k.box(CX, CX + 0.9, cy0 + 0.7 + i * 1.3 - 0.05, cy0 + 0.7 + i * 1.3 + 0.05, ZT - 0.35, ZT - 0.25, M.steel); k.cyl(CX + 0.85, cy0 + 0.7 + i * 1.3, ZT - 0.7, ZT - 0.35, 0.16, 0.16, M.holdY, 12); }
+      // crash pit x 25.15 … 27.50, y 22.20 … 27.80 (−0.60, foam to −0.30), bench rim N/S/E, 1.20 m stair gap at the south-east
+      const o = G.outdoor || layer('outdoor');
+      o.box(25.15, 27.5, 22.2, 27.8, -0.6, -0.55, M.concrete); o.box(25.15, 27.5, 22.2, 27.8, -0.55, -0.3, M.matFoam); o.box(25.3, 27.35, 22.35, 27.65, -0.3, -0.28, M.mat);
+      for (const [x0, x1, y0, y1] of [[25.15, 27.5, 22.05, 22.2], [25.15, 27.5, 27.8, 27.95], [27.5, 27.65, 22.2, 27.8]]) o.box(x0, x1, y0, y1, -0.6, 0.0, M.concrete);
+      o.box(25.15, 28.1, 21.6, 22.05, 0, 0.45, M.concrete); o.box(25.15, 28.1, 27.95, 28.4, 0, 0.45, M.concrete); o.box(27.65, 28.1, 23.4, 27.95, 0, 0.45, M.concrete);
+      o.box(27.65, 28.1, 22.2, 23.4, -0.3, 0.0, M.concreteDark);
+      // glazed link core → pavilion
+      k.box(23.3, 24.9, 28.0, 28.6, 0, 0.02, M.paving); k.box(23.3, 24.9, 28.0, 28.6, 2.5, 2.65, M.charcoal); for (const xg of [23.3, 24.9]) k.box(xg - 0.03, xg + 0.03, 28.0, 28.6, 0, 2.5, M.glass);
+    }
+
+    // ── NEW THERMAL PAVILION (x 23.20 … 33.20, y 28.60 … 34.00, h 3.60, green roof) — contrast-therapy circuit on grade ──
+    {
+      const P = layer('r2_pavilion'), X0 = 23.2, X1 = 33.2, Y0 = 28.6, Y1 = 34.0, H = 3.6, CYp = 29.8;
+      P.box(X0, X1, Y0, Y1, -0.05, 0.02, M.floorWet);
+      P.box(X0, X1, Y0, Y0 + 0.2, 0, H, M.plaster); // south wall (towards the pit / core)
+      P.box(X1 - 0.2, X1, Y0, Y1, 0, H, M.plaster);
+      P.box(X0, X0 + 0.2, Y0, Y1, 0, H, M.plaster);
+      // north face: glass sliders to the rest garden, teak slat screens in front of the changing rooms
+      P.box(X0, X1, Y1 - 0.1, Y1, 0, H, M.glass); for (let xg = X0; xg <= X1 + 0.01; xg += 1.25) P.box(xg - 0.03, xg + 0.03, Y1 - 0.12, Y1 + 0.02, 0, H, M.charcoal);
+      for (let xg = X0 + 0.1; xg < 29.2; xg += 0.16) P.box(xg, xg + 0.08, Y1 + 0.1, Y1 + 0.16, 0.05, H - 0.2, M.teak);
+      // internal corridor along the south (1.2 m) and room partitions
+      P.box(X0 + 0.2, X1 - 0.2, CYp, CYp + 0.1, 0, H - 0.4, M.wallInt);
+      for (const xp of [26.2, 29.2, 31.2]) P.box(xp - 0.05, xp + 0.05, CYp, Y1 - 0.1, 0, H - 0.4, M.wallInt);
+      // changing W / M: lockers, bench, two showers each
+      for (const [x0, x1] of [[23.4, 26.1], [26.3, 29.1]]) {
+        P.box(x0, x1, 29.95, 30.3, 0, 1.9, M2r.cabinet); P.box(x0 + 0.3, x1 - 0.3, 31.0, 31.4, 0, 0.45, M.teakLight);
+        for (const sx of [x0 + 0.1, x0 + 1.4]) { P.box(sx, sx + 1.2, 32.6, 32.65, 0, 2.1, M.glassFrost); P.cyl(sx + 0.6, 33.6, 2.0, 2.1, 0.12, 0.12, M.ss316, 10); }
+      }
+      // Finnish sauna (2.0 × 2.2) + steam room (2.0 × 1.8)
+      P.box(29.3, 31.1, 31.7, 33.8, 0, 2.3, M.teak); P.box(30.4, 31.0, 33.0, 33.6, 0.0, 0.9, M.charcoal);
+      P.box(29.3, 31.1, 29.95, 31.6, 0, 2.3, M.glassFrost);
+      // cold-plunge room (2.0 × 4.2): two tubs 3–5 °C + chiller
+      for (const ty of [30.4, 32.4]) { P.box(31.4, 32.9, ty, ty + 1.2, 0, 0.75, M.ss316); P.box(31.5, 32.8, ty + 0.1, ty + 1.1, 0.6, 0.7, M.plunge); }
+      // roof: thin RC slab, deep overhang to the north (shade over the rest deck), green roof + roof lights
+      const PR = layer('r2_pav_roof');
+      PR.box(X0 - 0.3, X1 + 0.3, Y0 - 0.1, Y1 + 1.4, H, H + 0.25, M.concrete); PR.box(X0 - 0.2, X1 + 0.2, Y0, Y1 + 1.3, H + 0.25, H + 0.4, M.turf);
+      for (const xl of [24.7, 27.7]) PR.box(xl - 0.5, xl + 0.5, 31.5, 32.5, H + 0.2, H + 0.5, M.skylight);
+      for (const xl of [24.0, 27.0, 30.0, 33.0]) P.box(xl - 0.06, xl + 0.06, Y1 + 1.2, Y1 + 1.32, 0, H, M.charcoal);
+      // outdoor showers + cold buckets on the north wall
+      for (const xs2 of [29.6, 30.6]) { P.cyl(xs2, Y1 + 0.5, 0, 2.3, 0.04, 0.04, M.ss316, 8); P.cyl(xs2, Y1 + 0.5, 2.2, 2.3, 0.03, 0.14, M.ss316, 10); }
+      P.box(29.2, 31.2, Y1 + 0.1, Y1 + 0.9, 0, 0.03, M.pebble);
+    }
+
+    // ── RECOVERY COURTYARD (garden) ──
+    {
+      const g = layer('r2_garden');
+      // rest deck north of the pavilion under its overhang + loungers
+      g.box(23.0, 33.4, 34.0, 36.4, 0, 0.07, M.teak);
+      for (const lx of [24.0, 25.4, 26.8, 28.2]) { g.box(lx - 0.35, lx + 0.35, 34.9, 36.2, 0.07, 0.35, M.bedWhite); g.box(lx - 0.35, lx + 0.35, 35.9, 36.2, 0.35, 0.75, M.bedWhite); }
+      // stepping path loop: pavilion → pool deck → west garden
+      for (let x = 7.0; x < 23.0; x += 0.9) g.box(x, x + 0.7, 35.75, 36.35, 0, 0.05, M.pathStone);
+      for (let y = 31.0; y < 35.6; y += 0.9) g.box(21.6, 22.6, y, y + 0.7, 0, 0.05, M.pathStone);
+      // west active-aging garden: handrail path + exercise stations + shade trees
+      g.box(-3.9, 11.3, 30.2, 34.0, 0, 0.02, M.turf);
+      for (let x = -3.0; x < 10.5; x += 1.5) { g.cyl(x, 31.4, 0, 0.95, 0.03, 0.03, M.steel, 6); }
+      g.box(-3.0, 10.5, 31.38, 31.42, 0.92, 0.97, M.steel);
+      for (const [sx, sy] of [[0.5, 32.6], [4.5, 32.8], [8.5, 33.0]]) { g.box(sx - 0.5, sx + 0.5, sy - 0.25, sy + 0.25, 0, 0.45, M.teakLight); g.cyl(sx, sy + 0.6, 0, 1.6, 0.04, 0.04, M.charcoal, 8); g.box(sx - 0.6, sx + 0.6, sy + 0.58, sy + 0.62, 1.55, 1.6, M.charcoal); }
+      for (const [tx, ty] of [[2.5, 34.3], [8.8, 35.0]]) { g.cyl(tx, ty, 0, 1.8, 0.12, 0.09, M.trunk, 8); for (const [dx, dy, dz, r] of [[0, 0, 2.6, 1.3], [0.6, 0.3, 2.1, 0.9], [-0.5, -0.3, 2.2, 0.95]]) { const ge = new THREE.IcosahedronGeometry(r, 1); ge.translate(tx + dx, dz, -(ty + dy)); g.add(M.treeCrown, ge); } }
+      // open-air lounge deck between the west lobby and the pool
+      g.box(5.0, 11.4, 30.1, 31.4, 0, 0.07, M.teak);
+      for (const tx of [6.2, 8.6]) { g.cyl(tx, 30.75, 0.07, 0.75, 0.04, 0.04, M.charcoal, 8); g.cyl(tx, 30.75, 0.72, 0.75, 0.35, 0.35, M.teakLight, 16); }
+    }
   }
 
   // ── vegetation: preserved coconut palms P1–P3 + trees ─────────────
@@ -1475,13 +1689,13 @@ export function buildModel() {
   }
 
   // ── flush layers into the scene ────────────────────────────────────
-  const order = ['site', 'fences', 'trees', 'rear_services', 'hall_shell', 'hall_roof', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'east_catwalk', 'west_wing', 'ww_G', 'ww_L2', 'ww_roof', 'x_wind', 'rear_structure', 'rear_GF', 'rear_L2', 'rear_L3', 'rear_roof', 'outdoor', 'vegetation'];
-  for (const n of order) root.add(G[n].flush());
+  const order = ['site', 'fences', 'trees', 'rear_services', 'hall_shell', 'hall_roof', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'east_catwalk', 'west_wing', 'ww_G', 'ww_L2', 'ww_roof', 'x_wind', 'rear_structure', 'rear_GF', 'rear_L2', 'rear_L3', 'rear_roof', 'r2_core', 'r2_pavilion', 'r2_pav_roof', 'r2_garden', 'outdoor', 'vegetation'];
+  for (const n of order) if (G[n]) root.add(G[n].flush());
   // every glass material must not cast shadows
   root.traverse((o) => {
     if (o.isMesh && o.material && o.material.transparent && !o.material.alphaTest) o.castShadow = false;
   });
-  return { root, layers: order };
+  return { root, layers: order.filter((n) => G[n]) };
 }
 
 // ───────────────────────────── camera shots (spec §5.4 + extras) ─────────────────────────────
@@ -1561,6 +1775,19 @@ export const SHOTS = {
   pool_side: { title: 'Prefab pool · long side, rim 0.80 m above the deck', pos: [11.0, 36.0, 1.3], target: [17.0, 32.8, 0.7], focal: 22, time: 'golden' },
   pool_plan: { title: 'Prefab pool · plan view', pos: [16.4, 33.0, 12.0], target: [16.4, 33.0, 0.0], focal: 28, time: 'day', hide: ['fences', 'trees', 'vegetation'] },
   pool_aerial: { title: 'Rear · pool court from above', pos: [26.0, 42.0, 9.0], target: [16.0, 32.5, 0.5], focal: 26, time: 'golden' },
+  // REV R2 'Recovery Courtyard' (render with SCHEME=r2)
+  r2_aerial: { title: 'R2 · Recovery Courtyard from the north-east', pos: [38.0, 50.0, 16.0], target: [13.0, 28.0, 2.0], focal: 24, time: 'golden', hide: ['fences'] },
+  r2_aerial_w: { title: 'R2 · from the north-west over the yoga terrace', pos: [-14.0, 46.0, 15.0], target: [12.0, 28.0, 3.0], focal: 24, time: 'golden', hide: ['fences'] },
+  r2_garden: { title: 'R2 · courtyard at eye level: pool, pavilion, climb tower', pos: [11.5, 36.9, 1.7], target: [25.0, 30.5, 3.5], focal: 20, time: 'golden', hide: ['fences'] },
+  r2_pavilion: { title: 'R2 · thermal pavilion + rest deck (contrast-therapy circuit)', pos: [21.0, 37.6, 1.7], target: [29.0, 32.0, 1.8], focal: 20, time: 'golden', hide: ['fences'] },
+  r2_climb: { title: 'R2 · east core = fire stair + catwalk access + 12 m climbing wall', pos: [33.5, 15.5, 2.0], target: [25.0, 25.0, 6.5], focal: 20, time: 'golden' },
+  r2_cut_GF: { title: 'R2 · GF cut-away: reception, HBOT, treatment, rehab, pavilion', pos: [14.0, 21.0, 30.0], target: [14.0, 29.5, 0.0], focal: 26, time: 'day', hide: ['rear_L2', 'rear_L3', 'rear_roof', 'hall_roof', 'r2_core', 'r2_pav_roof', 'fences', 'trees'] },
+  r2_cut_L2: { title: 'R2 · L2 cut-away: gallery, lounge, sports-science lab, massage', pos: [10.2, 18.0, 25.0], target: [10.2, 27.5, 3.5], focal: 24, time: 'day', hide: ['rear_L3', 'rear_roof', 'hall_roof', 'fences', 'trees'] },
+  r2_cut_L3: { title: 'R2 · L3 cut-away: yoga terrace west, studio, services', pos: [10.2, 18.0, 27.0], target: [10.2, 27.5, 7.0], focal: 24, time: 'day', hide: ['rear_roof', 'hall_roof', 'fences', 'trees'] },
+  r2_corridor: { title: 'R2 · GF recovery street (corridor on the hall side, rooms on the garden)', pos: [-0.8, 25.9, 1.6], target: [22.0, 25.9, 1.5], focal: 18, time: 'day' },
+  r2_yoga: { title: 'R2 · yoga terrace +7.00 under the palm crowns', pos: [3.4, 29.4, 8.7], target: [-3.5, 24.5, 10.0], focal: 18, time: 'morning' },
+  r2_lab: { title: 'R2 · L2 sports-science lab facing the garden', pos: [14.6, 27.2, 5.2], target: [5.8, 28.6, 4.6], focal: 18, time: 'day' },
+  r2_rear: { title: 'R2 · rear elevation from the garden', pos: [16.0, 40.5, 1.7], target: [14.0, 28.0, 4.5], focal: 16, time: 'golden', hide: ['fences'] },
   // interior studies
   hall_aisle: { title: 'Interior · Cyclone aisle W0–C0–E0', pos: [2.4, 6.0, 1.6], target: [14.0, 7.6, 4.0], focal: 20, time: 'day' },
   hall_roof: { title: 'Interior · Space-frame roof & courts', pos: [21.0, -9.0, 2.0], target: [6.0, 12.0, 6.0], focal: 16, time: 'day' },

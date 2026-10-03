@@ -15,17 +15,20 @@ const server = http.createServer((req, res) => {
 const port = server.address().port;
 
 const ids = process.argv.slice(2);
+const R2SHOTS = ['r2_aerial', 'r2_aerial_w', 'r2_garden', 'r2_pavilion', 'r2_climb', 'r2_cut_GF', 'r2_cut_L2', 'r2_cut_L3', 'r2_corridor', 'r2_yoga', 'r2_lab', 'r2_rear'];
 const all = ['pool_in', 'pool_side', 'pool_plan', 'pool_aerial', 'cafe_in', 'cafe_courts', 'cafe_ledge', 'lobby_open', 'lobby_in', 'studio_up', 'studio_lounge', 'cafe_cut', 'lane_in', 'lane_hall', 'lane_w0', 'lane_plan', 'canopy_out', 'canopy_under', 'canopy_deck', 'garden_open', 'ww_G', 'ww_L2', 'ww_L2_north', 'ww_G_north_ob', 'ww_G_south', 'ww_G_north', 'studio_in', 'studio_cyc', 'stair_hall', 'stair_up', 'suite_in', 'garden_eye', 'garden_palm', 'garden_top', 'walkway_l2', 'pods', 'core_in', 'palm_crown', 'catwalk_stair', 'catwalk_door_int', 'east_elev', 'east_climb', 'rear_gf', 'rear_pool', 'rear_roof', 'left_nw', 'left_top', 'entrance_plan', 'entrance_pond', 'entrance_front', 'catwalk_ext', 'catwalk_aerial', 'catwalk_int', 'left_elev', 'left_oblique', 'left_garden', 'rear_elev', 'rear_wide', 'rear_ne', 'rear_nw', 's1', 's1_dusk', 's2', 's3', 's4', 's5', 's6', 's7', 'oblique', 'hall_aisle', 'hall_roof', 'gallery_l2', 'clinic', 'plan_gf', 'plan_l2', 'plan_l3'];
 const W = 1600, H = 900;
+const SCHEME = process.env.SCHEME || '';
+const OUT = SCHEME ? `snapshots_${SCHEME}` : 'snapshots';
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl'] });
-fs.mkdirSync(path.join(here, 'snapshots'), { recursive: true });
-for (const id of ids.length ? ids : all) {
+fs.mkdirSync(path.join(here, OUT), { recursive: true });
+for (const id of ids.length ? ids : process.env.SCHEME === 'r2' ? R2SHOTS : all) {
   const page = await browser.newPage({ viewport: { width: W, height: H } });
   page.on('console', (m) => ['error', 'warning'].includes(m.type()) && console.log(`[${id}] ${m.text()}`));
   page.on('pageerror', (e) => { console.log(`[${id}] pageerror`, e.message); process.exit(1); });
-  await page.goto(`http://localhost:${port}/viewer.html?shot=${id}&w=${W}&h=${H}`);
+  await page.goto(`http://localhost:${port}/viewer.html?shot=${id}&w=${W}&h=${H}${SCHEME ? '&scheme=' + SCHEME : ''}`);
   await page.waitForFunction('window.__ready === true', null, { timeout: 300000 });
-  await page.screenshot({ path: path.join(here, 'snapshots', `${id}.png`) });
+  await page.screenshot({ path: path.join(here, OUT, `${id}.png`) });
   console.log('rendered', id);
   await page.close();
 }

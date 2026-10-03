@@ -77,3 +77,14 @@ Open points
 - L2: viewing gallery (1.80 m, glass balustrade), 10 bays along the north (West Cross, 2× Red Light, 2× HBOT, Cold Plunge, Sauna, Lounge, plant/chiller room, linen), east door + landing + 6-riser stair to the +4.50 catwalk.
 - L3: rentable fitness studio 13 × 6 m, open-air yoga terrace 5 × 6 m, top-out gate to the climbing tower. WC and tenant store on L3 are drawn per spec but are NOT in the 3D model.
 Known gaps: the GF area x 1.9…4.2 / y 27.5…30.1 is unused in the model; the L2 bay x 17.05…20.20 is a plant/chiller room (not in the spec list of 7 zones); stair flights are 0.95 m (spec 1.20 m).
+
+## REV R2 — "Recovery Courtyard" (alternative scheme for the rear zone, free re-think)
+Built as a switchable option: `viewer.html?scheme=r2` · `SCHEME=r2 node render.mjs` → `snapshots_r2/` · concept sheet `plans/r2_concept.*` (`plan_r2.mjs`). The default model (REV D.12) is unchanged.
+Review of D.12 that led to R2: wet/heavy rooms (sauna, cold plunge, HBOT) sit on the existing +3.50 slab (load + plumbing through a slab that must not be cored); rooms open straight onto the busy hall aisle; the 0.95 m fire stair fails the 1.20 m rule; the catwalk access is a free-standing landing over the crash pit; yoga sits on the east edge next to the climbing tower; the rear yard is three unrelated pieces (pool, pit, garden).
+R2 moves:
+1. All wet/heavy recovery on grade; the existing slab carries only light, dry uses (gallery, members' lounge, sports-science lab, massage, staff).
+2. A single-loaded "recovery street" corridor on the hall side (acoustic wall + clerestory), every room faces the north garden.
+3. New east RC core (x 22.3–25.1, y 22–28, top +12.0) = 2nd fire stair + access to the +4.50 catwalk (L2/L3 doors) + a 12 m climbing wall with overhang on its east face; crash pit moves to x 25.15–27.5.
+4. New single-storey Thermal Pavilion (x 23.2–33.2, y 28.6–34.0, green roof): changing W/M, Finnish sauna, steam, 2 cold-plunge tubs, outdoor showers, rest deck — a contrast-therapy loop with the pool and the rehab gym.
+5. Yoga terrace moves to the quiet west end of L3 under the palm crowns; L3 WC + tenant store next to the new core.
+Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit; badminton players' changing is far from the hall (use west-wing/lobby WCs or add lockers in the lobby).

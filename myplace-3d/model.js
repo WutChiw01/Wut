@@ -345,7 +345,7 @@ export function buildModel() {
       h.moveTo(x0, y0); h.lineTo(x0, y1); h.lineTo(x1, y1); h.lineTo(x1, y0); h.lineTo(x0, y0);
       shape.holes.push(h);
     };
-    hole(22.85, 25.05, 23.6, 27.9);
+    hole(22.85, 25.05, 24.9, 29.2);
     hole(10.2, 22.2, 31.0, 35.0);
     const gg = new THREE.ShapeGeometry(shape);
     gg.rotateX(-Math.PI / 2);
@@ -723,12 +723,12 @@ export function buildModel() {
     const X0 = HALL.x1; // 22.3 glass line
     const DZ = 4.5, dX0 = X0 + 0.2, dX1 = dX0 + 1.2; // deck 22.50 … 23.70
     const cols = [-8.0, -3.0, 2.0, 12.5, 17.5, 22.0]; // existing portal columns (east line)
-    const yS = -9.2, yN = 15.7; // catwalk runs between the south end and the stair landing
+    const yS = -9.2, yN = 21.85; // catwalk runs from the south end to the short stair up from the L2 landing
     // deck: grating + two stringers + edge channels
     b.box(dX0, dX1, yS, yN, DZ - 0.06, DZ, M.grating);
     for (const x of [dX0 + 0.05, dX1 - 0.05]) b.box(x - 0.06, x + 0.06, yS, yN, DZ - 0.3, DZ - 0.06, M.charcoal);
     // outriggers + knee braces at the existing columns (those inside the catwalk length)
-    for (const y of cols.filter((c) => c > yS && c < yN)) {
+    for (const y of cols.filter((c) => c > yS && c < yN + 0.3)) {
       b.box(X0 - 0.3, dX1 + 0.05, y - 0.07, y + 0.07, DZ - 0.34, DZ - 0.06, M.charcoal); // outrigger through the mullion line
       b.member([dX1 - 0.1, y - 0.1, DZ - 0.3], [X0 - 0.15, y - 0.1, DZ - 2.5], 0.045, M.charcoal, 8); // knee brace to column
       b.member([dX1 - 0.1, y + 0.1, DZ - 0.3], [X0 - 0.15, y + 0.1, DZ - 2.5], 0.045, M.charcoal, 8);
@@ -757,16 +757,26 @@ export function buildModel() {
         g.translate(x + 0.025, (zb + zt) / 2, -y); b.add(M.louvre, g);
       }
     }
-    // steel stair at the north end: 26 risers × 175 mm, 260 mm tread, 1.10 m wide, from ground (y 22.2) up to the deck (y 15.7)
-    const sx0 = dX0 + 0.05, sx1 = sx0 + 1.1, nR = 26;
-    for (let i = 0; i < nR; i++) {
-      const ya = 22.2 - i * 0.26, yb = ya - 0.26, z = 0.175 * (i + 1);
-      b.box(sx0, sx1, yb, ya, z - 0.05, z, M.grating);
+    // Access from the rear complex L2 floor (+3.50 / finish +3.56): door in the L2 east wall → free-standing landing → 6 risers (157 mm) up to the +4.50 deck.
+    // No climb from the ground floor; landing + stair stand on their own posts (the existing RC slab is not touched).
+    const LZ = 3.5, lx0 = 22.3, ly0 = 23.4, ly1 = 25.25;
+    b.box(lx0, dX1, ly0, ly1, LZ, LZ + 0.06, M.grating);
+    for (const x of [lx0 + 0.15, dX1 - 0.08]) b.box(x - 0.06, x + 0.06, ly0, ly1, LZ - 0.28, LZ, M.charcoal);
+    for (const [px, py, pz0] of [[dX1 - 0.1, 23.45, 0.0], [dX1 - 0.1, 24.68, 0.45], [lx0 + 0.2, 23.45, 0.0]]) b.box(px - 0.08, px + 0.08, py - 0.08, py + 0.08, pz0, LZ - 0.28, M.charcoal);
+    b.box(dX1 - 0.9, dX1 + 0.05, 24.68 - 0.3, 24.68 + 0.3, 0.45, 0.5, M.steel); // base plate on the pit bench
+    for (const y of [23.45, 24.3, 25.2]) b.box(dX1 - 0.03, dX1 + 0.01, y - 0.02, y + 0.02, LZ + 0.06, LZ + 1.15, M.charcoal);
+    b.box(dX1 - 0.03, dX1 + 0.01, ly0, ly1, LZ + 1.1, LZ + 1.15, M.charcoal);
+    b.box(lx0, dX1, ly1 - 0.03, ly1 + 0.01, LZ + 1.1, LZ + 1.15, M.charcoal);
+    for (const x of [lx0 + 0.5, 23.0, dX1 - 0.03]) b.box(x - 0.015, x + 0.015, ly1 - 0.03, ly1 + 0.01, LZ + 0.06, LZ + 1.15, M.charcoal);
+    const rise = (DZ - (LZ + 0.06)) / 6;
+    for (let i = 1; i <= 6; i++) {
+      const ya = ly0 - 0.26 * (i - 1), yb = ya - 0.26, z = LZ + 0.06 + rise * i;
+      b.box(dX0, dX1, yb, ya, z - 0.05, z, M.grating);
     }
-    for (const x of [sx0, sx1 - 0.08]) b.member([x + 0.04, 22.2, 0.0], [x + 0.04, 15.7, DZ - 0.06], 0.05, M.charcoal, 8);
-    for (const x of [sx0 - 0.02, sx1 + 0.02]) { b.member([x, 22.2, 1.05], [x, 15.7, DZ + 1.1 - 0.06], 0.025, M.charcoal, 6); for (let y = 22.2; y >= 15.7; y -= 1.3) b.cbox(x, y, (0.175 * (22.2 - y) / 0.26 + 1.05) / 2 + 0.1, 0.04, 0.04, 1.0, M.charcoal); }
-    // landing at the foot of the stair + gate
-    b.box(sx0, sx1, 22.2, 23.2, 0.0, 0.05, M.concreteDark);
+    for (const x of [dX0 + 0.05, dX1 - 0.05]) b.member([x, ly0, LZ - 0.2], [x, ly0 - 1.56, DZ - 0.2], 0.05, M.charcoal, 8);
+    for (const x of [dX0 + 0.01, dX1 - 0.01]) { b.member([x, ly0, LZ + 1.15], [x, ly0 - 1.56, DZ + 1.1], 0.022, M.charcoal, 6); for (const t of [0.1, 0.8, 1.5]) b.cbox(x, ly0 - t, (LZ + 1.15 + (DZ + 1.1 - LZ - 1.15) * t / 1.56 + LZ + 0.06 + rise * (t / 0.26 + 1)) / 2, 0.035, 0.035, 1.0, M.charcoal); }
+    // "to catwalk" exit-style sign above the L2 door
+    b.box(22.28, 22.34, 24.3, 25.0, LZ + 2.2, LZ + 2.5, M.led);
   }
 
   // ── West wing REV P6 + palms garden ───────────────────────────────
@@ -928,7 +938,10 @@ export function buildModel() {
     c.box(SLAB.x0, SLAB.x1, 30.05, 30.15, Z2 + 0.06, Z3 - 0.3, M.glass);
     for (let x = SLAB.x0; x <= SLAB.x1 + 0.01; x += 1.2) c.box(x - 0.03, x + 0.03, 30.0, 30.18, Z2, Z3 - 0.3, M.charcoal);
     // east wall x=22.2 (linen store)
-    c.box(22.1, 22.3, 24.1, 30.1, Z2, Z3 - 0.3, M.plaster);
+    c.box(22.1, 22.3, 25.2, 30.1, Z2, Z3 - 0.3, M.plaster);
+    c.box(22.1, 22.3, 24.1, 25.2, Z2 + 2.15, Z3 - 0.3, M.plaster); // lintel over the door to the catwalk landing
+    c.box(22.08, 22.32, 24.12, 24.17, Z2 + 0.06, Z2 + 2.15, M.charcoal); c.box(22.08, 22.32, 25.15, 25.2, Z2 + 0.06, Z2 + 2.15, M.charcoal);
+    c.box(22.18, 22.22, 24.17, 25.15, Z2 + 0.06, Z2 + 2.12, M.glass); // glazed door leaf, 1.05 m clear, opens onto the landing
     // wellness partitions (7 zones; row-B columns buried in the partitions)
     const px = [0.0, 2.05, 4.25, 7.05, 9.55, 12.05, 15.05, 17.05, 20.2];
     for (const x of px) c.box(x - 0.06, x + 0.06, 25.9, 30.1, Z2 + 0.06, Z3 - 0.3, M.wallInt);
@@ -982,12 +995,87 @@ export function buildModel() {
     RFr.box(4.0, 17.4, 23.95, 30.3, ZR - 0.25, ZR + 0.05, M.concrete);
     RFr.box(-1.9, 4.0, 22.0, 30.3, ZR, ZR + 0.3, M.concrete);
     // roof PV (rear complex part of the 60-75 kWp microgrid)
-    for (let k = 0; k < 6; k++) RFr.quad(M.solar, [4.6 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 29.5, ZR + 0.25], [4.6 + k * 2.1, 29.5, ZR + 0.25], [1, 2]);
+    for (let k = 0; k < 6; k++) RFr.quad(M.solar, [4.6 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 27.6, ZR + 0.25], [4.6 + k * 2.1, 27.6, ZR + 0.25], [1, 2]);
+  }
+
+  // ── Rear (north) façade, pool court and side detailing (REV D.8) ──────────
+  {
+    const R = layer('rear_services');
+    const fN = 30.1;
+    // L3 studio: vertical teak sun-fins on the north glass (0.65 m rhythm) + continuous fin rail
+    for (let x = 4.2; x <= 17.21; x += 0.65) L3r.box(x - 0.025, x + 0.025, fN + 0.1, fN + 0.55, Z3 + 0.05, ZR - 0.25, M.teak);
+    L3r.box(4.2, 17.2, fN + 0.08, fN + 0.12, ZR - 0.3, ZR - 0.24, M.charcoal);
+    L3r.box(4.2, 17.2, fN + 0.08, fN + 0.12, Z3 + 0.02, Z3 + 0.08, M.charcoal);
+    // L2 wellness: continuous 0.70 m eyebrow shade over the glazing + warm wall-washer lights under it
+    L2r.box(SLAB.x0, SLAB.x1, fN, fN + 0.7, Z3 - 0.3, Z3 - 0.24, M.charcoal);
+    L2r.box(SLAB.x0, SLAB.x1, fN + 0.68, fN + 0.72, Z3 - 0.45, Z3 - 0.24, M.plaster);
+    for (let x = -0.6; x < 22.2; x += 2.4) L2r.box(x - 0.1, x + 0.1, fN + 0.55, fN + 0.65, Z3 - 0.33, Z3 - 0.3, M.led);
+    // GF: timber-slat canopy over the 2.00 m clinic sliding door to the pool deck (x 14.6 … 18.2)
+    for (let x = 14.7; x <= 18.15; x += 0.18) GFr.box(x - 0.04, x + 0.04, fN, fN + 0.95, 2.95, 3.05, M.teak);
+    GFr.box(14.6, 18.3, fN + 0.9, fN + 1.0, 2.9, 3.1, M.charcoal);
+    for (const x of [14.7, 18.2]) GFr.box(x - 0.05, x + 0.05, fN + 0.85, fN + 0.95, 0, 2.95, M.charcoal);
+    for (const x of [15.2, 16.4, 17.6]) GFr.box(x - 0.08, x + 0.08, fN + 0.4, fN + 0.55, 2.88, 2.95, M.led);
+    GFr.box(15.4, 17.4, fN + 0.02, fN + 0.2, 0, 0.05, M.steel); // door threshold / drain
+    // services on the façade: stainless sauna exhaust risers + rain caps, charcoal downpipes
+    for (const x of [12.9, 14.3]) {
+      R.cyl(x, fN + 0.3, Z2 + 0.4, ZR + 1.6, 0.1, 0.1, M.ss316, 14);
+      R.cyl(x, fN + 0.3, ZR + 1.6, ZR + 1.78, 0.18, 0.02, M.ss316, 14);
+      for (let z = Z2 + 1.5; z < ZR + 1.5; z += 2.2) R.cyl(x, fN + 0.3, z, z + 0.05, 0.13, 0.13, M.steel, 14);
+    }
+    for (const x of [-1.6, 4.1, 10.1, 17.3, 22.05]) R.cyl(x, fN + 0.12, 0.0, ZR, 0.045, 0.045, M.charcoal, 8);
+    // rooftop plant screen on the L3 roof: louvred enclosure + condensers / chillers (north side, behind the PV)
+    {
+      const x0 = 5.0, x1 = 16.8, y0 = 28.0, y1 = 29.95, z0 = ZR + 0.05, zt = ZR + 2.0;
+      for (const x of [x0, 8.9, 12.9, x1]) RFr.box(x - 0.05, x + 0.05, y1 - 0.05, y1 + 0.05, z0, zt, M.charcoal);
+      for (const y of [y0, y1]) RFr.box(x0, x1, y - 0.04, y + 0.04, zt - 0.08, zt, M.charcoal);
+      for (const x of [x0, x1]) RFr.box(x - 0.04, x + 0.04, y0, y1, zt - 0.08, zt, M.charcoal);
+      for (let z = z0 + 0.15; z < zt - 0.1; z += 0.14) {
+        RFr.box(x0, x1, y1 - 0.02, y1 + 0.02, z, z + 0.05, M.louvre);
+        RFr.box(x0 - 0.02, x0 + 0.02, y0, y1, z, z + 0.05, M.louvre);
+        RFr.box(x1 - 0.02, x1 + 0.02, y0, y1, z, z + 0.05, M.louvre);
+      }
+      for (const [cx, cy] of [[6.2, 29.0], [8.0, 29.0], [10.2, 29.0], [12.0, 29.0], [14.2, 29.0], [15.8, 29.0]]) {
+        RFr.cbox(cx, cy, z0 + 0.55, 1.2, 1.0, 1.1, M.concreteDark);
+        RFr.cyl(cx, cy, z0 + 1.1, z0 + 1.14, 0.42, 0.42, M.rubber, 18);
+        RFr.cbox(cx, cy, z0 + 1.15, 0.9, 0.04, 0.02, M.steel);
+      }
+      RFr.box(x0, x1, y0, y1, z0 - 0.02, z0 + 0.02, M.concreteDark); // equipment plinth slab
+    }
+    // PV array moved to the south part of the roof so the plant screen has room
+    // (kept at 6 panels; the quad above is shortened in the roof block)
+    // pool: steps at the east end, steel ladder, underwater lights, outdoor shower, pool plant room, planters
+    {
+      const b = G.outdoor || layer('outdoor');
+      b.box(21.6, 22.2, 31.0, 35.0, -1.4, -0.5, M.poolTile); b.box(21.0, 21.6, 31.0, 35.0, -1.4, -0.95, M.poolTile);
+      for (const x of [10.55, 10.95]) { b.cyl(x, 31.15, -0.6, 0.9, 0.025, 0.025, M.ss316, 8); }
+      b.torus(10.75, 31.15, 0.9, 0.2, 0.02, M.ss316, 12);
+      for (const x of [11.5, 14.5, 17.5, 20.0]) b.box(x - 0.08, x + 0.08, 31.0, 31.05, -0.85, -0.7, M.led); // underwater lights
+      for (const y of [32.3, 33.7]) b.box(10.2, 10.25, y - 0.08, y + 0.08, -0.85, -0.7, M.led);
+      b.cyl(23.2, 31.3, 0.07, 2.3, 0.04, 0.04, M.ss316, 10); b.cyl(23.2, 31.3, 2.2, 2.3, 0.03, 0.14, M.ss316, 12);
+      b.cyl(23.2, 31.3, 0.07, 0.1, 0.35, 0.35, M.pebble, 16);
+      // pool equipment room (AFM filter, salt chlorinator, UV-C) with teak batten cladding and a louvred door
+      b.box(24.6, 26.6, 31.6, 33.6, 0, 2.4, M.charcoal);
+      for (let y = 31.65; y < 33.55; y += 0.22) b.box(24.55, 24.6, y, y + 0.1, 0.05, 2.3, M.teak);
+      b.box(24.52, 24.6, 32.2, 33.0, 0.1, 2.1, M.louvre);
+      b.box(24.45, 26.75, 31.5, 33.7, 2.4, 2.5, M.concrete);
+      // raised teak planters with tropical shrubs on the west deck
+      for (const y of [32.4, 34.0]) { b.box(7.3, 9.4, y - 0.4, y + 0.4, 0.07, 0.6, M.teak); for (let k = 0; k < 8; k++) { const g = new THREE.ConeGeometry(0.1, 0.9, 6); g.translate(7.5 + (k % 4) * 0.55, 1.05, -(y + (k < 4 ? -0.15 : 0.15))); b.add(M.hedge, g); } }
+      // pool-side towel stand + deck lights
+      for (const x of [10.0, 13.5, 17.0, 20.5]) b.cyl(x, 30.45, 0.07, 0.4, 0.06, 0.06, M.led, 8);
+    }
+    // west wing: sconces on the batten wall + PV on the flat roof (REV P6 wing, south-facing 10° arrays)
+    {
+      const b = G.west_wing;
+      for (let y = -8.0; y < 10; y += 2.2) b.box(-3.98, -3.9, y - 0.05, y + 0.05, 3.0, 3.25, M.led);
+      for (let y = 26.2; y < 30; y += 2.2) b.box(-3.98, -3.9, y - 0.05, y + 0.05, 3.0, 3.25, M.led);
+      for (let y = -8.4; y < 9.2; y += 2.2) b.quad(M.solar, [-3.6, y, 7.3 + 0.12], [-1.1, y, 7.3 + 0.12], [-1.1, y + 1.9, 7.3 + 0.45], [-3.6, y + 1.9, 7.3 + 0.45], [2, 1]);
+      for (let y = -8.4; y < 9.2; y += 2.2) for (const x of [-3.5, -1.2]) b.member([x, y + 0.1, 7.3], [x, y + 1.0, 7.3 + 0.28], 0.025, M.charcoal, 4);
+    }
   }
 
   // ── Outdoor: pool + deck, climbing wall + sunk crash pit, pickleball, senior garden ──
   {
-    const b = layer('outdoor');
+    const b = G.outdoor || layer('outdoor');
     // Pool 4 × 12 m (x 10.2…22.2, y 31…35), 1.2–1.4 m deep, teak deck
     b.box(10.2, 22.2, 31.0, 35.0, -1.4, -1.38, M.poolTile);
     b.box(10.0, 10.2, 30.8, 35.2, -1.4, 0.05, M.concrete);
@@ -1005,8 +1093,9 @@ export function buildModel() {
     b.cyl(8.6, 31.2, 0.07, 2.4, 0.03, 0.03, M.charcoal, 8);
     b.cyl(8.6, 31.2, 2.2, 2.45, 0.05, 1.3, M.plasterWarm, 14);
 
-    // Outdoor climbing wall: free-standing steel tower 3.30 m wide × 10.50 m tall, x 22.55…22.85, y 24.3…27.6
-    const cy0 = 24.3, cy1 = 27.6;
+    // Outdoor climbing wall: free-standing steel tower 3.30 m wide × 10.50 m tall, x 22.55…22.85, y 25.6…28.9
+    // (shifted 1.30 m north vs REV D.5 so the L2 → catwalk door and landing fit at the north-east corner of the hall)
+    const cy0 = 25.6, cy1 = 28.9;
     b.box(22.3, 23.2, cy0 - 0.3, cy1 + 0.3, -0.4, 0.0, M.concreteDark); // own foundation
     b.box(22.55, 22.85, cy0, cy1, 0, 10.5, M.charcoal); // HDG steel truss core
     b.box(22.85, 22.9, cy0, cy1, 0.1, 10.4, M.climbPanel); // 18 mm resin panels (facing the pit)
@@ -1019,18 +1108,25 @@ export function buildModel() {
       const z = 0.5 + hr() * 9.6, y = cy0 + 0.15 + hr() * (cy1 - cy0 - 0.3);
       b.cbox(22.93, y, z, 0.1, 0.18, 0.14, holds[i % 4]);
     }
-    // crash pit: floor −0.60, mat top −0.30, RC walls 150 mm, concrete bench rim +0.45 on N, S, E
-    b.box(22.85, 25.05, 23.6, 27.9, -0.6, -0.55, M.concrete);
-    b.box(22.85, 25.05, 23.6, 27.9, -0.55, -0.3, M.matFoam);
-    b.box(23.0, 24.9, 23.75, 27.75, -0.3, -0.28, M.mat);
-    for (const [x0, x1, y0, y1] of [[22.85, 25.05, 23.45, 23.6], [22.85, 25.05, 27.9, 28.05], [25.05, 25.2, 23.6, 27.9], [22.7, 22.85, 23.6, 27.9]]) b.box(x0, x1, y0, y1, -0.6, 0.0, M.concrete);
-    // benches (0.45 high, 0.45 wide) with a 1.20 m stair gap at the SE corner
-    b.box(22.85, 25.5, 28.05, 28.5, 0, 0.45, M.concrete); // south side
-    b.box(22.85, 25.5, 23.15, 23.6, 0, 0.45, M.concrete); // north side
-    b.box(25.2, 25.65, 23.15, 26.7, 0, 0.45, M.concrete); // east side (stops short = 1.20 m stair gap)
-    b.box(25.2, 25.65, 26.7, 27.9, -0.3, 0.0, M.concreteDark);
+    // route tapes (5 lines) + auto-belay units at the top + route plate
+    [M.holdY, M.holdR, M.holdB, M.holdK, M.white].forEach((m, i) => b.box(22.9, 22.915, cy0 + 0.35 + i * 0.65, cy0 + 0.45 + i * 0.65, 0.2, 10.3, m));
+    for (let i = 0; i < 3; i++) { b.cyl(23.0, cy0 + 0.6 + i * 1.05, 10.1, 10.45, 0.17, 0.17, M.holdY, 14); b.member([22.9, cy0 + 0.6 + i * 1.05, 10.45], [23.0, cy0 + 0.6 + i * 1.05, 10.1], 0.01, M.steel, 4); }
+    b.box(22.9, 22.93, cy0 + 0.2, cy1 - 0.2, 10.15, 10.45, M.charcoal);
+    // top-out gate at +7.00: steel bridge plate from the L3 yoga terrace to the tower
+    b.box(22.2, 22.55, 26.6, 27.9, 6.95, 7.0, M.grating);
+    b.box(22.2, 22.55, 26.6, 26.65, 7.0, 8.1, M.charcoal); b.box(22.2, 22.55, 27.85, 27.9, 7.0, 8.1, M.charcoal);
+    // crash pit: floor −0.60, mat top −0.30, RC walls 150 mm, concrete bench rim +0.45 on N, S, E (y 24.90 … 29.20)
+    b.box(22.85, 25.05, 24.9, 29.2, -0.6, -0.55, M.concrete);
+    b.box(22.85, 25.05, 24.9, 29.2, -0.55, -0.3, M.matFoam);
+    b.box(23.0, 24.9, 25.05, 29.05, -0.3, -0.28, M.mat);
+    for (const [x0, x1, y0, y1] of [[22.85, 25.05, 24.75, 24.9], [22.85, 25.05, 29.2, 29.35], [25.05, 25.2, 24.9, 29.2], [22.7, 22.85, 24.9, 29.2]]) b.box(x0, x1, y0, y1, -0.6, 0.0, M.concrete);
+    // benches (0.45 high, 0.45 wide): south (low y), north (high y) and east; 1.20 m stair gap at the SE corner (y 24.9 … 26.1)
+    b.box(22.85, 25.5, 24.45, 24.9, 0, 0.45, M.concrete); // south side
+    b.box(22.85, 25.5, 29.2, 29.65, 0, 0.45, M.concrete); // north side
+    b.box(25.2, 25.65, 26.1, 29.65, 0, 0.45, M.concrete); // east side (stops short = 1.20 m stair gap)
+    b.box(25.2, 25.65, 24.9, 26.1, -0.3, 0.0, M.concreteDark);
     // sump (0.6 × 0.6) + cover
-    b.box(23.7, 24.3, 25.4, 26.0, -0.6, -0.55, M.charcoal);
+    b.box(23.7, 24.3, 26.7, 27.3, -0.6, -0.55, M.charcoal);
 
     // pickleball courts PB1, PB2 along the hall's glass wall
     for (const y0 of [-8.0, 6.4]) {
@@ -1100,12 +1196,13 @@ export function buildModel() {
     palm(-3.67, 15.46, 11.8, rad(200), 1.6);
     palm(-3.24, 12.08, 10.8, rad(100), 1.0);
 
+    const T = layer('trees');
     const tree = (x, y, s = 1) => {
-      b.cyl(x, y, 0, 2.2 * s, 0.18 * s, 0.12 * s, M.trunk, 8);
+      T.cyl(x, y, 0, 2.2 * s, 0.18 * s, 0.12 * s, M.trunk, 8);
       for (const [dx, dy, dz, r] of [[0, 0, 3.4, 1.7], [0.9, 0.5, 2.7, 1.2], [-0.8, -0.4, 2.9, 1.3]]) {
         const g = new THREE.IcosahedronGeometry(r * s, 1);
         g.translate(x + dx * s, dz * s, -(y + dy * s));
-        b.add(M.treeCrown, g);
+        T.add(M.treeCrown, g);
       }
     };
     for (const [x, y, s] of [[-8, -21, 0.8], [3, -23.2, 0.7], [27, -23.3, 0.7], [36, -23.3, 0.7], [-8, -6, 0.7], [-34, 4, 1.4], [-34, 26, 1.3], [-30, -14, 1.2], [40, 6, 1.0], [41, 24, 0.9], [34, 36, 0.8], [27, 34, 0.7]]) tree(x, y, s);
@@ -1113,7 +1210,7 @@ export function buildModel() {
   }
 
   // ── flush layers into the scene ────────────────────────────────────
-  const order = ['site', 'fences', 'hall_shell', 'hall_roof', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'east_catwalk', 'west_wing', 'rear_structure', 'rear_GF', 'rear_L2', 'rear_L3', 'rear_roof', 'outdoor', 'vegetation'];
+  const order = ['site', 'fences', 'trees', 'rear_services', 'hall_shell', 'hall_roof', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'east_catwalk', 'west_wing', 'rear_structure', 'rear_GF', 'rear_L2', 'rear_L3', 'rear_roof', 'outdoor', 'vegetation'];
   for (const n of order) root.add(G[n].flush());
   // every glass material must not cast shadows
   root.traverse((o) => {
@@ -1136,17 +1233,27 @@ export const SHOTS = {
   // REV D.7 additions
   entrance_plan: { title: 'Entrance water court · plan view', pos: [10.75, -22.0, 17.0], target: [10.75, -12.0, 0.0], focal: 26, time: 'golden' },
   entrance_pond: { title: 'Entrance · koi pond + seating', pos: [4.2, -19.5, 1.7], target: [8.0, -12.5, 1.3], focal: 24, time: 'golden' },
-  entrance_front: { title: 'Entrance · front elevation (ortho)', pos: [10.75, -40.0, 5.5], target: [10.75, 0.0, 5.5], focal: 24, time: 'golden', ortho: 12.5 },
+  entrance_front: { title: 'Entrance · front elevation (ortho)', pos: [10.75, -40.0, 5.5], target: [10.75, 0.0, 5.5], focal: 24, time: 'golden', ortho: 12.5, hide: ['trees'] },
   catwalk_ext: { title: 'East wall · catwalk +4.50 from pickleball', pos: [29.0, 4.0, 3.2], target: [22.4, 6.0, 5.0], focal: 20, time: 'golden' },
   catwalk_aerial: { title: 'East wall · catwalk, stair and braces (aerial)', pos: [34.0, -13.0, 13.0], target: [22.5, 9.0, 4.0], focal: 24, time: 'golden' },
   catwalk_int: { title: 'East wall · louvre screens from inside', pos: [12.0, 1.0, 1.7], target: [22.3, 4.0, 5.0], focal: 18, time: 'day' },
-  left_elev: { title: 'Left (west) elevation (ortho)', pos: [-40.0, 13.0, 5.0], target: [0.0, 13.0, 5.0], focal: 24, time: 'golden', ortho: 12.5, hide: ['fences'] },
+  left_elev: { title: 'Left (west) elevation (ortho)', pos: [-40.0, 13.0, 5.0], target: [0.0, 13.0, 5.0], focal: 24, time: 'golden', ortho: 12.5, hide: ['fences', 'trees'] },
   left_oblique: { title: 'Left side · south-west oblique', pos: [-22.0, -16.0, 5.0], target: [-1.0, 8.0, 3.5], focal: 24, time: 'golden' },
   left_garden: { title: 'Left side · jali wall & palms from outside', pos: [-14.0, 16.0, 2.6], target: [-4.0, 15.0, 4.2], focal: 20, time: 'morning' },
-  rear_elev: { title: 'Rear (north) elevation (ortho)', pos: [11.0, 70.0, 5.0], target: [11.0, 0.0, 5.0], focal: 24, time: 'golden', ortho: 10.5, hide: ['fences'] },
+  rear_elev: { title: 'Rear (north) elevation (ortho)', pos: [11.0, 70.0, 5.0], target: [11.0, 0.0, 5.0], focal: 24, time: 'golden', ortho: 10.5, hide: ['fences', 'trees'] },
   rear_wide: { title: 'Rear · pool & wellness façade', pos: [11.0, 52.0, 4.0], target: [11.0, 28.0, 5.0], focal: 22, time: 'golden' },
   rear_ne: { title: 'Rear · north-east oblique', pos: [38.0, 50.0, 11.0], target: [10.0, 26.0, 4.0], focal: 24, time: 'golden' },
   rear_nw: { title: 'Rear · north-west oblique', pos: [-16.0, 46.0, 8.0], target: [8.0, 27.0, 4.0], focal: 24, time: 'golden' },
+  // REV D.8 additions: access from L2, rear and side details
+  catwalk_stair: { title: 'East · L2 door, landing and 6-riser stair up to the +4.50 catwalk', pos: [29.5, 19.0, 6.5], target: [22.9, 24.0, 3.8], focal: 26, time: 'golden' },
+  catwalk_door_int: { title: 'East · inside the L2 gallery looking at the catwalk door', pos: [15.0, 24.55, 4.9], target: [22.3, 24.7, 4.9], focal: 24, time: 'day' },
+  east_elev: { title: 'Right (east) elevation (ortho)', pos: [80.0, 12.0, 5.0], target: [0.0, 12.0, 5.0], focal: 24, time: 'golden', ortho: 12.5, hide: ['fences', 'trees'] },
+  east_climb: { title: 'East · climbing wall, crash pit, top-out gate', pos: [33.0, 28.5, 3.2], target: [23.3, 27.2, 5.2], focal: 20, time: 'golden' },
+  rear_gf: { title: 'Rear · clinic door, canopy and pool', pos: [16.5, 40.0, 1.7], target: [16.5, 30.0, 2.2], focal: 22, time: 'golden' },
+  rear_pool: { title: 'Rear · pool steps, plant room, shower', pos: [26.0, 38.0, 1.6], target: [15.0, 32.5, 0.4], focal: 20, time: 'golden' },
+  rear_roof: { title: 'Rear · fins, eyebrow shade, exhaust risers, roof plant screen', pos: [26.0, 44.0, 14.5], target: [10.0, 28.0, 8.5], focal: 28, time: 'golden' },
+  left_nw: { title: 'Left · north-west corner: fire-stair / lift core, palm P1', pos: [-13.0, 38.0, 4.5], target: [-3.5, 27.0, 4.5], focal: 22, time: 'golden' },
+  left_top: { title: 'Left · aerial over the west wing (PV, pergola, jali)', pos: [-16.0, -2.0, 19.0], target: [-2.0, 12.0, 3.0], focal: 28, time: 'golden' },
   // interior studies
   hall_aisle: { title: 'Interior · Cyclone aisle W0–C0–E0', pos: [2.4, 6.0, 1.6], target: [14.0, 7.6, 4.0], focal: 20, time: 'day' },
   hall_roof: { title: 'Interior · Space-frame roof & courts', pos: [21.0, -9.0, 2.0], target: [6.0, 12.0, 6.0], focal: 16, time: 'day' },

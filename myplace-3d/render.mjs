@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
 const port = server.address().port;
 
 const ids = process.argv.slice(2);
-const all = ['s1', 's1_dusk', 's2', 's3', 's4', 's5', 's6', 's7', 'oblique', 'hall_aisle', 'hall_roof', 'gallery_l2', 'clinic', 'plan_gf', 'plan_l2', 'plan_l3'];
+const all = ['entrance_plan', 'entrance_pond', 'entrance_front', 'catwalk_ext', 'catwalk_aerial', 'catwalk_int', 'left_elev', 'left_oblique', 'left_garden', 'rear_elev', 'rear_wide', 'rear_ne', 'rear_nw', 's1', 's1_dusk', 's2', 's3', 's4', 's5', 's6', 's7', 'oblique', 'hall_aisle', 'hall_roof', 'gallery_l2', 'clinic', 'plan_gf', 'plan_l2', 'plan_l3'];
 const W = 1600, H = 900;
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--enable-webgl'] });
 fs.mkdirSync(path.join(here, 'snapshots'), { recursive: true });

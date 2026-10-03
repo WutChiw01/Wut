@@ -49,7 +49,7 @@ scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
 const { root, layers } = buildModel();
 scene.add(root);
 
-const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 600);
+let camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 600);
 camera.filmGauge = 36;
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -97,12 +97,15 @@ function applyShot(id) {
   setTime(s.time);
   const hide = new Set(s.hide || []);
   root.children.forEach((c) => (c.visible = !hide.has(c.name)));
+  if (s.ortho) { const hh = s.ortho, hw = hh * W / H; camera = new THREE.OrthographicCamera(-hw, hw, hh, -hh, 0.1, 600); }
+  else if (!camera.isPerspectiveCamera) { camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 600); camera.filmGauge = 36; }
+  controls.object = camera;
   camera.up.set(0, 1, 0);
   const p = s.pos, t = s.target;
   camera.position.set(p[0], p[2], -p[1]);
   controls.target.set(t[0], t[2], -t[1]);
-  camera.setFocalLength(s.focal);
-  camera.aspect = W / H; camera.updateProjectionMatrix();
+  if (camera.isPerspectiveCamera) { camera.setFocalLength(s.focal); camera.aspect = W / H; }
+  camera.updateProjectionMatrix();
   camera.lookAt(controls.target);
   controls.update();
   syncChecks();

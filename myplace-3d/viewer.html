@@ -96,7 +96,8 @@ function applyShot(id) {
   const s = SHOTS[id]; if (!s) return;
   setTime(s.time);
   const hide = new Set(s.hide || []);
-  root.children.forEach((c) => (c.visible = !hide.has(c.name)));
+  const show = new Set(s.show || []);
+  root.children.forEach((c) => (c.visible = show.has(c.name) ? true : c.name.startsWith('x_') ? false : !hide.has(c.name)));
   if (s.ortho) { const hh = s.ortho, hw = hh * W / H; camera = new THREE.OrthographicCamera(-hw, hw, hh, -hh, 0.1, 600); }
   else if (!camera.isPerspectiveCamera) { camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 600); camera.filmGauge = 36; }
   controls.object = camera;

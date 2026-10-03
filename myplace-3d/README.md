@@ -38,3 +38,16 @@ Open design conflicts found while detailing (need a decision)
 1. The 2.65 m wide stair hall cannot hold a 20-riser U-stair, D3 (1.70 m) and WC G2 *and* a bridge from the stair head (z 3.50, south) to the L2 gallery walkway (z 3.50, north) — the bridge would sit 0.3 m above flight 2. Currently the L2 stair head feeds the Creative Suite only; the walkway starts at y = 10 with no direct stair link.
 2. Fire stair flights are 0.95 m wide (1.90 m available outside the existing slab) instead of the 1.20 m in the spec.
 3. G4/L3 pods are 4 m long, full width / half width — spec area 10.36 m² each is not reachable with the 2.65 m wing width.
+
+## REV D.10 — plot-line wall, canopy slab, wind lane
+- **Plot-line wall:** solid RC wall 0.50 m inside the boundary (x = −3.90) over the whole west side, no openings except the louvre door of the wind lane. In the garden the former perforated jali is now a *relief* of terracotta bricks on the inside face of the solid wall (perforations would be openings).
+- **Hall ↔ west strip:** the badminton-hall west wall (x = −0.80) is removed at the wind lane (y 6.35…8.35) and along the whole garden (y 10…22). Rooms keep their own walls (studio, stair block, store, core). A 1.10 m glass guard runs along the L2 slab edge on the hall side.
+- **Canopy slab:** one continuous RC slab at +3.50, 250 mm, from the hall edge out to the plot line (x = −4.40) along the full length (the 0.50 m beyond the wall is a cantilevered canopy with an upstand kerb). Round 0.85 m-radius openings with glass rails round the trunks of P2/P3; a gap round P1. The ground-floor garden is therefore shaded by the slab.
+- **Wind lane (แนวลู่รับลม):** 2.00 m clear through-passage at y 6.35…8.35, on the W0–C0–E0 axis. Pivoting louvre fins in the plot-line wall and at the hall edge (shown open); close for tournaments (zero-draught policy). **W0 is now a full 360° tower** (spec said a half tower facing the hall) so the breeze strikes tile faces directly. Breeze arrows can be toggled in the viewer (`x_wind` layer; shown in the `lane_*` shots).
+- **Re-planned wing:** the U-stair block slid 3.65 m south (now y 1.55…6.15) to free the lane; the studio/suite shrank to 2.65 × 9.95 m; a new 2.65 × 1.25 m store sits north of the lane. 2D plans in `plans/` regenerated.
+
+Open points / things to verify
+1. The slab beyond the wall (x −4.40…−3.90) is a 0.50 m eave that touches the plot line — check against MR 55 ข้อ 50 and the local authority; and neighbours' rights (eave drip). The wind-lane louvre door opens onto the neighbour's side in the closed condition only; ensure the louvre door is kept closed when the neighbour's use requires it.
+2. Studio area drops from 38.36 m² (spec) to about 26 m²; the U-stair now sits where the studio was.
+3. Still no link from the stair head (z 3.50, south end) to the L2 deck over the lane and garden: flight 1 climbs under that route and headroom would be < 2.0 m.
+4. The 0.50 m eave and the open garden edge change the fire-separation assumptions between the garden / hall and the stair block (door D3 only); re-check with the fire engineer.

@@ -70,3 +70,10 @@ Open points
 - Easy entry: 3 teak steps (0.27 m risers, 1.20 m wide) opposite the clinic door with stainless rails on both sides, 4 under-water treads, plus a built-in seat bench on the north wall.
 - Pool plant room (filter, salt chlorinator, UV-C, heater) 1.80 × 1.90 m on the east side; outdoor shower; loungers + umbrella on the west deck; planters on the north deck; pipes under the deck. Teak deck 1.50 m on the clinic side, ≥ 1.0 m elsewhere. 2D plan + section: `plans/pool_court.*` (`plan_pool.mjs`).
 - Needs checking: prefab pools are normally set in a structural collar — confirm the shell can carry 0.80 m of free-standing wall (supplier data) and the 0.80 m rim height against child-safety rules (needs a gate / cover if kids use the court); the spec's water volume / treatment sizing (4×12 m) is now much smaller (≈ 23 m³).
+
+## REV D.12 — rear complex 2D plans (GF, L2, L3)
+`plans_rear.mjs` → `plans/rear_GF`, `rear_L2`, `rear_L3` (.svg/.png), drawn from the same numbers as the 3D model (north up, grid 1–5 / A–B, existing 144 m² slab outlined on L2).
+- GF: lift lobby + C1 corridor, accessible WC, changing rooms M/F, physio clinic (reception, TR1, TR2, rehab bay, 2.00 m door to the pool), indoor bouldering room, corner fire stair + MRL lift, pool court with the 3×6 m prefab pool, outdoor climbing wall + crash pit.
+- L2: viewing gallery (1.80 m, glass balustrade), 10 bays along the north (West Cross, 2× Red Light, 2× HBOT, Cold Plunge, Sauna, Lounge, plant/chiller room, linen), east door + landing + 6-riser stair to the +4.50 catwalk.
+- L3: rentable fitness studio 13 × 6 m, open-air yoga terrace 5 × 6 m, top-out gate to the climbing tower. WC and tenant store on L3 are drawn per spec but are NOT in the 3D model.
+Known gaps: the GF area x 1.9…4.2 / y 27.5…30.1 is unused in the model; the L2 bay x 17.05…20.20 is a plant/chiller room (not in the spec list of 7 zones); stair flights are 0.95 m (spec 1.20 m).

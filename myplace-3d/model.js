@@ -382,7 +382,7 @@ export function buildModel() {
     const b = layer('hall_shell');
     const t = 0.25;
     // west wall (x=-0.8) – solid to 7.4, louvre band above
-    b.box(HALL.x0 - t, HALL.x0, HALL.y0, HALL.y1, 0, 7.4, M.plaster);
+    for (const [ya, yb, za, zb] of [[HALL.y0, 5.25, 0, 7.4], [5.25, 6.95, 2.4, 7.4], [6.95, 10.6, 0, 7.4], [10.6, 12.3, 2.4, 7.4], [12.3, HALL.y1, 0, 7.4]]) b.box(HALL.x0 - t, HALL.x0, ya, yb, za, zb, M.plaster); // D3 / D4 openings to the west wing
     // east wall (x=22.3): full-height sliding glass, mullions every 2.5 m
     for (let y = HALL.y0; y <= HALL.y1 + 0.01; y += 2.5) b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, y - 0.04, y + 0.04, 0, 7.4, M.charcoal);
     b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, HALL.y0, HALL.y1, 0, 0.1, M.charcoal);
@@ -779,89 +779,273 @@ export function buildModel() {
     b.box(22.28, 22.34, 24.3, 25.0, LZ + 2.2, LZ + 2.5, M.led);
   }
 
-  // ── West wing REV P6 + palms garden ───────────────────────────────
+  // ── West wing REV P6 + palms garden — detailed interior (REV D.9) ─────────────
+  // Layers (so the wing can be cut away): west_wing = shell/structure/jali/pergola frame, ww_G = ground-floor interiors,
+  // ww_L2 = upper-floor slabs + interiors + gallery walkway, ww_roof = roof slabs, skylight, PV, pergola slats.
   {
-    const b = layer('west_wing');
-    const wx0 = -3.9, wx1 = -0.8;
-    // zone 1 – creative studio + VIP lounge (y -9 … 5)
-    const block = (y0, y1, label) => {
-      b.box(wx0, wx1, y0, y1, -0.05, 0.0, M.concrete);
-      b.box(wx0, wx0 + 0.2, y0, y1, 0, Z3, M.plaster);
-      b.box(wx0, wx1, y0, y0 + 0.2, 0, Z3, M.plaster);
-      b.box(wx0, wx1, y1 - 0.2, y1, 0, Z3, M.plaster);
-      b.box(wx0 - 0.1, wx1 + 0.1, y0 - 0.1, y1 + 0.1, Z3, Z3 + 0.3, M.concrete); // roof slab + parapet
-      b.box(wx0, wx1, y0, y1, Z2 - 0.15, Z2 + 0.1, M.concrete); // floor L1
+    const W = layer('west_wing'), GI = layer('ww_G'), UI = layer('ww_L2'), RF = layer('ww_roof');
+    const wx0 = -3.9, wx1 = -0.8, ix0 = -3.7, ix1 = -1.05; // outer faces / inner clear faces (hall wall = x −1.05…−0.8)
+    const ZC = Z2 - 0.15; // ground-floor ceiling / L1 slab soffit (3.35)
+    const M2 = {
+      acoustic: std({ color: 0x39404a, roughness: 1 }),
+      cyclo: std({ color: 0xf6f6f4, roughness: 0.95, side: THREE.DoubleSide }),
+      fern: std({ color: 0x5f9a4a, roughness: 1 }),
+      fernDark: std({ color: 0x2f5d33, roughness: 1 }),
+      sofa: std({ color: 0x3e6b57, roughness: 0.9 }),
+      sofaTan: std({ color: 0xb48a5a, roughness: 0.85 }),
+      glassPod: std({ color: 0xbfd8e3, roughness: 0.05, transparent: true, opacity: 0.25, side: THREE.DoubleSide, depthWrite: false }),
+      board: std({ color: 0xf7f7f5, roughness: 0.4 }),
+      screen: std({ color: 0x0b1020, roughness: 0.2, emissive: 0x24408a, emissiveIntensity: 0.5 }),
+      rug: std({ color: 0x9a5b3a, roughness: 1 }),
+      rugGrey: std({ color: 0x7c8087, roughness: 1 }),
+      white: std({ color: 0xf1f1ee, roughness: 0.5 }),
+      moss: std({ color: 0x4a6b3a, roughness: 1 }),
+      cabinet: std({ color: 0x66707b, roughness: 0.5, metalness: 0.4 }),
+      lift: std({ color: 0xb9c0c7, roughness: 0.3, metalness: 0.8 }),
     };
-    block(-9.0, 5.0, 'zone1');
-    // front glass + teak fins on the zone-1 street front (y=-9)
-    b.box(wx0 + 0.2, wx1, -9.12, -9.0, 0.2, 3.2, M.glass);
-    b.box(wx0 + 0.2, wx1, -9.12, -9.0, Z2 + 0.3, Z3 - 0.4, M.glass);
-    for (let x = wx0 + 0.25; x <= wx1; x += 0.3) b.box(x - 0.03, x + 0.03, -9.4, -9.15, 0.1, Z3, M.teak);
-    // east-side glazing facing the hall wall is blank; add long clerestory ribbon on the west wall
-    b.box(wx0 - 0.02, wx0 + 0.02, -8.0, 4.0, 4.6, 6.2, M.glassFrost);
-    // zone 2 – Grand U-stair (y 5 … 10)
-    block(5.0, 10.0, 'zone2');
-    b.box(wx0 + 0.2, wx1, 6.0, 9.0, Z3, Z3 + 0.4, M.skylight);
-    // U-stair flights (visible through the stair-hall skylight; simplified)
-    for (let i = 0; i < 10; i++) {
-      b.box(wx0 + 0.3, wx0 + 1.55, 5.3 + i * 0.26, 5.3 + (i + 1) * 0.26, 0, 0.175 * (i + 1), M.concreteDark);
-      b.box(wx0 + 1.65, wx1 - 0.1, 7.9 - i * 0.26, 7.9 - (i + 1) * 0.26, 0, 3.5 - 0.175 * (i), M.concreteDark);
+    // wall pieces with rectangular holes. wallY: runs along x at thickness y0..y1; wallX: runs along y at thickness x0..x1.
+    const wallY = (L, y0, y1, xa, xb, za, zb, mat, holes = []) => {
+      let x = xa;
+      for (const h of [...holes].sort((p, q) => p.x0 - q.x0)) {
+        if (h.x0 > x) L.box(x, h.x0, y0, y1, za, zb, mat);
+        if (h.z0 > za) L.box(h.x0, h.x1, y0, y1, za, h.z0, mat);
+        if (h.z1 < zb) L.box(h.x0, h.x1, y0, y1, h.z1, zb, mat);
+        x = h.x1;
+      }
+      if (x < xb) L.box(x, xb, y0, y1, za, zb, mat);
+    };
+    const wallX = (L, x0, x1, ya, yb, za, zb, mat, holes = []) => {
+      let y = ya;
+      for (const h of [...holes].sort((p, q) => p.y0 - q.y0)) {
+        if (h.y0 > y) L.box(x0, x1, y, h.y0, za, zb, mat);
+        if (h.z0 > za) L.box(x0, x1, h.y0, h.y1, za, h.z0, mat);
+        if (h.z1 < zb) L.box(x0, x1, h.y0, h.y1, h.z1, zb, mat);
+        y = h.y1;
+      }
+      if (y < yb) L.box(x0, x1, y, yb, za, zb, mat);
+    };
+    const tripod = (L, x, y, h, legR = 0.45) => { for (let k = 0; k < 3; k++) { const a = k * 2.094 + 0.5; L.member([x, y, h], [x + Math.cos(a) * legR, y + Math.sin(a) * legR, 0.02], 0.012, M.charcoal, 4); } };
+    const chair = (L, x, y, m = M.charcoal) => { L.box(x - 0.2, x + 0.2, y - 0.2, y + 0.2, 0.42, 0.47, m); L.box(x - 0.2, x + 0.2, y + 0.17, y + 0.2, 0.47, 0.9, m); for (const [dx, dy] of [[-0.17, -0.17], [0.17, -0.17], [-0.17, 0.17], [0.17, 0.17]]) L.box(x + dx - 0.015, x + dx + 0.015, y + dy - 0.015, y + dy + 0.015, 0, 0.42, M.steel); };
+    const plant = (L, x, y, s = 1, mat = M2.fern) => { for (let k = 0; k < 7; k++) { const a = k * 0.9; const g = new THREE.ConeGeometry(0.06 * s, 0.7 * s, 5); g.rotateZ(0.4); g.rotateY(a); g.translate(x + Math.cos(a) * 0.08 * s, 0.4 * s, -(y + Math.sin(a) * 0.08 * s)); L.add(mat, g); } };
+
+    // ═══ shell ═══
+    W.box(wx0, wx1, -9.0, 30.1, -0.05, 0.0, M.concrete); // ground slab
+    // west wall: solid (2.00 m setback rule, no openings) with a fire-rated glass-block band and timber battens
+    wallX(W, wx0, wx0 + 0.2, -9.0, 10.0, 0, Z3, M.plaster);
+    W.box(wx0 - 0.02, wx0 + 0.02, -8.0, 4.0, 4.6, 6.2, M.glassFrost);
+    for (let y = -8.8; y < 4.8; y += 0.55) W.box(wx0 - 0.06, wx0, y, y + 0.1, 0.3, 6.8, M.teakLight);
+    for (let y = 5.2; y < 9.8; y += 0.55) W.box(wx0 - 0.06, wx0, y, y + 0.1, 0.3, 6.8, M.teak);
+    // street front y = −9.0 (zone 1): storefront with door D1 and VIP window, teak fins
+    wallY(W, -9.0, -8.8, wx0, wx1, 0, Z3, M.plaster, [{ x0: -3.6, x1: -1.25, z0: 0.1, z1: 3.1 }, { x0: -3.6, x1: -1.25, z0: 3.9, z1: 6.6 }]);
+    W.box(-3.6, -1.25, -8.98, -8.9, 0.1, 3.1, M.glass); W.box(-3.6, -1.25, -8.98, -8.9, 3.9, 6.6, M.glass);
+    for (const x of [-3.6, -2.4, -1.25]) W.box(x - 0.03, x + 0.03, -9.02, -8.86, 0.1, 6.6, M.charcoal);
+    W.box(-3.6, -1.25, -9.02, -8.86, 3.1, 3.9, M.charcoal); W.box(-3.6, -1.25, -9.02, -8.86, 6.55, 6.65, M.charcoal);
+    for (let x = wx0 + 0.25; x <= wx1; x += 0.3) W.box(x - 0.03, x + 0.03, -9.4, -9.15, 0.1, Z3, M.teak);
+    W.box(-3.0, -2.15, -9.06, -8.9, 0.1, 2.2, M.charcoal); // door D1 frame (private front door)
+    // zone 1 / zone 2 party wall (y 4.8…5.2): ground door into the stair lobby, upper door to the Creative Suite
+    wallY(W, 4.8, 5.2, ix0 - 0.2, ix1, 0, Z3, M.plaster, [{ x0: -3.5, x1: -2.7, z0: 0, z1: 2.2 }, { x0: -2.9, x1: -1.9, z0: 3.6, z1: 5.8 }]);
+    // zone 2 north wall (y 9.8…10.0): shell only (stair hall is closed at ground; garden is entered through D4 from the hall)
+    wallY(W, 9.8, 10.0, ix0 - 0.2, ix1, 0, Z3, M.plaster);
+    // roof + parapet (zones 1–2) and L1 slab
+    RF.box(wx0 - 0.1, wx1 + 0.1, -9.1, 10.1, Z3, Z3 + 0.3, M.concrete);
+    RF.box(-3.7, -1.05, 6.0, 9.0, Z3, Z3 + 0.4, M.skylight); // stair-hall skylight
+    UI.box(wx0, wx1, -9.0, 5.2, Z2 - 0.15, Z2 + 0.1, M.concrete); // L1 slab zone 1 (finish +3.60)
+
+    // ═══ ZONE 1 — G1 Full-front Creative Studio (ground) ═══
+    GI.box(ix0, ix1, -8.8, 4.8, 0, 0.02, M.floorInt);
+    // sound-lock vestibule: partition at y = −7.2 with a door, second door at the street front
+    wallY(GI, -7.25, -7.15, ix0, ix1, 0, ZC, M.wallInt, [{ x0: -2.9, x1: -2.0, z0: 0, z1: 2.1 }]);
+    GI.box(-2.95, -1.95, -7.3, -7.1, 2.1, 2.15, M.charcoal);
+    // acoustic panels (west) and teak-slat felt panels (east)
+    for (let y = -6.6; y < 3.0; y += 1.3) GI.box(ix0, ix0 + 0.08, y, y + 1.1, 0.9, 2.7, M2.acoustic);
+    for (let y = -6.6; y < 1.2; y += 0.4) GI.box(ix1 - 0.08, ix1, y, y + 0.25, 0.9, 2.7, M.teakLight);
+    // ceiling track + spot heads, rack of softboxes on tripods, reflector, camera
+    GI.box(-2.4 - 0.03, -2.4 + 0.03, -6.9, 2.9, ZC - 0.1, ZC - 0.04, M.steel);
+    for (let y = -6.4; y < 2.9; y += 0.9) { GI.cyl(-2.4, y, ZC - 0.3, ZC - 0.1, 0.07, 0.07, M.charcoal, 8); GI.cyl(-2.4, y, ZC - 0.32, ZC - 0.3, 0.05, 0.05, M.led, 8); }
+    for (const [x, y] of [[-3.15, 0.4], [-1.55, 1.3]]) { tripod(GI, x, y, 1.9); GI.box(x - 0.35, x + 0.35, y - 0.35, y + 0.35, 1.9, 2.5, M2.white); GI.box(x - 0.3, x + 0.3, y - 0.3, y + 0.3, 2.5, 2.52, M.led); }
+    tripod(GI, -1.4, -1.0, 1.5); GI.cyl(-1.4, -1.0, 1.5, 2.1, 0.5, 0.5, M2.white, 18);
+    tripod(GI, -2.4, -3.2, 1.4); GI.cbox(-2.4, -3.2, 1.5, 0.2, 0.3, 0.16, M.charcoal); GI.cyl(-2.4, -2.95, 1.46, 1.56, 0.06, 0.06, M.charcoal, 12);
+    GI.box(-1.6, -1.2, -2.9, -2.6, 0.0, 0.9, M2.cabinet); GI.box(-1.6, -1.2, -2.9, -2.6, 0.9, 1.4, M2.screen); // monitor cart
+    // make-up station on the east wall, sofa + coffee table, prop shelves, gear cases
+    GI.box(-1.65, -1.05, -6.8, -5.4, 0.8, 0.86, M.teakLight); GI.box(-1.45, -1.05, -6.8, -5.4, 0, 0.8, M2.white);
+    GI.box(-1.09, -1.05, -6.7, -5.5, 1.0, 2.1, M.glass); for (let y = -6.6; y <= -5.6; y += 0.25) GI.cyl(-1.12, y, 2.05, 2.1, 0.03, 0.03, M.led, 8);
+    chair(GI, -2.0, -6.1, M2.sofaTan);
+    GI.box(-3.6, -2.7, -5.6, -4.2, 0.1, 0.45, M2.sofa); GI.box(-3.6, -3.4, -5.6, -4.2, 0.45, 0.95, M2.sofa);
+    GI.box(-2.5, -2.0, -5.1, -4.5, 0.0, 0.4, M.teakLight); GI.box(-3.35, -2.55, -5.75, -4.05, 0.0, 0.015, M2.rug);
+    for (let k = 0; k < 4; k++) { GI.box(ix0 + 0.08, ix0 + 0.4, -2.4 + k * 0.55, -2.4 + k * 0.55 + 0.45, 0, 2.0, M.teakLight); for (let z = 0.3; z < 2; z += 0.4) GI.box(ix0 + 0.12, ix0 + 0.36, -2.38 + k * 0.55, -2.4 + k * 0.55 + 0.43, z, z + 0.03, M.charcoal); }
+    GI.box(-1.5, -1.1, -0.2, 0.5, 0, 0.5, M.rubber); GI.box(-1.45, -1.15, 0.6, 1.0, 0, 0.35, M.charcoal);
+    // cyclorama: white floor, 0.90 m radius cove and wall (y 2.4 … 4.8)
+    GI.box(ix0, ix1, 2.4, 3.9, 0.02, 0.03, M2.cyclo);
+    {
+      const n = 8;
+      for (let i = 0; i < n; i++) {
+        const a0 = (i / n) * (Math.PI / 2), a1 = ((i + 1) / n) * (Math.PI / 2);
+        const p = (a) => [3.9 + 0.9 * Math.sin(a), 0.9 - 0.9 * Math.cos(a)];
+        const [y0c, z0c] = p(a0), [y1c, z1c] = p(a1);
+        GI.quad(M2.cyclo, [ix0, y0c, z0c], [ix1, y0c, z0c], [ix1, y1c, z1c], [ix0, y1c, z1c]);
+      }
+      GI.quad(M2.cyclo, [ix0, 4.8, 0.9], [ix1, 4.8, 0.9], [ix1, 4.8, ZC], [ix0, 4.8, ZC]);
+      GI.box(ix0, ix0 + 0.06, 2.4, 4.8, 0.02, ZC, M2.cyclo); GI.box(ix1 - 0.06, ix1, 2.4, 4.8, 0.02, ZC, M2.cyclo);
     }
-    // zone 3 – co-working palm garden (y 10 … 22): open, pergola above, jali wall west, L2 gallery walkway east
-    // earth bed around palms (r 1.5) + circular teak benches
-    // jali (terracotta perforated brick) screens V1–V4, west face x=-3.9
+
+    // ═══ ZONE 2 — G2 Grand U-stair (y 5.2 … 9.8), 20 risers × 175 mm, 260 mm treads, 1.25 m flights ═══
+    GI.box(ix0, ix1, 5.2, 9.8, 0, 0.02, M.floorInt);
+    {
+      const R = 0.175, TR = 0.26, y0s = 5.95, yM = 8.55;
+      // flight 1 (west, rises north): x −3.70 … −2.45
+      for (let i = 1; i <= 10; i++) {
+        const ya = y0s + (i - 1) * TR, top = R * i;
+        GI.box(ix0, -2.45, ya, ya + TR, top - 0.3, top, M.concreteDark); GI.box(ix0, -2.45, ya - 0.02, ya + TR, top, top + 0.03, M.teak);
+      }
+      // mid-landing (z 1.75) and flight 2 (east, rises south): x −2.30 … −1.05
+      GI.box(ix0, ix1, yM, 9.8, 1.45, 1.75, M.concreteDark); GI.box(ix0, ix1, yM, 9.8, 1.75, 1.78, M.teak);
+      for (let j = 1; j <= 10; j++) {
+        const yb = yM - j * TR, top = 1.75 + R * j;
+        GI.box(-2.3, ix1, yb, yb + TR, top - 0.3, top, M.concreteDark); GI.box(-2.3, ix1, yb, yb + TR + 0.02, top, top + 0.03, M.teak);
+      }
+      // top landing (z 3.50) over the lobby, balustrades, handrails
+      UI.box(ix0, ix1, 5.2, 5.95, 3.2, 3.5, M.concrete); UI.box(ix0, ix1, 5.2, 5.95, 3.5, 3.56, M.teak);
+      GI.box(-2.45, -2.3, y0s, yM, 0, 0.9, M.charcoal); // central well rail base (void 0.15 m)
+      for (const [x, ya, yb, za, zb] of [[-2.38, y0s, yM, 0.9, 2.65], [-2.38, yM, y0s, 2.65, 4.4]]) GI.member([x, ya, za + 0.05], [x, yb, zb + 0.05], 0.025, M.steel, 6);
+      UI.box(-2.7, -1.05, 5.93, 5.97, 3.56, 4.6, M.glass); // balustrade at the stair head
+      // WC G2 under flight 2 (1.20 × 0.95, ceiling ≥ 2.0 m), door from the lobby
+      const hx0 = -2.3, hx1 = -1.1;
+      wallY(GI, 6.95, 7.0, hx0, hx1, 0, 2.05, M.wallInt, [{ x0: -2.15, x1: -1.45, z0: 0, z1: 2.0 }]);
+      GI.box(hx0, hx0 + 0.05, 6.95, 7.9, 0, 2.05, M.wallInt); GI.box(hx0, hx1, 7.9, 7.95, 0, 2.05, M.wallInt);
+      GI.box(hx0, hx1, 6.95, 7.95, 2.0, 2.05, M.wallInt);
+      GI.box(-1.75, -1.45, 7.55, 7.85, 0, 0.4, M2.white); GI.cyl(-1.6, 7.6, 0.4, 0.8, 0.14, 0.14, M2.white, 12); // WC pan + cistern
+      GI.box(-2.2, -1.9, 7.7, 7.9, 0.8, 0.88, M2.white); GI.box(-2.19, -1.91, 7.9, 7.93, 1.05, 1.9, M.glass); // basin + mirror
+      GI.box(-2.0, -1.5, 6.9, 7.1, 2.0, 2.05, M.charcoal);
+      // under-landing storage + fire extinguisher cabinet
+      GI.box(ix0, -2.5, 8.6, 9.8, 0, 1.4, M.teakLight); GI.box(ix0 + 0.02, -2.52, 8.62, 9.78, 0.02, 0.05, M.charcoal);
+      GI.box(-1.12, -1.05, 5.4, 5.7, 0.9, 1.5, M.holdR);
+      // lobby: bench, planter, wayfinding light
+      GI.box(-3.55, -2.7, 5.35, 5.75, 0, 0.45, M.teakLight); plant(GI, -3.45, 5.7, 1.2, M2.fernDark);
+    }
+    // D3 (double 1.70 m) & D4 (1.70 m) openings are cut in the hall west wall; recessed leaf lines are drawn here
+    for (const [ya, yb] of [[5.25, 6.95], [10.6, 12.3]]) {
+      GI.box(-1.35, -1.3, ya, yb, 0, 2.35, M.glass); GI.box(-1.36, -1.29, (ya + yb) / 2 - 0.02, (ya + yb) / 2 + 0.02, 0, 2.35, M.charcoal);
+      GI.box(-1.36, -1.29, ya, ya + 0.04, 0, 2.4, M.charcoal); GI.box(-1.36, -1.29, yb - 0.04, yb, 0, 2.4, M.charcoal); GI.box(-1.36, -1.29, ya, yb, 2.35, 2.4, M.charcoal);
+    }
+
+    // ═══ ZONE 3 — co-working palm garden (G3), jali wall V1–V4, slatted roof, L2 gallery walkway ═══
+    const palmYs = [15.46, 12.08];
     for (let k = 0; k < 4; k++) {
       const ya = 10.0 + k * 3.0, yb = ya + 2.85;
       for (let y = ya; y < yb; y += 0.19) for (let z = 0.0; z < 6.9; z += 0.19) {
         const ix = Math.round((y - ya) / 0.19), iz = Math.round(z / 0.19);
-        if ((ix + iz) % 2 === 0 && z > 0.4 && z < 6.4 && ix % 5 !== 0) continue; // checker perforation
-        b.box(wx0, wx0 + 0.18, y, y + 0.17, z, z + 0.17, k % 2 ? M.brick : M.terracotta);
+        if (Math.abs(y - 15.46) < 0.45) continue; // jali wraps around palm P2
+        if ((ix + iz) % 2 === 0 && z > 0.4 && z < 6.4 && ix % 5 !== 0) continue;
+        W.box(wx0, wx0 + 0.14, y, y + 0.17, z, z + 0.17, k % 2 ? M.brick : M.terracotta);
       }
     }
-    b.box(wx0, wx0 + 0.2, 10.0, 22.0, 6.9, 7.0, M.concrete);
-    // L2 gallery walkway (x -2.6 … -0.8) with safety balustrade + overhead canopy slats
-    b.box(-2.6, wx1, 10.0, 22.0, Z2 - 0.18, Z2 + 0.02, M.concrete);
-    b.box(-2.62, -2.58, 10.0, 22.0, Z2, Z2 + 1.1, M.glass);
-    b.box(-2.65, -2.55, 10.0, 22.0, Z2 + 1.05, Z2 + 1.1, M.charcoal);
-    // slatted pergola roof (z=7.0) and net frame
-    for (let y = 10.0; y <= 22.0; y += 0.45) b.box(wx0, wx1, y - 0.06, y + 0.06, 6.95, 7.05, M.teak);
-    for (const x of [wx0 + 0.1, -2.6, wx1 - 0.1]) b.box(x - 0.06, x + 0.06, 10.0, 22.0, 6.85, 6.95, M.charcoal);
-    for (let y = 10.0; y <= 22.0; y += 3.0) for (const x of [-2.55, -0.85]) b.box(x - 0.07, x + 0.07, y - 0.07, y + 0.07, 0, 6.9, M.charcoal);
-    // circular teak benches + earth around P2 / P3
+    W.box(wx0, wx0 + 0.2, 10.0, 22.0, 6.9, 7.0, M.concrete);
+    // L2 gallery walkway (x −2.6 … −0.8) with glass balustrade + coconut-fall guard net and canopy
+    UI.box(-2.6, wx1, 10.0, 22.0, Z2 - 0.18, Z2 + 0.02, M.concrete);
+    UI.box(-2.62, -2.58, 10.0, 22.0, Z2, Z2 + 1.1, M.glass); UI.box(-2.65, -2.55, 10.0, 22.0, Z2 + 1.05, Z2 + 1.1, M.charcoal);
+    for (let y = 10.0; y <= 22.01; y += 2.0) UI.box(-2.64, -2.56, y - 0.03, y + 0.03, Z2, Z2 + 1.1, M.steel);
+    UI.quad(M.net, [-2.6, 10.0, Z2 + 1.1], [-2.6, 22.0, Z2 + 1.1], [-2.6, 22.0, 6.1], [-2.6, 10.0, 6.1], [60, 8]); // vertical guard net to the canopy
+    UI.quad(M.glassFrost, [-2.6, 10.0, 6.1], [-2.6, 22.0, 6.1], [-0.85, 22.0, 6.35], [-0.85, 10.0, 6.35], [1, 1]); // polycarbonate canopy over the walkway
+    for (let y = 10.0; y <= 22.01; y += 1.0) UI.box(-2.62, -0.85, y - 0.015, y + 0.015, 6.08, 6.13, M.charcoal);
+    for (const y of [10.4, 14.4, 18.4, 21.6]) UI.box(-1.7, -1.2, y - 0.25, y + 0.25, Z2 + 0.02, Z2 + 0.5, M.teakLight); // bench pockets
+    // pergola frame + slats (slats and edge beam open around the palm trunks)
+    for (const x of [-2.6, wx1 - 0.1]) W.box(x - 0.06, x + 0.06, 10.0, 22.0, 6.85, 6.95, M.charcoal);
+    for (const [ya, yb] of [[10.0, 11.65], [12.5, 15.0], [15.9, 22.0]]) W.box(wx0 + 0.04, wx0 + 0.16, ya, yb, 6.85, 6.95, M.charcoal);
+    for (let y = 10.0; y <= 22.0; y += 3.0) for (const x of [-2.55, -0.85]) W.box(x - 0.07, x + 0.07, y - 0.07, y + 0.07, 0, 6.9, M.charcoal);
+    for (let y = 10.0; y <= 22.0; y += 0.45) { if (palmYs.some((p) => Math.abs(y - p) < 0.42)) continue; RF.box(wx0, wx1, y - 0.06, y + 0.06, 6.95, 7.05, M.teak); }
+    // earth beds, circular teak benches, root-zone guards, drip rings, planting
     for (const [px, py] of [[-3.67, 15.46], [-3.24, 12.08]]) {
-      b.cyl(px, py, 0, 0.05, 1.5, 1.5, M.earth, 36);
+      GI.cyl(px, py, 0, 0.06, 1.5, 1.5, M.earth, 36);
+      GI.torus(px, py, 0.08, 1.05, 0.015, M.charcoal, 40);
       const n = 14;
       for (let k = 0; k < n; k++) {
         if (k === 4 || k === 5) continue;
         const a = (k / n) * TAU;
-        const g = new THREE.BoxGeometry(0.9, 0.06, 0.38);
-        g.rotateY(a + Math.PI / 2);
-        g.translate(px + Math.cos(a) * 1.35, 0.45, -(py + Math.sin(a) * 1.35));
-        b.add(M.teakLight, g);
-        const l = new THREE.BoxGeometry(0.08, 0.45, 0.08);
-        l.translate(px + Math.cos(a) * 1.35, 0.22, -(py + Math.sin(a) * 1.35));
-        b.add(M.charcoal, l);
+        const g = new THREE.BoxGeometry(0.9, 0.06, 0.38); g.rotateY(a + Math.PI / 2); g.translate(px + Math.cos(a) * 1.35, 0.45, -(py + Math.sin(a) * 1.35)); GI.add(M.teakLight, g);
+        const l = new THREE.BoxGeometry(0.08, 0.45, 0.08); l.translate(px + Math.cos(a) * 1.35, 0.22, -(py + Math.sin(a) * 1.35)); GI.add(M.charcoal, l);
       }
+      for (let k = 0; k < 9; k++) plant(GI, px + Math.cos(k * 0.7 + 1) * (0.55 + (k % 3) * 0.18), py + Math.sin(k * 0.7 + 1) * (0.55 + (k % 3) * 0.18), 0.9 + (k % 2) * 0.4, k % 2 ? M2.fern : M2.fernDark);
     }
-    // co-working tables on the garden floor
-    b.box(-3.5, -2.9, 17.0, 17.9, 0.7, 0.75, M.teakLight);
-    b.box(-3.5, -2.9, 18.5, 19.4, 0.7, 0.75, M.teakLight);
-    b.box(-3.5, -2.9, 20.0, 20.9, 0.7, 0.75, M.teakLight);
-    // garden floor
-    b.box(wx0, wx1, 10.0, 22.0, -0.04, 0.0, M.paving);
-    // focus pods G4/L3 (y 18 … 22 north end)
-    // west façade relief: solid wall (no openings within the 2.00 m setback) treated with timber battens
-    for (let y = -8.8; y < 4.8; y += 0.55) b.box(wx0 - 0.06, wx0, y, y + 0.1, 0.3, 6.8, M.teakLight);
-    for (let y = 5.2; y < 9.8; y += 0.55) b.box(wx0 - 0.06, wx0, y, y + 0.1, 0.3, 6.8, M.teak);
-    for (let y = 25.6; y < 29.9; y += 0.55) b.box(wx0 - 0.06, wx0, y, y + 0.1, 0.3, 10.2, M.teakLight);
-    // zone 4 – north core, lift & fire stair (y 22 … 30.1)
-    b.box(-2.9, -1.8, 22.0, 25.4, 0, ZR, M.plaster);
-    b.box(wx0, -1.8, 25.4, 30.1, 0, ZR, M.plaster);
-    b.box(wx0 - 0.1, -1.7, 22.0, 30.2, ZR, ZR + 0.3, M.concrete);
-    b.box(-3.6, -1.8, 28.05, 30.1, 0, ZR + 1.2, M.concreteDark); // MRL lift shaft overrun
-    b.box(-3.55, -3.2, 25.4, 25.5, 0.2, 2.4, M.glassFrost);
-    // corner fire stair slits
-    for (let z = 0.8; z < ZR - 1; z += 3.5) b.box(wx0 - 0.02, wx0 + 0.02, 25.8, 27.2, z, z + 1.3, M.glassFrost);
+    GI.box(wx0, wx1, 10.0, 22.0, -0.04, 0.0, M.paving);
+    // stepping-stone path along the hall wall, bar-height co-working ledge with stools, lounge corner, pendants, bollards
+    for (let y = 10.5; y < 21.8; y += 0.85) GI.box(-2.0, -1.2, y, y + 0.7, 0.0, 0.06, M.pathStone);
+    GI.box(-1.45, -1.05, 12.6, 16.8, 1.02, 1.07, M.teakLight); GI.box(-1.25, -1.2, 12.6, 16.8, 0, 1.02, M.charcoal);
+    for (let y = 13.0; y < 16.7; y += 0.9) { GI.cyl(-1.85, y, 0.0, 0.7, 0.025, 0.025, M.steel, 6); GI.cyl(-1.85, y, 0.7, 0.76, 0.18, 0.18, M2.sofaTan, 12); }
+    GI.box(-3.0, -2.2, 17.0, 17.9, 0.7, 0.75, M.teakLight); for (const [x, y] of [[-3.3, 17.45], [-2.0, 17.45]]) chair(GI, x, y, M2.sofaTan);
+    for (let y = 11.0; y < 22; y += 2.5) for (const x of [-3.0, -1.3]) { UI.cyl(x, y, 5.6, 7.0, 0.006, 0.006, M.steel, 4); GI.cyl(x, y, 5.45, 5.65, 0.1, 0.1, M.led, 10); }
+    for (let y = 11.0; y < 22; y += 3.0) GI.cyl(-2.05, y, 0.0, 0.4, 0.05, 0.05, M.led, 8);
+    plant(GI, -1.2, 21.5, 1.4); plant(GI, -3.6, 21.6, 1.3, M2.fernDark); plant(GI, -3.6, 10.4, 1.2); plant(GI, -1.2, 10.3, 1.0, M2.fernDark);
+    GI.cyl(-2.9, 20.9, 0.0, 0.45, 0.4, 0.4, M.concreteDark, 20); GI.cyl(-2.9, 20.9, 0.4, 0.42, 0.36, 0.36, M.pondWater, 20); // water bowl
+    // focus pods G4 / L3 (y 18 … 22): glass boxes with meeting tables, screens, whiteboards
+    for (const L of [{ lyr: GI, z0: 0.0, key: 'G4' }, { lyr: UI, z0: Z2 + 0.1, key: 'L3' }]) {
+      const { lyr, z0 } = L, zt = z0 + 2.6, x0p = ix0, x1p = L.key === 'G4' ? ix1 : -2.65;
+      lyr.box(x0p, x1p, 18.0, 22.0, z0, z0 + 0.03, M2.rugGrey);
+      for (const y of [18.0, 22.0]) lyr.box(x0p, x1p, y - 0.03, y + 0.03, z0, zt, M2.glassPod);
+      lyr.box(x1p - 0.03, x1p + 0.03, 18.0, 22.0, z0, zt, M2.glassPod);
+      for (const y of [18.0, 22.0]) lyr.box(x0p, x1p, y - 0.04, y + 0.04, zt - 0.05, zt, M.charcoal);
+      lyr.box(x0p, x1p, 18.0, 22.0, zt, zt + 0.05, M.charcoal);
+      lyr.box(x0p + 0.1, x1p - 0.3, 19.0, 21.0, z0 + 0.72, z0 + 0.76, M.teakLight); lyr.box(x0p + 0.5, x0p + 0.56, 19.4, 20.6, z0, z0 + 0.72, M.charcoal);
+      for (const y of [19.3, 19.9, 20.5]) { chair(lyr, x0p + 0.3, y, M.charcoal); }
+      lyr.box(x0p + 0.04, x0p + 0.08, 18.4, 19.6, z0 + 1.0, z0 + 2.0, M2.board); lyr.box(x1p - 0.4, x1p - 0.36, 20.0, 21.0, z0 + 1.1, z0 + 1.7, M2.screen);
+      lyr.cyl(x0p + 0.9, 21.5, z0, z0 + 1.6, 0.025, 0.025, M.steel, 6); lyr.cyl(x0p + 0.9, 21.5, z0 + 1.6, z0 + 1.7, 0.2, 0.15, M.led, 10);
+    }
+    UI.box(ix0, -2.6, 18.0, 22.0, Z2 - 0.15, Z2 + 0.1, M.concrete); // slab under the L3 pod
+
+    // ═══ ZONE 4 — north core: G5 MDB + pump room, L4 staff / linen, MRL lift, corner fire stair ═══
+    {
+      const cx0 = -3.9, cx1 = -1.8;
+      // shell (palm P1 sits in a 0.5 m notch at y 23.2 … 24.4)
+      wallX(W, cx0, cx0 + 0.2, 25.3, 30.1, 0, ZR, M.plaster);
+      W.box(-3.4, -3.2, 23.2, 24.4, 0, ZR, M.plaster); W.box(wx0, -3.2, 22.0, 23.2, 0, ZR, M.plaster); W.box(wx0, -3.2, 24.4, 25.3, 0, ZR, M.plaster);
+      W.box(-3.4, -1.8, 23.2, 23.4, 0, ZR, M.plaster); W.box(-3.4, -1.8, 24.2, 24.4, 0, ZR, M.plaster);
+      W.box(cx0, -1.8, 22.0, 22.2, 0, ZR, M.plaster);
+      wallX(W, -1.9, -1.8, 22.0, 24.9, 0, ZR, M.plaster, [{ y0: 22.4, y1: 23.2, z0: 0, z1: 2.2 }]);
+      W.box(cx0 - 0.1, -1.7, 22.0, 30.2, ZR, ZR + 0.3, M.concrete);
+      W.box(-3.55, -3.2, 25.4, 25.5, 0.2, 2.4, M.glassFrost);
+      for (let z = 0.8; z < ZR - 1; z += 3.5) W.box(wx0 - 0.02, wx0 + 0.02, 25.8, 27.2, z, z + 1.3, M.glassFrost);
+      // G5 MDB & pump room (x −3.7…−1.9, y 22.2…24.9): switchboards, pump set, expansion tank
+      GI.box(-3.7, -1.9, 22.2, 24.9, 0, 0.02, M.floorWet);
+      for (let k = 0; k < 4; k++) { GI.box(-3.35 + k * 0.42, -2.97 + k * 0.42, 22.25, 22.7, 0, 2.1, M2.cabinet); GI.box(-3.3 + k * 0.42, -3.0 + k * 0.42, 22.69, 22.72, 1.5, 1.8, M2.screen); }
+      GI.box(-3.65, -3.0, 24.3, 24.85, 0, 0.5, M.concreteDark); GI.cyl(-3.3, 24.55, 0.5, 0.95, 0.2, 0.2, M.collarBlue, 14); GI.cyl(-2.4, 24.5, 0, 1.4, 0.3, 0.3, M2.cabinet, 16);
+      GI.member([-3.3, 24.55, 0.9], [-2.4, 24.5, 0.9], 0.04, M.steel, 6);
+      GI.box(-1.92, -1.9, 22.4, 23.2, 0, 2.2, M.charcoal); // door to the hall passage (service)
+      // fire stair + lift (x −3.7…−1.8, y 24.9…30.1). 2 × 0.95 m flights per floor (spec asks 1.20 m — see notes)
+      const FL = [{ lyr: GI, z: 0 }, { lyr: UI, z: Z2 }, { lyr: UI, z: Z3 }];
+      for (const { lyr, z } of FL) {
+        lyr.box(-3.7, -1.8, 24.9, 26.0, z - 0.02, z, M.concreteDark);
+        for (let i = 1; i <= 10; i++) { const ya = 28.0 - i * 0.2, top = z + 0.175 * i; lyr.box(-3.7, -2.78, ya, ya + 0.2, top - 0.25, top, M.concreteDark); }
+        lyr.box(-3.7, -1.8, 24.9, 26.0, z + 1.5, z + 1.75, M.concreteDark); // half landing
+        for (let j = 1; j <= 10; j++) { const ya = 26.0 + (j - 1) * 0.2, top = z + 1.75 + 0.175 * j; lyr.box(-2.72, -1.8, ya, ya + 0.2, top - 0.25, top, M.concreteDark); }
+        lyr.box(-2.78, -2.72, 26.0, 28.0, z, z + 1.1, M.steel);
+      }
+      // MRL lift shaft 2.05 × 2.05 (y 28.05 … 30.1), steel door at each level facing the stair lobby
+      W.box(-3.85, -1.8, 28.05, 30.1, 0, ZR + 1.2, M.concreteDark);
+      for (const z of [0, Z2, Z3]) GI.box(-3.2, -2.3, 28.0, 28.08, z + 0.02, z + 2.1, M2.lift);
+      // L4 staff room & linen (upper floor of the core) + L1 corridor to the lift
+      UI.box(-3.7, -1.9, 22.2, 24.9, Z2 - 0.15, Z2 + 0.1, M.concrete);
+      for (let k = 0; k < 5; k++) { UI.box(-3.65 + k * 0.33, -3.37 + k * 0.33, 22.25, 22.7, Z2 + 0.1, Z2 + 1.95, M.holdB); }
+      UI.box(-3.0, -2.2, 23.3, 24.0, Z2 + 0.74, Z2 + 0.78, M.teakLight); for (const y of [23.1, 24.2]) UI.box(-2.9, -2.3, y - 0.2, y + 0.2, Z2 + 0.45, Z2 + 0.5, M.charcoal);
+      for (let z = Z2 + 0.4; z < Z2 + 2.0; z += 0.4) UI.box(-3.65, -3.4, 24.45, 24.85, z, z + 0.03, M.charcoal);
+      for (let k = 0; k < 3; k++) UI.box(-3.65, -3.35, 24.45, 24.85, Z2 + 0.43 + k * 0.4, Z2 + 0.78 + k * 0.4, M2.white); // folded linen
+    }
+
+    // ═══ ZONE 1 — L1 Creative Suite / VIP lounge (upper floor, z 3.50) ═══
+    UI.box(ix0, ix1, -8.8, 4.8, Z2 + 0.1, Z2 + 0.12, M.floorInt);
+    UI.box(ix0, ix1, -8.8, 4.8, Z2 + 0.1, Z2 + 0.14, M.teakLight);
+    UI.box(-3.55, -1.4, -7.6, -4.4, Z2 + 0.14, Z2 + 0.16, M2.rug);
+    // lounge: sofa, armchairs, coffee tables, TV wall, bar counter with stools, plants
+    UI.box(-3.55, -2.45, -7.4, -5.3, Z2 + 0.16, Z2 + 0.55, M2.sofaTan); UI.box(-3.55, -3.3, -7.4, -5.3, Z2 + 0.55, Z2 + 1.0, M2.sofaTan);
+    chair(UI, -1.7, -6.2, M2.sofa); chair(UI, -1.7, -5.4, M2.sofa);
+    UI.box(-2.4, -1.9, -6.6, -5.8, Z2 + 0.16, Z2 + 0.55, M.teakLight);
+    UI.box(-3.6, -1.1, -2.2, -1.6, Z2 + 0.14, Z2 + 1.05, M.teak); UI.box(-3.4, -1.3, -2.2, -2.15, Z2 + 1.05, Z2 + 1.12, M.ss316); // bar counter
+    for (const x of [-3.2, -2.6, -2.0, -1.4]) { UI.cyl(x, -1.2, Z2 + 0.14, Z2 + 0.7, 0.03, 0.03, M.steel, 6); UI.cyl(x, -1.2, Z2 + 0.7, Z2 + 0.76, 0.17, 0.17, M2.sofa, 12); }
+    UI.box(ix0 + 0.02, ix0 + 0.08, -6.8, -4.6, Z2 + 1.0, Z2 + 2.0, M2.screen); // TV on the west wall
+    UI.box(-3.55, -1.3, 0.2, 4.4, Z2 + 0.14, Z2 + 0.16, M2.rugGrey); // work area: shared desk + chairs
+    UI.box(-3.4, -1.4, 1.2, 2.0, Z2 + 0.72, Z2 + 0.76, M.teakLight); for (const x of [-3.1, -2.4, -1.7]) { chair(UI, x, 0.8); chair(UI, x, 2.4, M.charcoal); }
+    UI.box(-3.4, -1.4, 1.2, 2.0, Z2 + 0.14, Z2 + 0.72, M.charcoal);
+    plant(UI, -3.6, -8.2, 1.5); plant(UI, -1.2, -8.2, 1.3, M2.fernDark); plant(UI, -3.6, 4.4, 1.4);
+    UI.box(ix1 - 0.05, ix1, -8.0, -1.0, Z2 + 0.9, Z2 + 2.4, M2.acoustic);
+    for (let y = -8.2; y < 4.6; y += 2.4) { UI.cyl(-2.4, y, ZC + Z2 - 3.35 + 2.9, Z3 - 0.3, 0.006, 0.006, M.steel, 4); UI.cyl(-2.4, y, Z3 - 0.58, Z3 - 0.35, 0.14, 0.14, M.led, 10); }
   }
 
   // ── Rear complex REV D.5 ──────────────────────────────────────────
@@ -1065,11 +1249,11 @@ export function buildModel() {
     }
     // west wing: sconces on the batten wall + PV on the flat roof (REV P6 wing, south-facing 10° arrays)
     {
-      const b = G.west_wing;
+      const b = G.west_wing, bR = G.ww_roof;
       for (let y = -8.0; y < 10; y += 2.2) b.box(-3.98, -3.9, y - 0.05, y + 0.05, 3.0, 3.25, M.led);
       for (let y = 26.2; y < 30; y += 2.2) b.box(-3.98, -3.9, y - 0.05, y + 0.05, 3.0, 3.25, M.led);
-      for (let y = -8.4; y < 9.2; y += 2.2) b.quad(M.solar, [-3.6, y, 7.3 + 0.12], [-1.1, y, 7.3 + 0.12], [-1.1, y + 1.9, 7.3 + 0.45], [-3.6, y + 1.9, 7.3 + 0.45], [2, 1]);
-      for (let y = -8.4; y < 9.2; y += 2.2) for (const x of [-3.5, -1.2]) b.member([x, y + 0.1, 7.3], [x, y + 1.0, 7.3 + 0.28], 0.025, M.charcoal, 4);
+      for (let y = -8.4; y < 9.2; y += 2.2) bR.quad(M.solar, [-3.6, y, 7.3 + 0.12], [-1.1, y, 7.3 + 0.12], [-1.1, y + 1.9, 7.3 + 0.45], [-3.6, y + 1.9, 7.3 + 0.45], [2, 1]);
+      for (let y = -8.4; y < 9.2; y += 2.2) for (const x of [-3.5, -1.2]) bR.member([x, y + 0.1, 7.3], [x, y + 1.0, 7.3 + 0.28], 0.025, M.charcoal, 4);
     }
   }
 
@@ -1153,22 +1337,28 @@ export function buildModel() {
   // ── vegetation: preserved coconut palms P1–P3 + trees ─────────────
   {
     const b = layer('vegetation');
+    const coconutG = std({ color: 0x7ba043, roughness: 0.7 }), coconutB = std({ color: 0x6b4a2a, roughness: 0.9 });
     const palm = (px, py, h, lean, tilt) => {
       const pts = [];
-      const n = 12;
+      const n = 16;
       for (let i = 0; i <= n; i++) {
         const t = i / n;
         pts.push([px + Math.cos(lean) * tilt * t * t, py + Math.sin(lean) * tilt * t * t, h * t]);
       }
-      for (let i = 0; i < n; i++) b.member(pts[i], pts[i + 1], 0.22 - 0.09 * (i / n), M.trunk, 10);
+      const rAt = (i) => 0.2 - 0.075 * (i / n);
+      for (let i = 0; i < n; i++) b.member(pts[i], pts[i + 1], rAt(i), M.trunk, 12);
+      // ring scars every ~0.32 m, swollen bole with root flare, green crown shaft
+      for (let z = 0.5; z < h - 1.3; z += 0.32) { const i = Math.min(n, Math.round((z / h) * n)); b.torus(pts[i][0], pts[i][1], z, rAt(i) + 0.004, 0.011, M.trunk, 14); }
+      b.cyl(px, py, 0, 0.8, 0.42, 0.22, M.trunk, 14);
+      for (let k = 0; k < 6; k++) { const a = k * 1.05; b.member([px + Math.cos(a) * 0.4, py + Math.sin(a) * 0.4, 0.02], [px + Math.cos(a) * 0.2, py + Math.sin(a) * 0.2, 0.55], 0.04, M.trunk, 5); }
       const top = pts[n];
-      // crown: fronds
+      b.cyl(top[0], top[1], top[2] - 1.3, top[2], 0.14, 0.11, M.hedge, 12);
       const frondGeo = (len, droop) => {
-        const seg = 8, pos = [], uv = [], idx = [];
+        const seg = 10, pos = [], uv = [], idx = [];
         for (let i = 0; i <= seg; i++) {
-          const t = i / seg, w = 1.3 * Math.sin(Math.PI * Math.min(1, t * 1.05 + 0.08));
+          const t = i / seg, w = 1.15 * Math.sin(Math.PI * Math.min(1, t * 1.02 + 0.06));
           const x = len * t, y = -droop * t * t;
-          pos.push(-w / 2 * 0 + x, y, -w / 2, x, y, w / 2);
+          pos.push(x, y, -w / 2, x, y, w / 2);
           uv.push(0, 1 - t, 1, 1 - t);
           if (i < seg) { const k = i * 2; idx.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
         }
@@ -1179,22 +1369,29 @@ export function buildModel() {
         g.computeVertexNormals();
         return g;
       };
-      for (let k = 0; k < 14; k++) {
-        const g = frondGeo(4.2 + (k % 3) * 0.4, 1.2 + (k % 4) * 0.5);
-        g.rotateX(Math.PI / 2 * 0);
-        g.rotateY(-(k / 14) * TAU + k * 0.4);
-        g.rotateZ(((k % 2) * 0.35 + 0.15));
-        g.translate(top[0], top[2], -top[1]);
+      for (let k = 0; k < 20; k++) {
+        const el = 1.05 - (k % 5) * 0.24; // fronds fan out from steep new growth to drooping old fronds
+        const g = frondGeo(4.2 + (k % 3) * 0.35, 1.0 + (k % 5) * 0.55);
+        g.rotateX(((k % 3) - 1) * 0.25); // roll
+        g.rotateZ(el);
+        g.rotateY(-(k / 20) * TAU * 1.0 - k * 0.15);
+        g.translate(top[0], top[2] - 0.1, -top[1]);
         b.add(M.leaf, g);
       }
-      for (let k = 0; k < 5; k++) {
-        const a = (k / 5) * TAU;
-        b.cyl(top[0] + Math.cos(a) * 0.25, top[1] + Math.sin(a) * 0.25, top[2] - 0.45, top[2] - 0.05, 0.14, 0.12, M.brick, 8);
+      // coconut bunches below the crown
+      for (let k = 0; k < 3; k++) {
+        const a = k * 2.1 + px;
+        for (let m = 0; m < 5; m++) {
+          const g = new THREE.SphereGeometry(0.11, 8, 6);
+          g.translate(top[0] + Math.cos(a) * (0.22 + 0.06 * (m % 2)), top[2] - 0.7 - 0.12 * (m % 3), -(top[1] + Math.sin(a) * (0.22 + 0.06 * (m % 2)) + (m - 2) * 0.03));
+          b.add(m % 2 ? coconutG : coconutB, g);
+        }
       }
     };
-    palm(-4.0, 23.8, 12.5, rad(160), 1.2);
-    palm(-3.67, 15.46, 11.8, rad(200), 1.6);
-    palm(-3.24, 12.08, 10.8, rad(100), 1.0);
+    // P1 north-west corner, P2 / P3 in the garden — leaning gently towards the open pergola gap (east)
+    palm(-4.0, 23.8, 12.5, rad(20), 0.7);
+    palm(-3.67, 15.46, 11.8, rad(10), 0.55);
+    palm(-3.24, 12.08, 10.8, rad(-10), 0.7);
 
     const T = layer('trees');
     const tree = (x, y, s = 1) => {
@@ -1210,7 +1407,7 @@ export function buildModel() {
   }
 
   // ── flush layers into the scene ────────────────────────────────────
-  const order = ['site', 'fences', 'trees', 'rear_services', 'hall_shell', 'hall_roof', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'east_catwalk', 'west_wing', 'rear_structure', 'rear_GF', 'rear_L2', 'rear_L3', 'rear_roof', 'outdoor', 'vegetation'];
+  const order = ['site', 'fences', 'trees', 'rear_services', 'hall_shell', 'hall_roof', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'east_catwalk', 'west_wing', 'ww_G', 'ww_L2', 'ww_roof', 'rear_structure', 'rear_GF', 'rear_L2', 'rear_L3', 'rear_roof', 'outdoor', 'vegetation'];
   for (const n of order) root.add(G[n].flush());
   // every glass material must not cast shadows
   root.traverse((o) => {
@@ -1254,6 +1451,25 @@ export const SHOTS = {
   rear_roof: { title: 'Rear · fins, eyebrow shade, exhaust risers, roof plant screen', pos: [26.0, 44.0, 14.5], target: [10.0, 28.0, 8.5], focal: 28, time: 'golden' },
   left_nw: { title: 'Left · north-west corner: fire-stair / lift core, palm P1', pos: [-13.0, 38.0, 4.5], target: [-3.5, 27.0, 4.5], focal: 22, time: 'golden' },
   left_top: { title: 'Left · aerial over the west wing (PV, pergola, jali)', pos: [-16.0, -2.0, 19.0], target: [-2.0, 12.0, 3.0], focal: 28, time: 'golden' },
+  // REV D.9: west wing + coconut garden in detail
+  ww_G: { title: 'West wing · ground floor cut-away, south half (studio, stair hall)', pos: [7.0, -14.0, 14.0], target: [-2.4, 3.0, 0.0], focal: 28, time: 'day', hide: ['vegetation', 'ww_L2', 'ww_roof', 'hall_roof', 'hall_shell', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'fences', 'trees'] },
+  ww_L2: { title: 'West wing · upper floor cut-away, south half (Creative Suite)', pos: [7.0, -14.0, 15.0], target: [-2.4, 3.0, 3.5], focal: 28, time: 'day', hide: ['vegetation', 'ww_roof', 'hall_roof', 'hall_shell', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'fences', 'trees'] },
+  ww_G_south: { title: 'West wing · studio + stair hall plan (ground, top view)', pos: [-2.4, -3.0, 21.0], target: [-2.4, 2.0, 0.0], focal: 30, time: 'day', hide: ['vegetation', 'ww_L2', 'ww_roof', 'hall_roof', 'hall_shell', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'fences', 'trees'] },
+  ww_G_north: { title: 'West wing · garden, pods and core (ground, top view)', pos: [-2.4, 12.0, 24.0], target: [-2.4, 21.0, 0.0], focal: 30, time: 'day', hide: ['vegetation', 'ww_L2', 'ww_roof', 'hall_roof', 'hall_shell', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'fences', 'trees'] },
+  ww_L2_north: { title: 'West wing · upper floor north (gallery walkway, L3 pod, L4 staff)', pos: [7.0, 5.0, 15.0], target: [-2.4, 20.0, 3.5], focal: 28, time: 'day', hide: ['vegetation', 'ww_roof', 'hall_roof', 'hall_shell', 'hall_interior', 'cyclones', 'fences', 'trees'] },
+  ww_G_north_ob: { title: 'West wing · ground floor cut-away, north half (garden, pods, core)', pos: [7.0, 5.0, 14.0], target: [-2.4, 20.0, 0.0], focal: 28, time: 'day', hide: ['vegetation', 'ww_L2', 'ww_roof', 'hall_roof', 'hall_shell', 'hall_interior', 'cyclones', 'fences', 'trees'] },
+  studio_in: { title: 'G1 Creative Studio · from the street door towards the cyclorama', pos: [-2.6, -8.4, 1.5], target: [-2.4, 3.5, 1.3], focal: 18, time: 'day', hide: ['ww_L2'] },
+  studio_cyc: { title: 'G1 Creative Studio · cyclorama end, lights and cameras', pos: [-2.4, -1.5, 1.6], target: [-2.4, 4.5, 1.2], focal: 20, time: 'day', hide: ['ww_L2'] },
+  stair_hall: { title: 'G2 Grand U-stair · from D3 (hall door)', pos: [-1.6, 5.4, 1.6], target: [-3.0, 8.5, 2.2], focal: 16, time: 'day', hide: ['ww_roof'] },
+  stair_up: { title: 'G2 Grand U-stair · looking up the flights', pos: [-3.0, 6.1, 0.9], target: [-2.4, 8.8, 3.6], focal: 16, time: 'day', hide: ['ww_roof'] },
+  suite_in: { title: 'L1 Creative Suite · VIP lounge', pos: [-1.5, -8.3, 5.2], target: [-2.6, 1.0, 4.5], focal: 16, time: 'day', hide: ['ww_roof'] },
+  garden_eye: { title: 'G3 Coconut co-working garden · ground level', pos: [-1.5, 10.5, 1.6], target: [-3.2, 17.5, 2.6], focal: 16, time: 'morning' },
+  garden_palm: { title: 'G3 · palm P2 / P3, teak benches, jali, bar ledge', pos: [-1.5, 17.2, 1.5], target: [-3.5, 12.5, 2.6], focal: 18, time: 'morning' },
+  garden_top: { title: 'G3 · garden from above (pergola slats removed)', pos: [-2.2, 9.5, 11.0], target: [-2.4, 17.0, 0.0], focal: 24, time: 'morning', hide: ['ww_roof', 'hall_roof', 'hall_shell', 'hall_interior'] },
+  walkway_l2: { title: 'L2 gallery walkway · guard net and canopy, palms beyond', pos: [-1.2, 10.4, 5.1], target: [-3.0, 19.0, 4.8], focal: 16, time: 'morning' },
+  pods: { title: 'Focus pods G4 / L3 and the north end of the garden', pos: [-2.0, 14.0, 1.6], target: [-2.6, 21.5, 2.4], focal: 18, time: 'day' },
+  core_in: { title: 'G5 MDB + pump room, fire stair, lift lobby', pos: [-2.8, 25.2, 1.6], target: [-2.8, 29.0, 1.6], focal: 16, time: 'day' },
+  palm_crown: { title: 'Palms P2 / P3 crowns above the pergola', pos: [-12.0, 22.0, 10.0], target: [-3.5, 14.0, 10.5], focal: 24, time: 'morning', hide: ['fences', 'trees'] },
   // interior studies
   hall_aisle: { title: 'Interior · Cyclone aisle W0–C0–E0', pos: [2.4, 6.0, 1.6], target: [14.0, 7.6, 4.0], focal: 20, time: 'day' },
   hall_roof: { title: 'Interior · Space-frame roof & courts', pos: [21.0, -9.0, 2.0], target: [6.0, 12.0, 6.0], focal: 16, time: 'day' },

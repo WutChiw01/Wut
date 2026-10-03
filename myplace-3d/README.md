@@ -24,3 +24,17 @@ Known deviations from the spec / simplifications
 - To make room, the climbing wall + crash pit moved 1.30 m north (pit y 24.90…29.20, tower y 25.60…28.90); the 1.20 m pit stair gap is now at the SE corner as in the spec.
 - Rear: teak sun-fins on L3, eyebrow shade + wall-washers on L2, slat canopy over the clinic door, sauna exhaust risers, downpipes, louvred roof plant screen with condensers, pool steps/ladder/underwater lights, shower, pool plant room, planters.
 - Sides: batten wall sconces and PV on the west wing roof; climbing wall route tapes, auto-belay units, top-out gate; new east elevation.
+
+## REV D.9 — West wing + coconut garden in detail
+New layers (`ww_G`, `ww_L2`, `ww_roof`) so the wing can be cut away; shots `ww_*`, `studio_*`, `stair_*`, `suite_in`, `garden_*`, `walkway_l2`, `pods`, `core_in`, `palm_crown`.
+- G1 Creative Studio (2.65 × 13.6 m): street door D1, sound-lock vestibule, acoustic + teak-slat panels, ceiling track, softboxes on tripods, camera, make-up station, lounge corner, prop shelves, 0.90 m radius cyclorama cove.
+- G2 Grand U-stair: 20 risers × 175 mm, 260 mm treads, two 1.25 m flights + mid-landing, stair-head glass balustrade, WC G2 under flight 2 (1.20 × 0.95 m only — the headroom limit of 2.0 m), under-landing store; hall doors D3 (1.70 m, y 5.25–6.95) and D4 (1.70 m, y 10.6–12.3) cut in the hall west wall.
+- L1 Creative Suite: rug, sofa, armchairs, bar counter with stools, TV wall, shared desk, pendants.
+- G3 garden: P2/P3 with earth beds, drip rings, curved teak benches, jali wall wrapped around P2, stepping-stone path, bar-height co-working ledge + stools, water bowl, pendants; L2 gallery walkway with guard net + polycarbonate canopy against falling coconuts, slatted pergola opened around the trunks.
+- Focus pods G4 (ground) and L3 (upper), G5 MDB + pump room, L4 staff / linen, 2.05 × 2.05 m MRL lift, switchback fire stair.
+- Palms rebuilt: ring scars, bole, crown shaft, 20 arching fronds, coconut bunches; trunks lean gently east into the pergola gap instead of towards the wall.
+
+Open design conflicts found while detailing (need a decision)
+1. The 2.65 m wide stair hall cannot hold a 20-riser U-stair, D3 (1.70 m) and WC G2 *and* a bridge from the stair head (z 3.50, south) to the L2 gallery walkway (z 3.50, north) — the bridge would sit 0.3 m above flight 2. Currently the L2 stair head feeds the Creative Suite only; the walkway starts at y = 10 with no direct stair link.
+2. Fire stair flights are 0.95 m wide (1.90 m available outside the existing slab) instead of the 1.20 m in the spec.
+3. G4/L3 pods are 4 m long, full width / half width — spec area 10.36 m² each is not reachable with the 2.65 m wing width.

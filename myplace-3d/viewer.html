@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MY PLACE · 3D Model vD6</title>
+<style>
+  html,body{margin:0;height:100%;background:#0e1116;color:#e6e9ee;font:13px/1.4 system-ui,"Noto Sans Thai",sans-serif;overflow:hidden}
+  canvas{display:block}
+  #ui{position:fixed;left:10px;top:10px;max-width:260px;background:rgba(14,17,22,.82);border:1px solid #2a313c;border-radius:10px;padding:10px;backdrop-filter:blur(6px)}
+  #ui h1{font-size:13px;margin:0 0 6px;letter-spacing:.08em}
+  #ui button{display:block;width:100%;text-align:left;background:#1a202a;color:inherit;border:1px solid #2a313c;border-radius:6px;padding:5px 8px;margin:3px 0;cursor:pointer;font:inherit}
+  #ui button:hover{background:#243044}
+  #ui label{display:block;margin:2px 0}
+  details summary{cursor:pointer;margin:6px 0}
+  body.shot #ui{display:none}
+</style>
+</head>
+<body>
+<script type="importmap">
+{"imports":{"three":"./lib/three.module.js","three/addons/":"./lib/addons/"}}
+</script>
+<div id="ui"><h1>MY PLACE · REV D.6</h1><div id="shots"></div><details open><summary>Layers</summary><div id="layers"></div></details></div>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { buildModel, SHOTS, TIMES } from './model.js';
+
+const q = new URLSearchParams(location.search);
+const shotId = q.get('shot');
+if (shotId) document.body.classList.add('shot');
+const W = +q.get('w') || innerWidth, H = +q.get('h') || innerHeight;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(shotId ? 1 : Math.min(devicePixelRatio, 2));
+renderer.setSize(W, H);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pm = new THREE.PMREMGenerator(renderer);
+scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const { root, layers } = buildModel();
+scene.add(root);
+
+const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 600);
+camera.filmGauge = 36;
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// sky dome
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false, fog: false,
+  uniforms: { top: { value: new THREE.Color() }, mid: { value: new THREE.Color() }, bot: { value: new THREE.Color() } },
+  vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }',
+  fragmentShader: 'uniform vec3 top,mid,bot; varying vec3 vP; void main(){ float h=clamp(vP.y,-0.1,1.); vec3 c = h<0.25 ? mix(bot,mid,smoothstep(-0.1,0.25,h)) : mix(mid,top,smoothstep(0.25,0.8,h)); gl_FragColor=vec4(c,1.); #include <colorspace_fragment>\n}',
+});
+const sky = new THREE.Mesh(new THREE.SphereGeometry(450, 32, 16), skyMat);
+scene.add(sky);
+
+const sun = new THREE.DirectionalLight(0xffffff, 3);
+sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096);
+const sc = sun.shadow.camera; sc.left = -60; sc.right = 60; sc.top = 60; sc.bottom = -60; sc.near = 1; sc.far = 300;
+sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.04;
+scene.add(sun, sun.target);
+const hemi = new THREE.HemisphereLight(0xcfe3ff, 0x8a7a66, 0.3);
+scene.add(hemi);
+const warm = []; // dusk accent lights
+const glowTargets = [];
+
+function setTime(name) {
+  const t = TIMES[name] || TIMES.day;
+  skyMat.uniforms.top.value.set(t.sky[0]); skyMat.uniforms.mid.value.set(t.sky[1]); skyMat.uniforms.bot.value.set(t.sky[2]);
+  sun.color.set(t.sun); sun.intensity = t.sunI;
+  sun.position.set(11 + t.sunPos[0], t.sunPos[1], -12 + t.sunPos[2]); sun.target.position.set(11, 0, -12);
+  scene.environmentIntensity = t.env; hemi.intensity = t.hemi;
+  scene.fog = new THREE.Fog(t.fog, 90, 330);
+  root.traverse((o) => { if (o.isMesh && o.material.vertexColors) o.material.emissiveIntensity = t.glow * 0.55; });
+  warm.forEach((l) => scene.remove(l)); warm.length = 0;
+  if (t.glow) {
+    for (const [x, y] of [[7.35, -11.3], [14.15, -11.3]]) {
+      const l = new THREE.PointLight(0xffa24d, 90, 22, 2); l.position.set(x, 4.5, -y + 1.5); scene.add(l); warm.push(l);
+    }
+    const l2 = new THREE.PointLight(0xffd9a0, 110, 28, 2); l2.position.set(10.75, 2.4, 12.5); scene.add(l2); warm.push(l2);
+  }
+}
+
+function applyShot(id) {
+  const s = SHOTS[id]; if (!s) return;
+  setTime(s.time);
+  const hide = new Set(s.hide || []);
+  root.children.forEach((c) => (c.visible = !hide.has(c.name)));
+  camera.up.set(0, 1, 0);
+  const p = s.pos, t = s.target;
+  camera.position.set(p[0], p[2], -p[1]);
+  controls.target.set(t[0], t[2], -t[1]);
+  camera.setFocalLength(s.focal);
+  camera.aspect = W / H; camera.updateProjectionMatrix();
+  camera.lookAt(controls.target);
+  controls.update();
+  syncChecks();
+  document.title = s.title;
+}
+
+// UI
+const shotsEl = document.getElementById('shots'), layersEl = document.getElementById('layers');
+for (const [id, s] of Object.entries(SHOTS)) {
+  const b = document.createElement('button'); b.textContent = s.title; b.onclick = () => applyShot(id); shotsEl.appendChild(b);
+}
+const checks = {};
+for (const n of layers) {
+  const l = document.createElement('label'); const c = document.createElement('input'); c.type = 'checkbox'; c.checked = true;
+  c.onchange = () => { root.getObjectByName(n).visible = c.checked; };
+  l.append(c, ' ' + n); layersEl.appendChild(l); checks[n] = c;
+}
+function syncChecks() { for (const n of layers) checks[n].checked = root.getObjectByName(n).visible; }
+
+addEventListener('resize', () => { if (shotId) return; renderer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); });
+
+window.exportGLB = () => new Promise((res, rej) => {
+  setTime('day');
+  new GLTFExporter().parse(root, (buf) => {
+    const bytes = new Uint8Array(buf); let s = ''; const CH = 0x8000;
+    for (let i = 0; i < bytes.length; i += CH) s += String.fromCharCode.apply(null, bytes.subarray(i, i + CH));
+    res(btoa(s));
+  }, rej, { binary: true, onlyVisible: false });
+});
+
+applyShot(shotId || 's7');
+function frame() { controls.update(); renderer.render(scene, camera); }
+if (shotId) { frame(); frame(); window.__ready = true; }
+else renderer.setAnimationLoop(frame);
+</script>
+</body>
+</html>

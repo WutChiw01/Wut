@@ -346,7 +346,7 @@ export function buildModel() {
       shape.holes.push(h);
     };
     hole(22.85, 25.05, 24.9, 29.2);
-    hole(10.2, 22.2, 31.0, 35.0);
+    hole(13.4, 19.4, 31.6, 34.6); // prefab pool pit 6.0 × 3.0
     const gg = new THREE.ShapeGeometry(shape);
     gg.rotateX(-Math.PI / 2);
     gg.translate(0, -0.02, 0);
@@ -1287,26 +1287,6 @@ export function buildModel() {
     }
     // PV array moved to the south part of the roof so the plant screen has room
     // (kept at 6 panels; the quad above is shortened in the roof block)
-    // pool: steps at the east end, steel ladder, underwater lights, outdoor shower, pool plant room, planters
-    {
-      const b = G.outdoor || layer('outdoor');
-      b.box(21.6, 22.2, 31.0, 35.0, -1.4, -0.5, M.poolTile); b.box(21.0, 21.6, 31.0, 35.0, -1.4, -0.95, M.poolTile);
-      for (const x of [10.55, 10.95]) { b.cyl(x, 31.15, -0.6, 0.9, 0.025, 0.025, M.ss316, 8); }
-      b.torus(10.75, 31.15, 0.9, 0.2, 0.02, M.ss316, 12);
-      for (const x of [11.5, 14.5, 17.5, 20.0]) b.box(x - 0.08, x + 0.08, 31.0, 31.05, -0.85, -0.7, M.led); // underwater lights
-      for (const y of [32.3, 33.7]) b.box(10.2, 10.25, y - 0.08, y + 0.08, -0.85, -0.7, M.led);
-      b.cyl(23.2, 31.3, 0.07, 2.3, 0.04, 0.04, M.ss316, 10); b.cyl(23.2, 31.3, 2.2, 2.3, 0.03, 0.14, M.ss316, 12);
-      b.cyl(23.2, 31.3, 0.07, 0.1, 0.35, 0.35, M.pebble, 16);
-      // pool equipment room (AFM filter, salt chlorinator, UV-C) with teak batten cladding and a louvred door
-      b.box(24.6, 26.6, 31.6, 33.6, 0, 2.4, M.charcoal);
-      for (let y = 31.65; y < 33.55; y += 0.22) b.box(24.55, 24.6, y, y + 0.1, 0.05, 2.3, M.teak);
-      b.box(24.52, 24.6, 32.2, 33.0, 0.1, 2.1, M.louvre);
-      b.box(24.45, 26.75, 31.5, 33.7, 2.4, 2.5, M.concrete);
-      // raised teak planters with tropical shrubs on the west deck
-      for (const y of [32.4, 34.0]) { b.box(7.3, 9.4, y - 0.4, y + 0.4, 0.07, 0.6, M.teak); for (let k = 0; k < 8; k++) { const g = new THREE.ConeGeometry(0.1, 0.9, 6); g.translate(7.5 + (k % 4) * 0.55, 1.05, -(y + (k < 4 ? -0.15 : 0.15))); b.add(M.hedge, g); } }
-      // pool-side towel stand + deck lights
-      for (const x of [10.0, 13.5, 17.0, 20.5]) b.cyl(x, 30.45, 0.07, 0.4, 0.06, 0.06, M.led, 8);
-    }
     // west wing: sconces on the batten wall + PV on the flat roof (REV P6 wing, south-facing 10° arrays)
     {
       const b = G.west_wing, bR = G.ww_roof;
@@ -1320,22 +1300,50 @@ export function buildModel() {
   // ── Outdoor: pool + deck, climbing wall + sunk crash pit, pickleball, senior garden ──
   {
     const b = G.outdoor || layer('outdoor');
-    // Pool 4 × 12 m (x 10.2…22.2, y 31…35), 1.2–1.4 m deep, teak deck
-    b.box(10.2, 22.2, 31.0, 35.0, -1.4, -1.38, M.poolTile);
-    b.box(10.0, 10.2, 30.8, 35.2, -1.4, 0.05, M.concrete);
-    b.box(22.2, 22.4, 30.8, 35.2, -1.4, 0.05, M.concrete);
-    b.box(10.0, 22.4, 30.8, 31.0, -1.4, 0.05, M.concrete);
-    b.box(10.0, 22.4, 35.0, 35.2, -1.4, 0.05, M.concrete);
-    b.box(10.2, 22.2, 31.0, 35.0, -0.12, -0.1, M.poolWater);
-    // teak deck all around (≥ 1.5 m where room allows; rear fence pinches the NE corner)
-    b.box(7.0, 24.0, 30.1, 30.8, 0.0, 0.07, M.teak);
-    b.box(7.0, 10.0, 30.8, 35.4, 0.0, 0.07, M.teak);
-    b.box(22.4, 24.5, 30.8, 36.0, 0.0, 0.07, M.teak);
-    for (let x = 7.0; x < 24.0; x += 0.1) b.box(x, x + 0.004, 30.1, 30.8, 0.07, 0.072, M.charcoal);
-    // loungers + umbrellas on the deck
-    for (const x of [8.0, 9.2]) b.box(x, x + 0.7, 32.2, 33.8, 0.07, 0.4, M.bedWhite);
-    b.cyl(8.6, 31.2, 0.07, 2.4, 0.03, 0.03, M.charcoal, 8);
-    b.cyl(8.6, 31.2, 2.2, 2.45, 0.05, 1.3, M.plasterWarm, 14);
+    // ── PREFAB POOL 6.0 × 3.0 m (x 13.4…19.4, y 31.6…34.6) on the clinic-door axis (x 16.4), set 0.60 m into the ground, rim +0.80 m above the deck ──
+    {
+      const X0 = 13.4, X1 = 19.4, Y0 = 31.6, Y1 = 34.6, T = 0.12, DECK = 0.07, RIM = DECK + 0.8, FLOOR = -0.55, WATER = RIM - 0.15;
+      b.box(X0, X1, Y0, Y1, FLOOR - 0.12, FLOOR - 0.04, M.concrete); // compacted base slab
+      b.box(X0 + T, X1 - T, Y0 + T, Y1 - T, FLOOR - 0.04, FLOOR, M.poolTile); // shell floor
+      // shell walls (composite / fibreglass, light blue inside, charcoal outside), full height −0.55 … rim
+      for (const [x0, x1, y0, y1] of [[X0, X1, Y0, Y0 + T], [X0, X1, Y1 - T, Y1], [X0, X0 + T, Y0, Y1], [X1 - T, X1, Y0, Y1]]) b.box(x0, x1, y0, y1, FLOOR - 0.04, RIM, M.poolTile);
+      // solid charcoal outer skin behind the slats (no light blue showing through the gaps)
+      for (const [x0, x1, y0, y1] of [[X0 - 0.02, X1 + 0.02, Y0 - 0.02, Y0], [X0 - 0.02, X1 + 0.02, Y1, Y1 + 0.02], [X0 - 0.02, X0, Y0, Y1], [X1, X1 + 0.02, Y0, Y1]]) b.box(x0, x1, y0, y1, DECK, RIM - 0.06, M.charcoal);
+      // outer cladding above the deck: vertical teak slats on all four sides + charcoal base band
+      for (let x = X0; x < X1; x += 0.15) { b.box(x, x + 0.1, Y0 - 0.04, Y0, DECK, RIM - 0.06, M.teak); b.box(x, x + 0.1, Y1, Y1 + 0.04, DECK, RIM - 0.06, M.teak); }
+      for (let y = Y0; y < Y1; y += 0.15) { b.box(X0 - 0.04, X0, y, y + 0.1, DECK, RIM - 0.06, M.teak); b.box(X1, X1 + 0.04, y, y + 0.1, DECK, RIM - 0.06, M.teak); }
+      // capping / seat ledge 0.32 m wide, overhanging 0.04 m
+      for (const [x0, x1, y0, y1] of [[X0 - 0.04, X1 + 0.04, Y0 - 0.04, Y0 + 0.28], [X0 - 0.04, X1 + 0.04, Y1 - 0.28, Y1 + 0.04], [X0 - 0.04, X0 + 0.28, Y0 - 0.04, Y1 + 0.04], [X1 - 0.28, X1 + 0.04, Y0 - 0.04, Y1 + 0.04]]) b.box(x0, x1, y0, y1, RIM - 0.06, RIM, M.teakLight);
+      b.box(X0 + T, X1 - T, Y0 + T, Y1 - T, WATER - 0.02, WATER, M.poolWater); // water, 0.15 m below the rim
+      // entry steps on the clinic side (south long side): 3 risers × 0.267 m, 1.20 m wide, steel rails both sides
+      const SX0 = 15.8, SX1 = 17.0, rs = (RIM - DECK) / 3;
+      for (let i = 1; i <= 3; i++) b.box(SX0, SX1, Y0 - 0.32 * (4 - i), Y0, DECK, DECK + rs * i, M.teakLight);
+      for (const x of [SX0 - 0.03, SX1 + 0.03]) { b.member([x, Y0 - 0.96, DECK + 0.9], [x, Y0 + 0.2, RIM + 0.9], 0.025, M.ss316, 8); b.member([x, Y0 - 0.96, DECK], [x, Y0 - 0.96, DECK + 0.9], 0.025, M.ss316, 6); b.member([x, Y0 + 0.2, RIM], [x, Y0 + 0.2, RIM + 0.9], 0.025, M.ss316, 6); }
+      // in-pool steps under the entry (4 treads down to the floor) + hand-rail
+      for (let i = 1; i <= 4; i++) b.box(SX0, SX1, Y0 + T, Y0 + T + 0.3 * i, RIM - rs * i - 0.05, RIM - rs * i, M.poolTile);
+      b.member([SX0 - 0.03, Y0 + 0.2, RIM + 0.9], [SX0 - 0.03, Y0 + 1.1, WATER + 0.9], 0.025, M.ss316, 8);
+      // built-in seat bench along the north wall (0.40 m wide, seat 0.45 m under the water)
+      b.box(X0 + T, X1 - T, Y1 - T - 0.4, Y1 - T, WATER - 0.55, WATER - 0.5, M.poolTile); b.box(X0 + T, X1 - T, Y1 - T - 0.4, Y1 - T - 0.36, FLOOR, WATER - 0.55, M.poolTile);
+      // return jets, skimmer, underwater lights
+      for (const x of [14.4, 16.4, 18.4]) { b.box(x - 0.1, x + 0.1, Y1 - T - 0.02, Y1 - T, WATER - 0.4, WATER - 0.3, M.ss316); b.box(x - 0.08, x + 0.08, Y0 + T, Y0 + T + 0.02, WATER - 0.9, WATER - 0.8, M.led); }
+      b.box(18.9, 19.3, Y0 + T, Y0 + T + 0.03, WATER - 0.1, WATER + 0.02, M.charcoal);
+      // outdoor shower, towel rail, pool plant room (filter, salt chlorinator, UV-C, heater) to the east
+      b.cyl(20.4, 31.9, DECK, 2.3, 0.04, 0.04, M.ss316, 10); b.cyl(20.4, 31.9, 2.2, 2.3, 0.03, 0.14, M.ss316, 12); b.cyl(20.4, 31.9, DECK, DECK + 0.03, 0.35, 0.35, M.pebble, 16);
+      b.box(21.1, 22.9, 31.6, 33.5, 0, 2.4, M.charcoal); for (let y = 31.65; y < 33.45; y += 0.22) b.box(21.05, 21.1, y, y + 0.1, 0.05, 2.3, M.teak);
+      b.box(21.02, 21.1, 32.1, 32.9, 0.1, 2.1, M.louvre); b.box(20.95, 23.05, 31.5, 33.6, 2.4, 2.5, M.concrete);
+      b.member([X1 - 0.05, 32.9, WATER - 0.2], [22.0, 32.9, 0.3], 0.03, M.charcoal, 6); // pipe run (buried, shown schematically)
+      // teak deck around the pool: 1.50 m on the clinic side, ≥ 1.0 m elsewhere (rear fence slopes towards the north-east)
+      b.box(11.4, 21.4, 30.1, 31.6, 0.0, DECK, M.teak); b.box(11.4, 21.4, 34.6, 35.6, 0.0, DECK, M.teak);
+      b.box(11.4, 13.4, 31.6, 34.6, 0.0, DECK, M.teak); b.box(19.4, 21.4, 31.6, 34.6, 0.0, DECK, M.teak);
+      for (let x = 11.4; x < 21.4; x += 0.1) b.box(x, x + 0.004, 30.1, 31.6, DECK, DECK + 0.002, M.charcoal);
+      // loungers + umbrella on the west deck, planters on the north deck, deck lights
+      for (const y of [32.2, 33.4]) b.box(11.7, 12.9, y - 0.3, y + 0.3, DECK, DECK + 0.38, M.bedWhite);
+      b.cyl(12.3, 34.1, DECK, 2.4, 0.03, 0.03, M.charcoal, 8); b.cyl(12.3, 34.1, 2.2, 2.45, 0.05, 1.3, M.plasterWarm, 14);
+      for (const x0 of [14.0, 16.6]) { b.box(x0, x0 + 2.0, 34.95, 35.5, DECK, DECK + 0.55, M.teak); for (let k = 0; k < 7; k++) { const g = new THREE.ConeGeometry(0.1, 0.9, 6); g.translate(x0 + 0.25 + k * 0.25, DECK + 1.0, -35.22); b.add(M.hedge, g); } }
+      for (const x of [12.0, 14.5, 18.4, 20.8]) b.cyl(x, 30.45, DECK, DECK + 0.4, 0.06, 0.06, M.led, 8);
+      // 2.00 m glass sliding door of the clinic opens to this deck: threshold step flush with the deck
+      b.box(15.4, 17.4, 30.1, 30.5, DECK - 0.02, DECK, M.steel);
+    }
 
     // Outdoor climbing wall: free-standing steel tower 3.30 m wide × 10.50 m tall, x 22.55…22.85, y 25.6…28.9
     // (shifted 1.30 m north vs REV D.5 so the L2 → catwalk door and landing fit at the north-east corner of the hall)
@@ -1548,6 +1556,11 @@ export const SHOTS = {
   studio_up: { title: 'L2 Creative studio · cyclorama end', pos: [-2.4, -4.2, 5.2], target: [-2.4, 1.0, 4.8], focal: 18, time: 'day', hide: ['ww_roof'] },
   studio_lounge: { title: 'L2 Creative studio · VIP lounge corner', pos: [-2.3, -1.0, 5.2], target: [-2.5, -8.0, 4.6], focal: 18, time: 'day', hide: ['ww_roof'] },
   cafe_cut: { title: 'Coffee shop · ground-floor cut-away (top view)', pos: [-2.4, -3.5, 22.0], target: [-2.4, -3.5, 0.0], focal: 30, time: 'day', hide: ['ww_L2', 'ww_roof', 'hall_roof', 'fences', 'trees', 'vegetation'] },
+  // REV D.12: prefab raised pool 3 × 6
+  pool_in: { title: 'Prefab pool 3×6 m · from the clinic door, entry steps', pos: [16.4, 29.2, 1.5], target: [16.4, 33.0, 0.8], focal: 20, time: 'golden', hide: ['rear_L2', 'rear_L3', 'rear_roof'] },
+  pool_side: { title: 'Prefab pool · long side, rim 0.80 m above the deck', pos: [11.0, 36.0, 1.3], target: [17.0, 32.8, 0.7], focal: 22, time: 'golden' },
+  pool_plan: { title: 'Prefab pool · plan view', pos: [16.4, 33.0, 12.0], target: [16.4, 33.0, 0.0], focal: 28, time: 'day', hide: ['fences', 'trees', 'vegetation'] },
+  pool_aerial: { title: 'Rear · pool court from above', pos: [26.0, 42.0, 9.0], target: [16.0, 32.5, 0.5], focal: 26, time: 'golden' },
   // interior studies
   hall_aisle: { title: 'Interior · Cyclone aisle W0–C0–E0', pos: [2.4, 6.0, 1.6], target: [14.0, 7.6, 4.0], focal: 20, time: 'day' },
   hall_roof: { title: 'Interior · Space-frame roof & courts', pos: [21.0, -9.0, 2.0], target: [6.0, 12.0, 6.0], focal: 16, time: 'day' },

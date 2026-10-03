@@ -63,3 +63,10 @@ Open points
 2. Café kitchen / grease: only a counter + display is modelled. A full kitchen would need exhaust and a grease trap (spec has a 1,000 L trap for the café zone) — location not decided.
 3. Café tables are 2.90 m deep only; peak seating overflows to the lobby benches. Capacity ≈ 8 table seats + 8 stools + 4 bench seats.
 4. Fire / egress: the open ground floor connects café, stair and hall without separation; check travel distances and smoke control with the fire engineer.
+
+## REV D.12 — prefab pool 3 × 6 m, rim +0.80 m
+- The 4 × 12 m site-built pool is replaced by a prefab shell **3.00 × 6.00 m** (x 13.40…19.40, y 31.60…34.60) on the axis of the clinic's 2.00 m sliding door (x = 16.40), 1.50 m from the façade.
+- Set 0.55 m into the ground (floor −0.55, depth 1.30 m); the rim stands **0.80 m above the teak deck** (+0.87), 0.32 m wide so it doubles as a seat. Water level 0.15 m below the rim. Charcoal skin + vertical teak slats on the sides.
+- Easy entry: 3 teak steps (0.27 m risers, 1.20 m wide) opposite the clinic door with stainless rails on both sides, 4 under-water treads, plus a built-in seat bench on the north wall.
+- Pool plant room (filter, salt chlorinator, UV-C, heater) 1.80 × 1.90 m on the east side; outdoor shower; loungers + umbrella on the west deck; planters on the north deck; pipes under the deck. Teak deck 1.50 m on the clinic side, ≥ 1.0 m elsewhere. 2D plan + section: `plans/pool_court.*` (`plan_pool.mjs`).
+- Needs checking: prefab pools are normally set in a structural collar — confirm the shell can carry 0.80 m of free-standing wall (supplier data) and the 0.80 m rim height against child-safety rules (needs a gate / cover if kids use the court); the spec's water volume / treatment sizing (4×12 m) is now much smaller (≈ 23 m³).

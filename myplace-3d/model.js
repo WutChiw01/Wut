@@ -143,6 +143,7 @@ M.solar = std({
   metalness: 0.6,
   side: THREE.DoubleSide,
 });
+M.solar.map.wrapS = M.solar.map.wrapT = THREE.RepeatWrapping;
 
 M.leaf = std({
   map: canvasTex(128, 256, (g, w, h) => {
@@ -192,6 +193,8 @@ class B {
     this.map = new Map();
   }
   add(mat, geo) {
+    if (geo.index) geo = geo.toNonIndexed(); // Extrude/Shape geometries are non-indexed; merge needs one convention
+    for (const k of Object.keys(geo.attributes)) if (!['position', 'normal', 'uv', 'color'].includes(k)) geo.deleteAttribute(k);
     if (!this.map.has(mat)) this.map.set(mat, []);
     this.map.get(mat).push(geo);
   }
@@ -355,7 +358,7 @@ export function buildModel() {
       b.add(M.charcoal, g);
     };
     fence(-4.4, -12.5, -4.4, 33.45);
-    fence(-4.4, 33.45, 38.5, 39.9); // slope 3/20 through (0.2,34.1) and (20.2,37.1)
+    fence(-4.4, 33.45, 38.5, 39.9, 0.5); // slope 3/20 through (0.2,34.1) and (20.2,37.1)
     fence(38.5, 39.9, 38.5, -12.5);
     b.box(-4.4, 38.5, -12.6, -12.4, 0, 0.6, M.hedge);
     // boundary markers (setbacks)
@@ -439,7 +442,7 @@ export function buildModel() {
       new THREE.PlaneGeometry(5.0, 0.94),
       new THREE.MeshStandardMaterial({ map: signTex, transparent: true, emissive: 0xffffff, emissiveMap: signTex, emissiveIntensity: 0.15, roughness: 0.6 })
     );
-    sign.position.set(HALL.ridgeX, 9.35, -(HALL.y0 - 0.27));
+    sign.position.set(HALL.ridgeX, 9.35, -(HALL.y0 - 0.31));
     sign.name = 'sign';
     G.hall_shell.group.add(sign);
     // sign backing band
@@ -709,11 +712,12 @@ export function buildModel() {
   {
     const xs = [0.2, 5.2, 10.2, 15.2, 20.2];
     // columns, rows A (25.1) and B (28.1)
-    for (const y of [25.1, 28.1]) for (const x of xs) STr.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, 0, ZR, M.concreteDark);
+    const colsAt = (lyr, z0, z1) => { for (const y of [25.1, 28.1]) for (const x of xs) lyr.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, z0, z1, M.concreteDark); };
+    colsAt(GFr, 0, Z2); colsAt(L2r, Z2, Z3); colsAt(L3r, Z3, ZR);
     // existing RC slab at +3.5 (144 m²) — shown darker so it reads as "do not touch"
-    STr.box(SLAB.x0, SLAB.x1, SLAB.y0, SLAB.y1, Z2 - 0.28, Z2, M.concreteDark);
+    L2r.box(SLAB.x0, SLAB.x1, SLAB.y0, SLAB.y1, Z2 - 0.28, Z2, M.concreteDark);
     // existing beams along rows
-    for (const y of [25.1, 28.1]) STr.box(SLAB.x0, SLAB.x1, y - 0.15, y + 0.15, Z2 - 0.65, Z2 - 0.28, M.concreteDark);
+    for (const y of [25.1, 28.1]) L2r.box(SLAB.x0, SLAB.x1, y - 0.15, y + 0.15, Z2 - 0.65, Z2 - 0.28, M.concreteDark);
 
     // ground floor ----------------------------------------------------
     const b = GFr;
@@ -746,7 +750,7 @@ export function buildModel() {
     b.box(13.1, 14.0, 27.7, 29.6, 0.45, 0.8, M.bedBlue); b.box(13.1, 14.0, 27.7, 29.6, 0.0, 0.45, M.charcoal);
     b.box(12.0, 12.5, 29.4, 29.9, 0, 1.25, M.charcoal); b.box(14.6, 15.1, 29.4, 29.9, 0, 1.25, M.charcoal);
     b.box(15.6, 18.3, 27.2, 30.0, 0.0, 0.02, M.turf); // rehab turf lane
-    for (let x = 15.7; x < 18.3; x += 0.3) b.box(x, x + 0.05, 29.95, 30.05, 0.0, 2.2, M.teakLight); // stall bars
+    for (let y = 27.3; y < 29.8; y += 0.3) b.box(18.2, 18.3, y, y + 0.05, 0.0, 2.2, M.teakLight); // stall bars
     b.box(11.0, 14.2, 26.0, 26.5, 0, 1.05, M.teakLight); // reception counter
     b.box(15.0, 17.8, 25.3, 25.8, 0, 0.45, M.teakLight); // waiting bench
     // changing rooms: lockers + benches
@@ -919,7 +923,7 @@ export function buildModel() {
       const frondGeo = (len, droop) => {
         const seg = 8, pos = [], uv = [], idx = [];
         for (let i = 0; i <= seg; i++) {
-          const t = i / seg, w = 0.85 * Math.sin(Math.PI * Math.min(1, t * 1.05 + 0.08));
+          const t = i / seg, w = 1.3 * Math.sin(Math.PI * Math.min(1, t * 1.05 + 0.08));
           const x = len * t, y = -droop * t * t;
           pos.push(-w / 2 * 0 + x, y, -w / 2, x, y, w / 2);
           uv.push(0, 1 - t, 1, 1 - t);
@@ -933,7 +937,7 @@ export function buildModel() {
         return g;
       };
       for (let k = 0; k < 14; k++) {
-        const g = frondGeo(3.2 + (k % 3) * 0.3, 1.0 + (k % 4) * 0.45);
+        const g = frondGeo(4.2 + (k % 3) * 0.4, 1.2 + (k % 4) * 0.5);
         g.rotateX(Math.PI / 2 * 0);
         g.rotateY(-(k / 14) * TAU + k * 0.4);
         g.rotateZ(((k % 2) * 0.35 + 0.15));
@@ -957,7 +961,7 @@ export function buildModel() {
         b.add(M.treeCrown, g);
       }
     };
-    for (const [x, y, s] of [[-8, -20, 1.2], [4, -23.2, 1], [26, -23.3, 1.1], [36, -23.3, 1.0], [-9, 8, 1.4], [-9, 26, 1.2], [-7, -5, 1.1], [-20, 12, 1.3], [-20, 30, 1.2], [-15, -10, 1.3], [40, 10, 1.5], [41, 28, 1.3], [42, -10, 1.4], [31, 34, 1.2], [26, 33, 1.2], [3, 33, 1.1]]) tree(x, y, s);
+    for (const [x, y, s] of [[-8, -21, 0.8], [3, -23.2, 0.7], [27, -23.3, 0.7], [36, -23.3, 0.7], [-9, 8, 0.9], [-9, 26, 0.8], [-8, -5, 0.8], [-18, 12, 1.0], [-18, 30, 0.9], [40, 6, 1.0], [41, 24, 0.9], [34, 36, 0.8], [27, 34, 0.7]]) tree(x, y, s);
     for (const x of [-3, 0.5, 4, 17, 20.5, 24]) b.box(x, x + 1.4, -13.9, -12.8, 0, 0.5, M.hedge);
   }
 
@@ -977,16 +981,16 @@ export const SHOTS = {
   s1_dusk: { title: 'S1 · Street Approach (Dusk hero)', pos: [10.75, -30.0, 1.7], target: [10.75, -12.0, 5.4], focal: 24, time: 'dusk' },
   s2: { title: 'S2 · Entrance Threshold', pos: [10.75, -18.0, 1.6], target: [10.75, -10.5, 4.6], focal: 24, time: 'golden' },
   s3: { title: 'S3 · Badminton Hall Grandeur', pos: [10.4, -1.0, 1.7], target: [10.4, 12.0, 4.0], focal: 14, time: 'day' },
-  s4: { title: 'S4 · C0 Cyclone Close-up', pos: [10.13, 3.5, 1.6], target: [10.13, 7.35, 4.4], focal: 35, time: 'day' },
-  s5: { title: 'S5 · West Palms Co-Working', pos: [-2.0, 10.0, 5.2], target: [-3.4, 14.5, 5.0], focal: 28, time: 'morning' },
-  s6: { title: 'S6 · Rear Wellness & Pool', pos: [14.0, 38.0, 1.7], target: [14.0, 28.0, 4.6], focal: 24, time: 'golden' },
+  s4: { title: 'S4 · C0 Cyclone Close-up', pos: [10.13, 3.5, 1.6], target: [10.13, 7.35, 3.4], focal: 35, time: 'day' },
+  s5: { title: 'S5 · West Palms Co-Working', pos: [-1.3, 10.2, 6.6], target: [-3.5, 14.0, 0.8], focal: 20, time: 'morning' },
+  s6: { title: 'S6 · Rear Wellness & Pool', pos: [14.0, 39.0, 1.7], target: [14.0, 28.0, 4.2], focal: 14, time: 'golden' },
   s7: { title: 'S7 · Aerial Master', pos: [-22.0, -40.0, 20.0], target: [11.0, 10.0, 3.0], focal: 30, time: 'golden' },
   oblique: { title: 'Master Oblique (front-right)', pos: [42.0, -34.0, 17.0], target: [10.0, 8.0, 3.0], focal: 30, time: 'golden' },
   // interior studies
   hall_aisle: { title: 'Interior · Cyclone aisle W0–C0–E0', pos: [2.4, 6.0, 1.6], target: [14.0, 7.6, 4.0], focal: 20, time: 'day' },
   hall_roof: { title: 'Interior · Space-frame roof & courts', pos: [21.0, -9.0, 2.0], target: [6.0, 12.0, 6.0], focal: 16, time: 'day' },
-  gallery_l2: { title: 'Interior · L2 viewing gallery', pos: [-1.2, 25.0, 4.9], target: [21.0, 25.0, 5.0], focal: 18, time: 'day', hide: [] },
-  clinic: { title: 'Interior · Physio clinic → pool', pos: [11.0, 25.9, 1.5], target: [16.4, 30.0, 1.3], focal: 20, time: 'day', hide: ['rear_L2', 'rear_L3', 'rear_roof'] },
+  gallery_l2: { title: 'Interior · L2 viewing gallery', pos: [-1.2, 24.6, 4.9], target: [21.0, 24.9, 5.0], focal: 18, time: 'day', hide: [] },
+  clinic: { title: 'Interior · Physio clinic → pool', pos: [17.9, 27.2, 1.5], target: [15.0, 30.1, 1.4], focal: 16, time: 'day', hide: ['rear_L2', 'rear_L3', 'rear_roof'] },
   // cut-away plans (upper levels removed) for interior reading
   plan_gf: { title: 'Cut-away · Ground floor (clinic, changing, climbing)', pos: [10.2, 18.5, 26.0], target: [10.2, 28.0, 0.0], focal: 22, time: 'day', hide: ['rear_L2', 'rear_L3', 'rear_roof', 'hall_roof'], upVec: 'north' },
   plan_l2: { title: 'Cut-away · Level 2 wellness (7 zones + gallery)', pos: [10.2, 17.0, 24.0], target: [10.2, 27.0, 3.5], focal: 22, time: 'day', hide: ['rear_L3', 'rear_roof', 'hall_roof'], upVec: 'north' },

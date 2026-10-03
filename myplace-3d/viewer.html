@@ -37,7 +37,7 @@ const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffe
 renderer.setPixelRatio(shotId ? 1 : Math.min(devicePixelRatio, 2));
 renderer.setSize(W, H);
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.0;
 document.body.appendChild(renderer.domElement);
@@ -59,7 +59,7 @@ const skyMat = new THREE.ShaderMaterial({
   side: THREE.BackSide, depthWrite: false, fog: false,
   uniforms: { top: { value: new THREE.Color() }, mid: { value: new THREE.Color() }, bot: { value: new THREE.Color() } },
   vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }',
-  fragmentShader: 'uniform vec3 top,mid,bot; varying vec3 vP; void main(){ float h=clamp(vP.y,-0.1,1.); vec3 c = h<0.25 ? mix(bot,mid,smoothstep(-0.1,0.25,h)) : mix(mid,top,smoothstep(0.25,0.8,h)); gl_FragColor=vec4(c,1.); #include <colorspace_fragment>\n}',
+  fragmentShader: 'uniform vec3 top,mid,bot; varying vec3 vP; void main(){ float h=clamp(vP.y,-0.1,1.); vec3 c = h<0.25 ? mix(bot,mid,smoothstep(-0.1,0.25,h)) : mix(mid,top,smoothstep(0.25,0.8,h)); gl_FragColor=vec4(c,1.);\n#include <colorspace_fragment>\n}',
 });
 const sky = new THREE.Mesh(new THREE.SphereGeometry(450, 32, 16), skyMat);
 scene.add(sky);

@@ -22,9 +22,9 @@ fs.mkdirSync(path.join(here, 'snapshots'), { recursive: true });
 for (const id of ids.length ? ids : all) {
   const page = await browser.newPage({ viewport: { width: W, height: H } });
   page.on('console', (m) => ['error', 'warning'].includes(m.type()) && console.log(`[${id}] ${m.text()}`));
-  page.on('pageerror', (e) => console.log(`[${id}] pageerror`, e.message));
+  page.on('pageerror', (e) => { console.log(`[${id}] pageerror`, e.message); process.exit(1); });
   await page.goto(`http://localhost:${port}/viewer.html?shot=${id}&w=${W}&h=${H}`);
-  await page.waitForFunction('window.__ready === true', null, { timeout: 180000 });
+  await page.waitForFunction('window.__ready === true', null, { timeout: 300000 });
   await page.screenshot({ path: path.join(here, 'snapshots', `${id}.png`) });
   console.log('rendered', id);
   await page.close();

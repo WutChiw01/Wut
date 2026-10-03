@@ -51,3 +51,15 @@ Open points / things to verify
 2. Studio area drops from 38.36 m² (spec) to about 26 m²; the U-stair now sits where the studio was.
 3. Still no link from the stair head (z 3.50, south end) to the L2 deck over the lane and garden: flight 1 climbs under that route and headroom would be < 2.0 m.
 4. The 0.50 m eave and the open garden edge change the fire-separation assumptions between the garden / hall and the stair block (door D3 only); re-check with the fire engineer.
+
+## REV D.11 — coffee shop on the ground floor, studio upstairs, stair + wind lane as one open lobby
+- **Ground floor (zone 1):** no studio any more. The strip becomes an open coffee shop: espresso counter + pastry display near the street door, four two-top tables on a long banquette against the plot-line wall, a bar ledge with stools facing the courts, waiting benches, planters. The hall wall is removed at ground level from the street front to the wind lane, so the café opens straight onto the courts; all furniture stays inside x ≤ −0.90 so the 1.20 m athlete run-off (x −0.80 … +0.40) is untouched.
+- **Open lobby:** the party wall between café and stair, the stair's north wall and the hall-side wall are removed at ground level (they remain above the slab for acoustics / fire). The U-stair, its WC, the stone floor and the 2.00 m wind lane read as one open breezeway lobby with the louvre screens at both ends.
+- **Upper floor (+3.50):** the creative studio (cyclorama, ceiling track, softboxes, acoustic panels) and a VIP lounge corner at the street end, separated by a glass sound partition; floating acoustic floor over the café. Studio footprint 2.65 × 9.95 m.
+- New views: `cafe_*`, `lobby_*`, `studio_up`, `studio_lounge`; plans in `plans/` regenerated (REV D.11).
+
+Open points
+1. The café sits under the studio: needs a proper floating floor / ceiling build-up (shown only as a soft layer) and the studio's own sound lock at the stair-head door.
+2. Café kitchen / grease: only a counter + display is modelled. A full kitchen would need exhaust and a grease trap (spec has a 1,000 L trap for the café zone) — location not decided.
+3. Café tables are 2.90 m deep only; peak seating overflows to the lobby benches. Capacity ≈ 8 table seats + 8 stools + 4 bench seats.
+4. Fire / egress: the open ground floor connects café, stair and hall without separation; check travel distances and smoke control with the fire engineer.

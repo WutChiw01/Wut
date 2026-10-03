@@ -382,7 +382,7 @@ export function buildModel() {
     const b = layer('hall_shell');
     const t = 0.25;
     // west wall (x=-0.8) – solid to 7.4, louvre band above
-    for (const [ya, yb, za, zb] of [[HALL.y0, 1.6, 0, 7.4], [1.6, 3.3, 2.4, 7.4], [3.3, 6.35, 0, 7.4], [8.35, 10.0, 0, 7.4], [22.0, HALL.y1, 0, 7.4]]) b.box(HALL.x0 - t, HALL.x0, ya, yb, za, zb, M.plaster); // D3 to the stair hall; NO wall at the 2.00 m wind lane (y 6.35…8.35) and none along the garden (y 10…22)
+    for (const [ya, yb, za, zb] of [[HALL.y0, -9.0, 0, 7.4], [-9.0, 6.35, 3.35, 7.4], [8.35, 10.0, 0, 7.4], [22.0, HALL.y1, 0, 7.4]]) b.box(HALL.x0 - t, HALL.x0, ya, yb, za, zb, M.plaster); // D3 to the stair hall; NO wall at the 2.00 m wind lane (y 6.35…8.35) and none along the garden (y 10…22)
     // east wall (x=22.3): full-height sliding glass, mullions every 2.5 m
     for (let y = HALL.y0; y <= HALL.y1 + 0.01; y += 2.5) b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, y - 0.04, y + 0.04, 0, 7.4, M.charcoal);
     b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, HALL.y0, HALL.y1, 0, 0.1, M.charcoal);
@@ -833,10 +833,10 @@ export function buildModel() {
     for (let x = wx0 + 0.25; x <= wx1; x += 0.3) W.box(x - 0.03, x + 0.03, -9.4, -9.15, 0.1, Z3, M.teak);
     W.box(-3.0, -2.15, -9.06, -8.9, 0.1, 2.2, M.charcoal); // door D1 frame (private front door)
     // zone 1 / zone 2 party wall (y 4.8…5.2): ground door into the stair lobby, upper door to the Creative Suite
-    wallY(SW, 4.8, 5.2, ix0 - 0.2, ix1, 0, Z3, M.plaster, [{ x0: -3.5, x1: -2.7, z0: 0, z1: 2.2 }, { x0: -2.9, x1: -1.9, z0: 3.6, z1: 5.8 }]);
+    wallY(SW, 4.8, 5.2, ix0 - 0.2, ix1, Z2 - 0.15, Z3, M.plaster, [{ x0: -2.9, x1: -1.9, z0: 3.6, z1: 5.8 }]); // only above the slab: at ground the cafe and the stair lobby are one open space
     // zone 2 north wall (y 9.8…10.0): shell only (stair hall is closed at ground; garden is entered through D4 from the hall)
-    wallY(SW, 9.8, 10.0, ix0 - 0.2, ix1, 0, Z3, M.plaster); // north wall of the stair block (6.15…6.35 after the slide) = south wall of the lane
-    SW.box(ix1, wx1, 9.8, 10.0, 0, Z3, M.plaster);
+    wallY(SW, 9.8, 10.0, ix0 - 0.2, ix1, Z2 - 0.15, Z3, M.plaster); // north wall (above the slab only: stair lobby and wind lane share the ground floor) of the stair block (6.15…6.35 after the slide) = south wall of the lane
+    SW.box(ix1, wx1, 9.8, 10.0, Z2 - 0.15, Z3, M.plaster);
     wallY(W, 9.8, 10.0, ix0 - 0.2, ix1, 0, Z3, M.plaster); // north wall of the store block (y 9.8…10.0)
     wallY(W, 8.35, 8.55, wx0, wx1, 0, Z2 - 0.15, M.plaster); // north wall of the wind lane
     // roof + parapet (zones 1–2) and L1 slab
@@ -845,41 +845,34 @@ export function buildModel() {
     SR.box(-3.7, -1.05, 6.0, 9.0, Z3, Z3 + 0.4, M.skylight); // stair-hall skylight
     UI.box(-4.4, wx1, -9.0, 1.15, Z2 - 0.15, Z2 + 0.1, M.concrete); // L1 slab, now a canopy slab out to the plot line
 
-    // ═══ ZONE 1 — G1 Full-front Creative Studio (ground) ═══
-    GI.box(ix0, ix1, -8.8, 1.15, 0, 0.02, M.floorInt);
-    // sound-lock vestibule: partition at y = −7.2 with a door, second door at the street front
-    wallY(GI, -7.25, -7.15, ix0, ix1, 0, ZC, M.wallInt, [{ x0: -2.9, x1: -2.0, z0: 0, z1: 2.1 }]);
-    GI.box(-2.95, -1.95, -7.3, -7.1, 2.1, 2.15, M.charcoal);
-    // acoustic panels (west) and teak-slat felt panels (east)
-    for (let y = -6.6; y < -1.5; y += 1.3) GI.box(ix0, ix0 + 0.08, y, y + 1.1, 0.9, 2.7, M2.acoustic);
-    for (let y = -6.6; y < -2.6; y += 0.4) GI.box(ix1 - 0.08, ix1, y, y + 0.25, 0.9, 2.7, M.teakLight);
-    // ceiling track + spot heads, rack of softboxes on tripods, reflector, camera
-    GI.box(-2.4 - 0.03, -2.4 + 0.03, -6.9, 0.9, ZC - 0.1, ZC - 0.04, M.steel);
-    for (let y = -6.4; y < 0.9; y += 0.9) { GI.cyl(-2.4, y, ZC - 0.3, ZC - 0.1, 0.07, 0.07, M.charcoal, 8); GI.cyl(-2.4, y, ZC - 0.32, ZC - 0.3, 0.05, 0.05, M.led, 8); }
-    for (const [x, y] of [[-3.15, -2.5], [-1.55, -1.9]]) { tripod(GI, x, y, 1.9); GI.box(x - 0.35, x + 0.35, y - 0.35, y + 0.35, 1.9, 2.5, M2.white); GI.box(x - 0.3, x + 0.3, y - 0.3, y + 0.3, 2.5, 2.52, M.led); }
-    tripod(GI, -1.4, -0.6, 1.5); GI.cyl(-1.4, -0.6, 1.5, 2.1, 0.5, 0.5, M2.white, 18);
-    tripod(GI, -2.4, -3.2, 1.4); GI.cbox(-2.4, -3.2, 1.5, 0.2, 0.3, 0.16, M.charcoal); GI.cyl(-2.4, -2.95, 1.46, 1.56, 0.06, 0.06, M.charcoal, 12);
-    GI.box(-1.6, -1.2, -2.9, -2.6, 0.0, 0.9, M2.cabinet); GI.box(-1.6, -1.2, -2.9, -2.6, 0.9, 1.4, M2.screen); // monitor cart
-    // make-up station on the east wall, sofa + coffee table, prop shelves, gear cases
-    GI.box(-1.65, -1.05, -6.8, -5.4, 0.8, 0.86, M.teakLight); GI.box(-1.45, -1.05, -6.8, -5.4, 0, 0.8, M2.white);
-    GI.box(-1.09, -1.05, -6.7, -5.5, 1.0, 2.1, M.glass); for (let y = -6.6; y <= -5.6; y += 0.25) GI.cyl(-1.12, y, 2.05, 2.1, 0.03, 0.03, M.led, 8);
-    chair(GI, -2.0, -6.1, M2.sofaTan);
-    GI.box(-3.6, -2.7, -5.6, -4.2, 0.1, 0.45, M2.sofa); GI.box(-3.6, -3.4, -5.6, -4.2, 0.45, 0.95, M2.sofa);
-    GI.box(-2.5, -2.0, -5.1, -4.5, 0.0, 0.4, M.teakLight); GI.box(-3.35, -2.55, -5.75, -4.05, 0.0, 0.015, M2.rug);
-    for (let k = 0; k < 4; k++) { GI.box(ix0 + 0.08, ix0 + 0.4, -4.0 + k * 0.55, -4.0 + k * 0.55 + 0.45, 0, 2.0, M.teakLight); for (let z = 0.3; z < 2; z += 0.4) GI.box(ix0 + 0.12, ix0 + 0.36, -3.98 + k * 0.55, -4.0 + k * 0.55 + 0.43, z, z + 0.03, M.charcoal); }
-    GI.box(-1.5, -1.1, -4.0, -3.3, 0, 0.5, M.rubber); GI.box(-1.45, -1.15, -3.2, -2.95, 0, 0.35, M.charcoal);
-    // cyclorama: white floor, 0.90 m radius cove and wall (y −1.25 … 1.15)
-    GI.box(ix0, ix1, -1.25, 0.25, 0.02, 0.03, M2.cyclo);
+    // ═══ ZONE 1 (ground) — COFFEE SHOP open to the badminton hall: counter, banquette tables, viewing ledge + stools, waiting lounge ═══
     {
-      const n = 8;
-      for (let i = 0; i < n; i++) {
-        const a0 = (i / n) * (Math.PI / 2), a1 = ((i + 1) / n) * (Math.PI / 2);
-        const p = (a) => [0.25 + 0.9 * Math.sin(a), 0.9 - 0.9 * Math.cos(a)];
-        const [y0c, z0c] = p(a0), [y1c, z1c] = p(a1);
-        GI.quad(M2.cyclo, [ix0, y0c, z0c], [ix1, y0c, z0c], [ix1, y1c, z1c], [ix0, y1c, z1c]);
+      GI.box(ix0, ix1, -8.8, 1.15, 0, 0.02, M.floorInt);
+      GI.box(-2.0, -0.9, -8.8, 1.15, 0.02, 0.025, M.pathStone); // lighter stone strip along the hall edge (spill-out zone)
+      // back-of-house + service counter near the street door
+      GI.box(ix0, -3.35, -8.5, -4.6, 0, 2.3, M.wallInt); // back wall unit (fridges, shelves)
+      for (let z = 0.9; z < 2.2; z += 0.4) GI.box(ix0 + 0.02, ix0 + 0.35, -8.3, -4.8, z, z + 0.03, M.teakLight);
+      GI.box(ix0 + 0.05, ix0 + 0.4, -8.2, -6.4, 1.0, 1.45, M.ss316); // espresso machine + grinders
+      GI.box(-3.35, -2.45, -8.2, -4.9, 0.0, 1.05, M.teak); GI.box(-3.4, -2.4, -8.25, -4.85, 1.05, 1.1, M.ss316); // service counter 0.90 × 3.30
+      GI.box(-3.0, -2.5, -7.6, -5.4, 1.1, 1.5, M.glass); // pastry display
+      for (const y of [-7.7, -6.6, -5.5]) { GI.cyl(-2.1, y, 0.0, 0.7, 0.025, 0.025, M.steel, 6); GI.cyl(-2.1, y, 0.7, 0.76, 0.17, 0.17, M2.sofa, 12); } // counter stools
+      GI.box(-3.55, -2.75, -9.0 + 0.2, -8.6, 1.8, 2.5, M.charcoal); // menu board over the entrance side
+      for (const y of [-7.4, -6.0, -4.6]) { GI.cyl(-2.85, y, 2.7, ZC - 0.02, 0.006, 0.006, M.steel, 4); GI.cyl(-2.85, y, 2.45, 2.7, 0.14, 0.14, M.led, 10); }
+      // banquette along the plot-line wall with two-top tables
+      GI.box(ix0, -3.25, -4.2, 0.9, 0.0, 0.45, M2.sofa); GI.box(ix0, -3.55, -4.2, 0.9, 0.45, 1.0, M2.sofa);
+      for (const y of [-3.5, -2.2, -0.9, 0.4]) {
+        GI.box(-3.1, -2.4, y - 0.35, y + 0.35, 0.72, 0.76, M.teakLight); GI.cyl(-2.75, y, 0.0, 0.72, 0.03, 0.03, M.charcoal, 8); GI.box(-2.9, -2.6, y - 0.12, y + 0.12, 0.0, 0.02, M.charcoal);
+        chair(GI, -2.15, y, M2.sofaTan);
+        GI.cyl(-2.75, y, 2.5, 3.0, 0.006, 0.006, M.steel, 4); GI.cyl(-2.75, y, 2.3, 2.5, 0.12, 0.12, M.led, 10);
       }
-      GI.quad(M2.cyclo, [ix0, 1.15, 0.9], [ix1, 1.15, 0.9], [ix1, 1.15, ZC], [ix0, 1.15, ZC]);
-      GI.box(ix0, ix0 + 0.06, -1.25, 1.15, 0.02, ZC, M2.cyclo); GI.box(ix1 - 0.06, ix1, -1.25, 1.15, 0.02, ZC, M2.cyclo);
+      // viewing / waiting zone on the hall edge: bar ledge facing the courts + stools + two low benches
+      GI.box(-1.28, -0.95, -7.0, -0.5, 1.02, 1.07, M.teakLight); GI.box(-1.2, -1.15, -7.0, -0.5, 0, 1.02, M.charcoal);
+      for (let y = -6.6; y < -0.6; y += 0.85) { GI.cyl(-1.62, y, 0.0, 0.68, 0.025, 0.025, M.steel, 6); GI.cyl(-1.62, y, 0.68, 0.74, 0.18, 0.18, M2.sofaTan, 12); }
+      GI.box(-1.5, -1.05, 0.15, 1.1, 0, 0.45, M.teakLight); GI.box(-1.5, -1.05, -8.7, -7.6, 0, 0.45, M.teakLight); // waiting benches facing the courts
+      GI.box(-1.52, -1.48, 0.15, 1.1, 0.45, 0.95, M2.sofa);
+      plant(GI, -3.6, 1.0, 1.4); plant(GI, -1.25, 1.0, 1.1, M2.fernDark); plant(GI, -3.6, -8.6, 1.3, M2.fernDark);
+      // entrance door D1 (street) mat + step light
+      GI.box(-3.0, -2.15, -8.86, -8.5, 0.0, 0.015, M.charcoal);
     }
 
     // ═══ ZONE 2 — G2 Grand U-stair (y 5.2 … 9.8), 20 risers × 175 mm, 260 mm treads, 1.25 m flights ═══
@@ -916,11 +909,7 @@ export function buildModel() {
       // lobby: bench, planter, wayfinding light
       SG.box(-3.55, -2.7, 5.35, 5.75, 0, 0.45, M.teakLight); plant(SG, -3.45, 5.7, 1.2, M2.fernDark);
     }
-    // D3 (double 1.70 m) leads from the hall into the stair lobby (shifted with the stair block). There is NO D4 any more: the garden is open to the hall.
-    for (const [ya, yb] of [[5.25, 6.95]]) {
-      SG.box(-1.35, -1.3, ya, yb, 0, 2.35, M.glass); SG.box(-1.36, -1.29, (ya + yb) / 2 - 0.02, (ya + yb) / 2 + 0.02, 0, 2.35, M.charcoal);
-      SG.box(-1.36, -1.29, ya, ya + 0.04, 0, 2.4, M.charcoal); SG.box(-1.36, -1.29, yb - 0.04, yb, 0, 2.4, M.charcoal); SG.box(-1.36, -1.29, ya, yb, 2.35, 2.4, M.charcoal);
-    }
+    // (D3 is gone: the stair lobby is open to the hall and to the wind lane)
     // store block north of the wind lane (y 8.55 … 9.80): bicycle / cleaning store, door from the lane
     GI.box(ix0, ix1, 8.55, 9.8, 0, 0.02, M.floorWet);
     for (let k = 0; k < 4; k++) GI.box(ix0 + 0.05, ix0 + 0.4, 8.7 + k * 0.28, 8.92 + k * 0.28, 0, 1.9, M.teakLight);
@@ -1017,12 +1006,10 @@ export function buildModel() {
     // breeze run straight onto the terracotta tower W0 (and on along the cross-aisle to C0 / E0) and close for tournaments (zero-draught policy).
     {
       const LY0 = 6.35, LY1 = 8.35, LX0 = wx0, LX1 = wx1;
-      GI.box(LX0, LX1, LY0, LY1, 0.0, 0.03, M.pathStone);
+      GI.box(LX0, LX1, 1.55, LY1, 0.0, 0.03, M.pathStone); // one continuous stone floor: stair lobby + wind lane
       for (let x = LX0 + 0.1; x < LX1; x += 0.4) GI.box(x, x + 0.04, LY0 + 0.05, LY1 - 0.05, 0.03, 0.045, M.grating);
-      for (const y of [LY0, LY1]) GI.box(LX0, LX1, y - 0.05, y + 0.05, 0.0, 0.1, M.charcoal); // kerb rails
       const fins = (xc, depth, open, mat = M.louvre) => { // vertical pivoting fins, 10 per 2.00 m
         GI.box(xc - 0.07, xc + 0.07, LY0, LY1, 0, 0.06, M.charcoal); GI.box(xc - 0.07, xc + 0.07, LY0, LY1, Z2 - 0.21, Z2 - 0.15, M.charcoal);
-        for (const y of [LY0, LY1]) GI.box(xc - 0.07, xc + 0.07, y - 0.05, y + 0.05, 0, Z2 - 0.15, M.charcoal);
         for (let i = 0; i < 10; i++) {
           const g = new THREE.BoxGeometry(depth, Z2 - 0.4, 0.02); g.rotateY(open); g.translate(xc, (Z2 - 0.4) / 2 + 0.07, -(LY0 + 0.1 + i * 0.2)); GI.add(mat, g);
           GI.cyl(xc, LY0 + 0.1 + i * 0.2, 0.0, Z2 - 0.15, 0.01, 0.01, M.steel, 4);
@@ -1034,7 +1021,7 @@ export function buildModel() {
       GI.box(LX0 + 0.15, LX1 - 0.15, LY1 + 0.0, LY1 + 0.04, 0.2, 2.6, M.glassFrost);
       // lane ceiling lights + a bench niche in the south wall
       for (const x of [-3.3, -2.3, -1.3]) GI.cyl(x, 7.35, Z2 - 0.32, Z2 - 0.15, 0.09, 0.09, M.led, 10);
-      GI.box(-3.0, -1.6, LY0 + 0.0, LY0 + 0.4, 0.0, 0.45, M.teakLight);
+      GI.box(-3.0, -1.6, LY1 - 0.4, LY1, 0.0, 0.45, M.teakLight); // bench
       // arrows of the breeze (hidden unless a wind view is shown)
       const WM = new THREE.MeshStandardMaterial({ color: 0x3aa6ff, emissive: 0x2a8cff, emissiveIntensity: 1.2, transparent: true, opacity: 0.55, roughness: 0.3 });
       const WB = G.x_wind;
@@ -1083,22 +1070,40 @@ export function buildModel() {
       for (let k = 0; k < 3; k++) UI.box(-3.65, -3.35, 24.45, 24.85, Z2 + 0.43 + k * 0.4, Z2 + 0.78 + k * 0.4, M2.white); // folded linen
     }
 
-    // ═══ ZONE 1 — L1 Creative Suite / VIP lounge (upper floor, z 3.50) ═══
-    UI.box(ix0, ix1, -8.8, 1.15, Z2 + 0.1, Z2 + 0.14, M.teakLight);
-    UI.box(-3.55, -1.4, -7.6, -4.4, Z2 + 0.14, Z2 + 0.16, M2.rug);
-    // lounge: sofa, armchairs, coffee tables, TV wall, bar counter with stools, plants
-    UI.box(-3.55, -2.45, -7.4, -5.3, Z2 + 0.16, Z2 + 0.55, M2.sofaTan); UI.box(-3.55, -3.3, -7.4, -5.3, Z2 + 0.55, Z2 + 1.0, M2.sofaTan);
-    chair(UI, -1.7, -6.2, M2.sofa); chair(UI, -1.7, -5.4, M2.sofa);
-    UI.box(-2.4, -1.9, -6.6, -5.8, Z2 + 0.16, Z2 + 0.55, M.teakLight);
-    UI.box(-3.6, -1.1, -2.2, -1.6, Z2 + 0.14, Z2 + 1.05, M.teak); UI.box(-3.4, -1.3, -2.2, -2.15, Z2 + 1.05, Z2 + 1.12, M.ss316); // bar counter
-    for (const x of [-3.2, -2.6, -2.0, -1.4]) { UI.cyl(x, -1.2, Z2 + 0.14, Z2 + 0.7, 0.03, 0.03, M.steel, 6); UI.cyl(x, -1.2, Z2 + 0.7, Z2 + 0.76, 0.17, 0.17, M2.sofa, 12); }
-    UI.box(ix0 + 0.02, ix0 + 0.08, -6.8, -4.6, Z2 + 1.0, Z2 + 2.0, M2.screen); // TV on the west wall
-    UI.box(-3.55, -1.3, -1.2, 0.95, Z2 + 0.14, Z2 + 0.16, M2.rugGrey); // work area: shared desk + chairs
-    UI.box(-3.4, -1.4, -0.6, 0.2, Z2 + 0.72, Z2 + 0.76, M.teakLight); for (const x of [-3.1, -2.4, -1.7]) { chair(UI, x, -0.95); chair(UI, x, 0.55, M.charcoal); }
-    UI.box(-3.4, -1.4, -0.6, 0.2, Z2 + 0.14, Z2 + 0.72, M.charcoal);
-    plant(UI, -3.6, -8.2, 1.5); plant(UI, -1.2, -8.2, 1.3, M2.fernDark); plant(UI, -3.6, 0.85, 1.4);
-    UI.box(ix1 - 0.05, ix1, -8.0, -1.0, Z2 + 0.9, Z2 + 2.4, M2.acoustic);
-    for (let y = -8.2; y < 0.9; y += 2.4) { UI.cyl(-2.4, y, ZC + Z2 - 3.35 + 2.9, Z3 - 0.3, 0.006, 0.006, M.steel, 4); UI.cyl(-2.4, y, Z3 - 0.58, Z3 - 0.35, 0.14, 0.14, M.led, 10); }
+    // ═══ ZONE 1 (upper, +3.50) — CREATIVE STUDIO with cyclorama + VIP lounge corner (moved up from the ground floor) ═══
+    {
+      const z = Z2 + 0.1; // finished floor 3.60
+      UI.box(ix0, ix1, -8.8, 1.15, z, z + 0.05, M.teakLight); // floating acoustic floor over the cafe (soft layer + isolation joint underneath)
+      // sound-lock vestibule from the stair head: partition at y 0.55…0.65 with a door (the party wall with the stair block is at y 1.15…1.55)
+      // VIP lounge corner at the street end (y −8.8 … −5.6): sofa, armchairs, bar counter, TV
+      UI.box(-3.55, -1.4, -8.4, -6.0, z + 0.05, z + 0.07, M2.rug);
+      UI.box(-3.55, -2.6, -8.3, -6.4, z + 0.07, z + 0.45, M2.sofaTan); UI.box(-3.55, -3.3, -8.3, -6.4, z + 0.45, z + 0.95, M2.sofaTan);
+      chair(UI, -1.7, -7.7, M2.sofa); chair(UI, -1.7, -6.8, M2.sofa); UI.box(-2.5, -2.0, -7.6, -7.0, z + 0.07, z + 0.45, M.teakLight);
+      UI.box(ix0 + 0.02, ix0 + 0.08, -8.0, -6.2, z + 1.0, z + 2.0, M2.screen);
+      // glass partition between the lounge and the shooting area (y −5.5)
+      UI.box(ix0, ix1, -5.55, -5.5, z, ZC + Z2 - 0.1, M2.glassPod); UI.box(ix0, ix1, -5.58, -5.47, z + 2.55, z + 2.65, M.charcoal);
+      UI.box(-2.9, -2.0, -5.6, -5.45, z, z + 2.2, M2.glassPod);
+      // shooting area y −5.4 … 1.15: acoustic panels, ceiling track, softboxes, camera, monitor, prop shelves
+      for (let y = -5.0; y < -1.5; y += 1.3) UI.box(ix0, ix0 + 0.08, y, y + 1.1, z + 0.9, z + 2.7, M2.acoustic);
+      for (let y = -5.0; y < -1.4; y += 0.4) UI.box(ix1 - 0.08, ix1, y, y + 0.25, z + 0.9, z + 2.7, M.teakLight);
+      UI.box(-2.43, -2.37, -5.2, 0.9, Z3 - 0.4, Z3 - 0.34, M.steel);
+      for (let y = -5.0; y < 0.9; y += 0.9) { UI.cyl(-2.4, y, Z3 - 0.6, Z3 - 0.4, 0.07, 0.07, M.charcoal, 8); UI.cyl(-2.4, y, Z3 - 0.62, Z3 - 0.6, 0.05, 0.05, M.led, 8); }
+      for (const [x, y] of [[-3.15, -2.5], [-1.55, -1.9]]) { for (let k = 0; k < 3; k++) { const a = k * 2.094 + 0.5; UI.member([x, y, z + 1.9], [x + Math.cos(a) * 0.45, y + Math.sin(a) * 0.45, z + 0.02], 0.012, M.charcoal, 4); } UI.box(x - 0.35, x + 0.35, y - 0.35, y + 0.35, z + 1.9, z + 2.5, M2.white); UI.box(x - 0.3, x + 0.3, y - 0.3, y + 0.3, z + 2.5, z + 2.52, M.led); }
+      UI.box(-1.6, -1.2, -3.0, -2.7, z, z + 0.9, M2.cabinet); UI.box(-1.6, -1.2, -3.0, -2.7, z + 0.9, z + 1.4, M2.screen);
+      for (let k = 0; k < 4; k++) UI.box(ix0 + 0.08, ix0 + 0.4, -5.2 + k * 0.55 + 3.4, -5.2 + k * 0.55 + 3.85, z, z + 2.0, M.teakLight);
+      // cyclorama: white floor, 0.90 m radius cove and wall (y −1.25 … 1.15)
+      UI.box(ix0, ix1, -1.25, 0.25, z + 0.05, z + 0.06, M2.cyclo);
+      for (let i = 0; i < 8; i++) {
+        const a0 = (i / 8) * (Math.PI / 2), a1 = ((i + 1) / 8) * (Math.PI / 2);
+        const pp = (a) => [0.25 + 0.9 * Math.sin(a), z + 0.06 + 0.9 - 0.9 * Math.cos(a)];
+        const [y0c, z0c] = pp(a0), [y1c, z1c] = pp(a1);
+        UI.quad(M2.cyclo, [ix0, y0c, z0c], [ix1, y0c, z0c], [ix1, y1c, z1c], [ix0, y1c, z1c]);
+      }
+      UI.quad(M2.cyclo, [ix0, 1.15, z + 0.96], [ix1, 1.15, z + 0.96], [ix1, 1.15, Z3 - 0.3], [ix0, 1.15, Z3 - 0.3]);
+      UI.box(ix0, ix0 + 0.06, -1.25, 1.15, z + 0.05, Z3 - 0.3, M2.cyclo); UI.box(ix1 - 0.06, ix1, -1.25, 1.15, z + 0.05, Z3 - 0.3, M2.cyclo);
+      plant(UI, -3.6, -8.55, 1.3); plant(UI, -1.2, -8.55, 1.1, M2.fernDark);
+    }
+
     for (const [sb, host] of [[SW, W], [SG, GI], [SU, UI], [SR, RF]]) { const g = sb.flush(); g.position.z = SHIFT; host.group.add(g); }
   }
 
@@ -1534,6 +1539,15 @@ export const SHOTS = {
   canopy_under: { title: 'Under the canopy slab · garden with round openings round the palms', pos: [-1.0, 11.0, 1.6], target: [-3.5, 18.5, 3.0], focal: 16, time: 'morning' },
   canopy_deck: { title: 'On top of the canopy slab · palm openings and hall-side edge', pos: [-1.2, 10.6, 5.2], target: [-3.4, 16.5, 4.5], focal: 16, time: 'morning' },
   garden_open: { title: 'Garden open to the badminton hall (no wall at x = −0.80)', pos: [2.5, 15.0, 1.7], target: [-3.4, 16.0, 2.2], focal: 18, time: 'day' },
+  // REV D.11: coffee shop on the ground floor, studio upstairs, stair + wind lane as one open lobby
+  cafe_in: { title: 'Coffee shop · from the street door along the counter', pos: [-2.3, -8.4, 1.6], target: [-2.4, -0.5, 1.3], focal: 18, time: 'day', hide: ['ww_L2'] },
+  cafe_courts: { title: 'Coffee shop · seen from the badminton courts (open edge)', pos: [3.5, -3.0, 1.6], target: [-2.5, -3.0, 1.3], focal: 20, time: 'day' },
+  cafe_ledge: { title: 'Coffee shop · viewing ledge and stools facing the courts', pos: [-2.9, -6.8, 1.5], target: [1.5, -2.5, 1.2], focal: 22, time: 'day' },
+  lobby_open: { title: 'Open lobby · stair + wind lane as one space (from the courts)', pos: [4.6, 5.0, 1.7], target: [-2.5, 4.2, 2.4], focal: 18, time: 'day', show: ['x_wind'] },
+  lobby_in: { title: 'Open lobby · inside, stair to the south, lane to the north', pos: [-1.5, 7.3, 1.6], target: [-3.0, 3.6, 2.2], focal: 16, time: 'day', hide: ['ww_roof'] },
+  studio_up: { title: 'L2 Creative studio · cyclorama end', pos: [-2.4, -4.2, 5.2], target: [-2.4, 1.0, 4.8], focal: 18, time: 'day', hide: ['ww_roof'] },
+  studio_lounge: { title: 'L2 Creative studio · VIP lounge corner', pos: [-2.3, -1.0, 5.2], target: [-2.5, -8.0, 4.6], focal: 18, time: 'day', hide: ['ww_roof'] },
+  cafe_cut: { title: 'Coffee shop · ground-floor cut-away (top view)', pos: [-2.4, -3.5, 22.0], target: [-2.4, -3.5, 0.0], focal: 30, time: 'day', hide: ['ww_L2', 'ww_roof', 'hall_roof', 'fences', 'trees', 'vegetation'] },
   // interior studies
   hall_aisle: { title: 'Interior · Cyclone aisle W0–C0–E0', pos: [2.4, 6.0, 1.6], target: [14.0, 7.6, 4.0], focal: 20, time: 'day' },
   hall_roof: { title: 'Interior · Space-frame roof & courts', pos: [21.0, -9.0, 2.0], target: [6.0, 12.0, 6.0], focal: 16, time: 'day' },

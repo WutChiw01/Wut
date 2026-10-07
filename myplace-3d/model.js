@@ -1207,7 +1207,10 @@ export function buildModel(opts = {}) {
     c.box(12.4, 14.6, 26.5, 29.7, Z2 + 0.06, Z2 + 2.3, M.teak); // sauna cabins
     c.box(14.65, 14.95, 26.5, 29.7, Z2 + 0.06, Z2 + 2.3, M.charcoal);
     for (const y of [27.4, 28.8]) c.box(15.4, 16.8, y - 0.35, y + 0.35, Z2 + 0.06, Z2 + 0.55, M.bedBlue); // lounge chairs
-    c.box(17.5, 19.9, 27.0, 29.2, Z2 + 0.06, Z2 + 1.2, M.charcoal); // chiller/HBOT compressor store
+    // massage & manual-therapy suite (was the chiller store; plant now lives on the roof screen): two beds, curtain rail, towel warmer, aroma diffuser
+    for (const y of [26.9, 28.7]) { c.box(18.0, 19.6, y - 0.4, y + 0.4, Z2 + 0.5, Z2 + 0.85, M.bedWhite); c.box(18.1, 19.5, y - 0.3, y + 0.3, Z2 + 0.06, Z2 + 0.5, M.charcoal); c.box(17.4, 17.6, y - 0.3, y + 0.3, Z2 + 0.06, Z2 + 0.6, M.teakLight); }
+    c.box(17.4, 19.9, 27.8 - 0.02, 27.8 + 0.02, Z2 + 2.2, Z2 + 2.25, M.steel); c.box(17.4, 19.9, 27.8 - 0.02, 27.8 + 0.02, Z2 + 1.0, Z2 + 2.2, M.glassFrost);
+    c.box(19.5, 19.9, 29.6, 29.95, Z2 + 0.06, Z2 + 1.3, M.teak);
     // linen & towel store (east)
     c.box(20.5, 21.9, 26.2, 29.9, Z2 + 0.06, Z2 + 2.2, M.teakLight);
     // yoga-planters on the gallery
@@ -1231,18 +1234,98 @@ export function buildModel(opts = {}) {
     // yoga terrace: balustrade, pergola, planters, retractable canopy
     d.box(17.2, 22.2, 24.0, 24.1, Z3, Z3 + 1.1, M.glass);
     d.box(17.2, 22.2, 30.1, 30.2, Z3, Z3 + 1.1, M.glass);
-    d.box(22.1, 22.2, 24.1, 30.1, Z3, Z3 + 1.1, M.glass);
+    d.box(22.1, 22.2, 24.1, 29.2, Z3, Z3 + 1.1, M.glass); // east edge: open at y 29.2…30.1 where the hiking-trail bridge leaves the deck
+    for (const y of [29.2]) d.box(22.1, 22.2, y - 0.03, y + 0.03, Z3, Z3 + 1.1, M.steel);
     for (const x of [17.7, 22.0]) for (const y of [24.3, 29.9]) d.box(x - 0.08, x + 0.08, y - 0.08, y + 0.08, Z3, ZR - 0.4, M.teak);
     for (let x = 17.7; x <= 22.0; x += 0.45) d.box(x - 0.05, x + 0.05, 24.3, 29.9, ZR - 0.4, ZR - 0.3, M.teak);
     d.box(17.7, 22.0, 26.0, 28.4, ZR - 0.28, ZR - 0.25, M.glassFrost); // canopy sheet (retractable)
     for (const [x, y] of [[18.0, 24.5], [18.0, 29.6], [21.6, 29.6]]) d.box(x - 0.3, x + 0.3, y - 0.3, y + 0.3, Z3, Z3 + 0.6, M.hedge);
-    for (let k = 0; k < 4; k++) d.box(18.4 + k * 0.9, 18.4 + k * 0.9 + 0.65, 26.2, 27.8, Z3 + 0.04, Z3 + 0.06, M.holdY);
+    // OUTDOOR FITNESS DECK (5.0 × 6.0, +7.00): sled/sprint turf, functional rig with pull-up bars + rings + TRX, plyo boxes, kettlebell rack, battle-rope post, door-wide link to the indoor studio
+    d.box(17.6, 22.0, 25.0, 26.1, Z3 + 0.04, Z3 + 0.07, M.turf); d.box(17.6, 22.0, 25.0, 25.06, Z3 + 0.07, Z3 + 0.09, M.white); d.box(17.6, 22.0, 26.04, 26.1, Z3 + 0.07, Z3 + 0.09, M.white);
+    d.box(18.4, 19.4, 25.3, 25.8, Z3 + 0.07, Z3 + 0.25, M.charcoal); d.box(18.5, 18.6, 25.3, 25.8, Z3 + 0.25, Z3 + 0.9, M.charcoal); // weighted sled
+    for (const x of [18.2, 21.2]) d.box(x - 0.06, x + 0.06, 28.4 - 0.06, 28.4 + 0.06, Z3, Z3 + 2.7, M.charcoal); // rig posts
+    d.box(18.1, 21.3, 28.34, 28.46, Z3 + 2.6, Z3 + 2.7, M.charcoal); d.box(18.1, 21.3, 28.34, 28.46, Z3 + 1.1, Z3 + 1.16, M.steel); d.box(18.1, 21.3, 28.34, 28.46, Z3 + 2.05, Z3 + 2.11, M.steel);
+    for (const x of [19.0, 19.7]) { d.member([x, 28.4, Z3 + 2.6], [x, 28.4, Z3 + 2.0], 0.012, M.steel, 4); d.torus(x, 28.4, Z3 + 1.95, 0.12, 0.012, M.steel, 14); }
+    for (const x of [20.4, 20.7]) { d.member([x, 28.4, Z3 + 2.6], [x - 0.1, 28.2, Z3 + 1.0], 0.012, M.holdY, 4); d.cyl(x - 0.1, 28.2, Z3 + 0.95, Z3 + 1.05, 0.03, 0.03, M.holdY, 8); } // TRX straps
+    for (const [x0, h] of [[18.0, 0.5], [18.8, 0.6], [19.7, 0.75]]) d.box(x0, x0 + 0.7, 26.6, 27.2, Z3 + 0.04, Z3 + 0.04 + h, M.teakLight); // plyo boxes
+    d.box(21.2, 21.9, 26.5, 27.9, Z3, Z3 + 0.9, M.charcoal); for (let k = 0; k < 6; k++) { const ge = new THREE.SphereGeometry(0.11, 10, 8); ge.translate(21.3 + (k % 3) * 0.22, Z3 + 0.62, -(26.7 + Math.floor(k / 3) * 0.5 + 0.0)); d.add(M.holdB, ge); }
+    d.box(21.7, 21.85, 25.4, 25.55, Z3, Z3 + 1.3, M.teak); d.member([21.78, 25.45, Z3 + 1.0], [20.6, 25.9, Z3 + 0.2], 0.03, M.holdR, 6); // battle-rope post + rope
+    d.box(17.1, 17.3, 26.5, 27.9, Z3, ZR - 0.2, M.glassFrost); // sliding door leaf to the indoor studio (parked open: frosted)
 
     // roof of rear complex
     RFr.box(4.0, 17.4, 23.95, 30.3, ZR - 0.25, ZR + 0.05, M.concrete);
     RFr.box(-1.9, 4.0, 22.0, 30.3, ZR, ZR + 0.3, M.concrete);
     // roof PV (rear complex part of the 60-75 kWp microgrid)
     for (let k = 0; k < 6; k++) RFr.quad(M.solar, [4.6 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 27.6, ZR + 0.25], [4.6 + k * 2.1, 27.6, ZR + 0.25], [1, 2]);
+  }
+
+
+  // ── SKY TRAIL (REV E): the L3 outdoor fitness deck links to the ground floor by a 48 m switch-back hiking trail (boardwalk 1.30 m wide, 17.5 % hill grade, 4 runs), trailhead at the pool court.
+  // No new building: it is a landscape structure (steel posts + teak deck) in the rear garden. A step-free alternative remains the MRL lift.
+  {
+    const T = layer('hiking_trail');
+    const deck = std({ color: 0xb07a3c, roughness: 0.65, side: THREE.DoubleSide });
+    const W = 1.3, TH = 0.14, ZB = 7.0;
+    const X0 = 26.0, X1 = 36.0, YC = [30.7, 32.5, 34.3, 36.1];
+    const zRun = [ZB, ZB - 1.75, ZB - 3.5, ZB - 5.25, 0];
+    const slab = (xa, za, xb, zb, yc, w = W) => {
+      const y0 = yc - w / 2, y1 = yc + w / 2;
+      T.quad(deck, [xa, y0, za], [xb, y0, zb], [xb, y1, zb], [xa, y1, za]);
+      T.quad(deck, [xa, y0, za - TH], [xb, y0, zb - TH], [xb, y1, zb - TH], [xa, y1, za - TH]);
+      T.quad(deck, [xa, y0, za], [xb, y0, zb], [xb, y0, zb - TH], [xa, y0, za - TH]);
+      T.quad(deck, [xa, y1, za], [xb, y1, zb], [xb, y1, zb - TH], [xa, y1, za - TH]);
+    };
+    const cleat = (x, z, yc, ang, w = W - 0.1) => { const g = new THREE.BoxGeometry(0.05, 0.035, w); g.rotateZ(ang); g.translate(x, z + 0.02, -yc); T.add(M.charcoal, g); };
+    const post = (x, y, z1) => T.cyl(x, y, 0, z1, 0.07, 0.07, M.charcoal, 8);
+    const rails = (xa, za, xb, zb, yc, nPost = 5) => {
+      for (const sy of [-1, 1]) {
+        const y = yc + sy * (W / 2 - 0.03);
+        T.member([xa, y, za + 1.0], [xb, y, zb + 1.0], 0.025, M.steel, 6); T.member([xa, y, za + 0.5], [xb, y, zb + 0.5], 0.018, M.steel, 5);
+        for (let k = 0; k < nPost; k++) { const t = k / (nPost - 1), x = xa + (xb - xa) * t, z = za + (zb - za) * t; T.member([x, y, z], [x, y, z + 1.0], 0.022, M.steel, 5); }
+      }
+    };
+    const run = (i, dir) => { // dir +1 = eastwards
+      const xa = dir > 0 ? X0 : X1, xb = dir > 0 ? X1 : X0, za = zRun[i], zb = zRun[i + 1], yc = YC[i];
+      slab(xa, za, xb, zb, yc);
+      const L = Math.abs(xb - xa), ang = Math.atan2(zb - za, xb - xa);
+      for (let t = 0.4; t < L; t += 0.55) { const x = xa + Math.sign(xb - xa) * t, z = za + (zb - za) * (t / L); cleat(x, z, yc, ang); }
+      rails(xa, za, xb, zb, yc);
+      for (let k = 0; k <= 3; k++) { const t = (k / 3) * L, x = xa + Math.sign(xb - xa) * t, z = za + (zb - za) * (t / L) - TH; for (const sy of [-1, 1]) post(x, yc + sy * 0.55, z); T.box(x - 0.05, x + 0.05, yc - W / 2, yc + W / 2, z - 0.12, z, M.charcoal); }
+      // trail km-post every run
+      T.cbox(xa + Math.sign(xb - xa) * 1.0, yc + W / 2 + 0.12, za + (zb - za) * (1.0 / L) + 0.45, 0.35, 0.03, 0.2, M.holdY);
+    };
+    const landing = (x0, x1, y0, y1, z) => {
+      T.box(x0, x1, y0, y1, z - TH, z, M.teak);
+      for (const [px, py] of [[x0 + 0.1, y0 + 0.1], [x1 - 0.1, y0 + 0.1], [x0 + 0.1, y1 - 0.1], [x1 - 0.1, y1 - 0.1]]) post(px, py, z - TH);
+      T.box(x0 + 0.05, x1 - 0.05, y0 + 0.05, y1 - 0.05, z - TH - 0.1, z - TH, M.charcoal);
+      for (const [xa, xb, ya, yb] of [[x0, x1, y0, y0], [x0, x1, y1, y1], [x0, x0, y0, y1], [x1, x1, y0, y1]]) T.member([xa, ya, z + 1.0], [xb, yb, z + 1.0], 0.025, M.steel, 6);
+    };
+    // deck on the L3 level → bridge → first landing
+    T.box(22.2, 24.3, 29.35, 30.65, ZB - TH, ZB, M.teak); T.box(22.2, 24.3, 29.35, 30.65, ZB - TH - 0.25, ZB - TH, M.charcoal);
+    for (const y of [29.35, 30.65]) T.member([22.2, y, ZB + 1.0], [24.3, y, ZB + 1.0], 0.025, M.steel, 6);
+    landing(24.3, 26.0, 29.35, 31.5, ZB);
+    for (const x of [22.8, 23.7]) for (const y of [29.45, 30.55]) post(x, y, ZB - TH - 0.25);
+    run(0, +1); landing(36.0, 37.6, 30.05, 33.15, zRun[1]);
+    run(1, -1); landing(24.4, 26.0, 31.85, 34.95, zRun[2]);
+    run(2, +1); landing(36.0, 37.6, 33.65, 36.75, zRun[3]);
+    run(3, -1);
+    // trailhead pad at the ground floor + amenities
+    T.box(23.4, 26.0, 35.45, 36.75, 0, 0.04, M.pathStone);
+    T.box(23.5, 25.0, 36.0, 36.6, 0.04, 0.45, M.teakLight); T.box(23.5, 24.9, 36.5, 36.6, 0.45, 0.95, M.teakLight); // bench with back
+    T.cyl(23.9, 35.65, 0.04, 1.0, 0.1, 0.1, M.ss316, 10); T.cyl(23.9, 35.65, 1.0, 1.04, 0.15, 0.15, M.ss316, 10); // drinking fountain
+    T.box(24.4, 25.6, 34.95, 35.3, 0, 0.3, M.pebble); T.box(24.45, 25.55, 35.0, 35.25, 0.18, 0.3, M.poolWater); // boot-wash trough
+    const sgn = canvasTex(512, 256, (g, w, h) => { g.fillStyle = '#2b2118'; g.fillRect(0, 0, w, h); g.fillStyle = '#f4e9d4'; g.font = '700 54px "Helvetica Neue", Arial, sans-serif'; g.textAlign = 'center'; g.fillText('SKY TRAIL', w / 2, 84); g.font = '34px Arial'; g.fillText('48 m  ·  +7.0 m  ·  17 %', w / 2, 142); g.font = '26px Arial'; g.fillText('L3 FITNESS DECK  ⟷  GROUND', w / 2, 196); });
+    const sg = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 0.75), new THREE.MeshStandardMaterial({ map: sgn, roughness: 0.8 }));
+    sg.position.set(23.45, 1.75, -35.7); sg.rotation.y = Math.PI / 2; sg.name = 'trail_sign'; T.group.add(sg);
+    T.cyl(23.45, 35.1, 0, 1.4, 0.04, 0.04, M.charcoal, 6); T.cyl(23.45, 36.3, 0, 1.4, 0.04, 0.04, M.charcoal, 6);
+    // hill terrain flanking the trail: rock garden + planted slope
+    let hs2 = 5; const hr2 = () => ((hs2 = (hs2 * 48271) % 2147483647) / 2147483647);
+    const rock = std({ color: 0x8b8f93, roughness: 1 });
+    for (let k = 0; k < 16; k++) { const rx = 24.2 + hr2() * 13.6, ry = 29.9 + hr2() * 6.9, r = 0.18 + hr2() * 0.28; if (Math.abs(ry - YC[0]) < 0.9 && rx > 24 && rx < 36) continue; const rg = new THREE.DodecahedronGeometry(r, 0); rg.scale(1.2, 0.7, 1); rg.translate(rx, r * 0.45, -ry); T.add(rock, rg); }
+    for (const [mx, my, mr] of [[38.0, 34.0, 1.1], [24.0, 37.3, 0.9], [37.9, 31.0, 0.8]]) { const mg = new THREE.SphereGeometry(mr, 12, 8, 0, TAU, 0, Math.PI / 2); mg.translate(mx, 0, -my); T.add(M.treeCrown, mg); }
+    for (let k = 0; k < 10; k++) { const gx = 24.4 + k * 1.4; const g = new THREE.ConeGeometry(0.08, 0.7, 5); g.translate(gx, 0.35, -(37.2 - (k % 2) * 0.2)); T.add(M.hedge, g); }
+    // under-deck LED strips on the runs (night walking)
+    for (let i = 0; i < 4; i++) { const xa = i % 2 === 0 ? X0 : X1, xb = i % 2 === 0 ? X1 : X0; T.member([xa, YC[i], zRun[i] - TH - 0.02], [xb, YC[i], zRun[i + 1] - TH - 0.02], 0.02, M.led, 4); }
   }
 
   // ── Rear (north) façade, pool court and side detailing (REV D.8) ──────────
@@ -1689,7 +1772,7 @@ export function buildModel(opts = {}) {
   }
 
   // ── flush layers into the scene ────────────────────────────────────
-  const order = ['site', 'fences', 'trees', 'rear_services', 'hall_shell', 'hall_roof', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'east_catwalk', 'west_wing', 'ww_G', 'ww_L2', 'ww_roof', 'x_wind', 'rear_structure', 'rear_GF', 'rear_L2', 'rear_L3', 'rear_roof', 'r2_core', 'r2_pavilion', 'r2_pav_roof', 'r2_garden', 'outdoor', 'vegetation'];
+  const order = ['site', 'fences', 'trees', 'rear_services', 'hall_shell', 'hall_roof', 'hall_interior', 'cyclones', 'front_facade', 'entrance_court', 'east_catwalk', 'west_wing', 'ww_G', 'ww_L2', 'ww_roof', 'x_wind', 'rear_structure', 'rear_GF', 'rear_L2', 'rear_L3', 'rear_roof', 'r2_core', 'r2_pavilion', 'r2_pav_roof', 'r2_garden', 'hiking_trail', 'outdoor', 'vegetation'];
   for (const n of order) if (G[n]) root.add(G[n].flush());
   // every glass material must not cast shadows
   root.traverse((o) => {
@@ -1788,6 +1871,14 @@ export const SHOTS = {
   r2_yoga: { title: 'R2 · yoga terrace +7.00 under the palm crowns', pos: [3.4, 29.4, 8.7], target: [-3.5, 24.5, 10.0], focal: 18, time: 'morning' },
   r2_lab: { title: 'R2 · L2 sports-science lab facing the garden', pos: [14.6, 27.2, 5.2], target: [5.8, 28.6, 4.6], focal: 18, time: 'day' },
   r2_rear: { title: 'R2 · rear elevation from the garden', pos: [16.0, 40.5, 1.7], target: [14.0, 28.0, 4.5], focal: 16, time: 'golden', hide: ['fences'] },
+  // REV E: wellness L2, fitness L3 (indoor + outdoor) and the sky trail down to the ground floor
+  trail_aerial: { title: 'Sky Trail · aerial from the north-east', pos: [46.0, 46.0, 17.0], target: [29.0, 31.0, 3.0], focal: 24, time: 'golden', hide: ['fences'] },
+  trail_run: { title: 'Sky Trail · walking down run 1 from the L3 fitness deck', pos: [24.4, 30.7, 8.6], target: [36.0, 30.9, 5.0], focal: 20, time: 'golden' },
+  trail_head: { title: 'Sky Trail · trailhead at the pool court', pos: [28.5, 38.0, 1.7], target: [24.5, 34.0, 2.0], focal: 20, time: 'golden', hide: ['fences'] },
+  trail_side: { title: 'Sky Trail · side elevation from the north', pos: [30.0, 52.0, 4.5], target: [30.0, 31.0, 3.5], focal: 24, time: 'golden', hide: ['fences', 'trees'] },
+  fit_deck: { title: 'L3 outdoor fitness deck · rig, sled lane, plyo boxes', pos: [17.5, 24.5, 9.3], target: [20.3, 28.0, 8.1], focal: 20, time: 'day' },
+  fit_indoor: { title: 'L3 indoor fitness studio opening onto the deck', pos: [5.0, 29.4, 8.7], target: [16.5, 26.5, 8.2], focal: 18, time: 'day' },
+  wellness_l2: { title: 'L2 wellness centre cut-away', pos: [10.2, 17.0, 24.0], target: [10.2, 27.0, 3.5], focal: 22, time: 'day', hide: ['rear_L3', 'rear_roof', 'hall_roof', 'hiking_trail', 'fences', 'trees'] },
   // interior studies
   hall_aisle: { title: 'Interior · Cyclone aisle W0–C0–E0', pos: [2.4, 6.0, 1.6], target: [14.0, 7.6, 4.0], focal: 20, time: 'day' },
   hall_roof: { title: 'Interior · Space-frame roof & courts', pos: [21.0, -9.0, 2.0], target: [6.0, 12.0, 6.0], focal: 16, time: 'day' },

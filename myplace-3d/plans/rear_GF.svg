@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2020" height="1290" viewBox="0 0 2020 1290" font-family="Loma, 'Noto Sans Thai', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="2812" height="1290" viewBox="0 0 2812 1290" font-family="Loma, 'Noto Sans Thai', sans-serif">
 <rect width="100%" height="100%" fill="#fff"/>
 <text x="80" y="56" font-size="32" font-weight="700" fill="#111">แปลนอาคารด้านหลัง ชั้น 1 (GF ±0.00)</text>
-<text x="80" y="86" font-size="16" fill="#555">MY PLACE REV D.12 · ทิศเหนืออยู่ด้านบน · หน่วย เมตร · ผังตามโมเดล 3 มิติ (ไม่ใช่แบบก่อสร้าง)</text>
-<g transform="translate(1760,30)"><circle cx="30" cy="40" r="26" fill="none" stroke="#111" stroke-width="2"/><path d="M30,12 L22,48 L30,40 L38,48 Z" fill="#111"/><text x="68" y="46" font-size="14" fill="#111">N</text></g>
-<g transform="translate(1760,120)"><line x1="0" y1="0" x2="300" y2="0" stroke="#111" stroke-width="3"/><line x1="0" y1="-6" x2="0" y2="6" stroke="#111" stroke-width="2"/><line x1="300" y1="-6" x2="300" y2="6" stroke="#111" stroke-width="2"/><text x="150" y="22" font-size="13" text-anchor="middle" fill="#111">5 ม.</text></g>
+<text x="80" y="86" font-size="16" fill="#555">MY PLACE REV E · ทิศเหนืออยู่ด้านบน · หน่วย เมตร · ผังตามโมเดล 3 มิติ (ไม่ใช่แบบก่อสร้าง)</text>
+<g transform="translate(2552,30)"><circle cx="30" cy="40" r="26" fill="none" stroke="#111" stroke-width="2"/><path d="M30,12 L22,48 L30,40 L38,48 Z" fill="#111"/><text x="68" y="46" font-size="14" fill="#111">N</text></g>
+<g transform="translate(2552,120)"><line x1="0" y1="0" x2="300" y2="0" stroke="#111" stroke-width="3"/><line x1="0" y1="-6" x2="0" y2="6" stroke="#111" stroke-width="2"/><line x1="300" y1="-6" x2="300" y2="6" stroke="#111" stroke-width="2"/><text x="150" y="22" font-size="13" text-anchor="middle" fill="#111">5 ม.</text></g>
 <line x1="368.0" y1="1108.0" x2="368.0" y2="544.0" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
 <circle cx="368.0" cy="535.0" r="11" fill="#fff" stroke="#999"/><text x="368.0" y="539.0" font-size="11" text-anchor="middle" fill="#666">1</text>
 <line x1="668.0" y1="1108.0" x2="668.0" y2="544.0" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
@@ -182,6 +182,102 @@
 <circle cx="1094.0" cy="358.0" r="78.0" fill="rgba(200,190,170,0.4)" stroke="#887" stroke-width="1" />
 <line x1="248.0" y1="376.0" x2="1376.0" y2="206.8" stroke="#222" stroke-width="3" />
 <text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="260.0" y="394.0" font-size="11" fill="#111" text-anchor="start"  >รั้วหลังเฉียง (0.20, 34.10) → (20.20, 37.10)</text>
+<rect x="1814.0" y="514.0" width="102.0" height="129.0" fill="#f1d9b0" stroke="#8a5a1a" stroke-width="1.4"  />
+<rect x="1688.0" y="565.0" width="126.0" height="78.0" fill="#f1d9b0" stroke="#8a5a1a" stroke-width="1.4" stroke-dasharray="4 3" />
+<rect x="1916.0" y="523.0" width="600.0" height="78.0" fill="#f6e3c0" stroke="#8a5a1a" stroke-width="1.4"  />
+<line x1="1940.0" y1="598.0" x2="1940.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="1973.0" y1="598.0" x2="1973.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2006.0" y1="598.0" x2="2006.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2039.0" y1="598.0" x2="2039.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2072.0" y1="598.0" x2="2072.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2105.0" y1="598.0" x2="2105.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2138.0" y1="598.0" x2="2138.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2171.0" y1="598.0" x2="2171.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2204.0" y1="598.0" x2="2204.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2237.0" y1="598.0" x2="2237.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2270.0" y1="598.0" x2="2270.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2303.0" y1="598.0" x2="2303.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2336.0" y1="598.0" x2="2336.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2369.0" y1="598.0" x2="2369.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2402.0" y1="598.0" x2="2402.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2435.0" y1="598.0" x2="2435.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2468.0" y1="598.0" x2="2468.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2501.0" y1="598.0" x2="2501.0" y2="526.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2294.0" y1="562.0" x2="2438.0" y2="562.0" stroke="#c0392b" stroke-width="2" />
+<path d="M2456.0,562.0 l-12,-6 v12 z" fill="#c0392b" stroke="#c0392b" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="2216.0" y="554.8" font-size="10" fill="#6a3b00" text-anchor="middle" font-weight="700" >ทางเดินเขา 1: +7.00 → +5.25</text>
+<rect x="1916.0" y="415.0" width="600.0" height="78.0" fill="#f6e3c0" stroke="#8a5a1a" stroke-width="1.4"  />
+<line x1="1940.0" y1="490.0" x2="1940.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="1973.0" y1="490.0" x2="1973.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2006.0" y1="490.0" x2="2006.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2039.0" y1="490.0" x2="2039.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2072.0" y1="490.0" x2="2072.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2105.0" y1="490.0" x2="2105.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2138.0" y1="490.0" x2="2138.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2171.0" y1="490.0" x2="2171.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2204.0" y1="490.0" x2="2204.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2237.0" y1="490.0" x2="2237.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2270.0" y1="490.0" x2="2270.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2303.0" y1="490.0" x2="2303.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2336.0" y1="490.0" x2="2336.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2369.0" y1="490.0" x2="2369.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2402.0" y1="490.0" x2="2402.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2435.0" y1="490.0" x2="2435.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2468.0" y1="490.0" x2="2468.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2501.0" y1="490.0" x2="2501.0" y2="418.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2138.0" y1="454.0" x2="1994.0" y2="454.0" stroke="#c0392b" stroke-width="2" />
+<path d="M1976.0,454.0 l12,-6 v12 z" fill="#c0392b" stroke="#c0392b" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="2216.0" y="446.8" font-size="10" fill="#6a3b00" text-anchor="middle" font-weight="700" >ทางเดินเขา 2: +5.25 → +3.50</text>
+<rect x="1916.0" y="307.0" width="600.0" height="78.0" fill="#f6e3c0" stroke="#8a5a1a" stroke-width="1.4"  />
+<line x1="1940.0" y1="382.0" x2="1940.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="1973.0" y1="382.0" x2="1973.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2006.0" y1="382.0" x2="2006.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2039.0" y1="382.0" x2="2039.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2072.0" y1="382.0" x2="2072.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2105.0" y1="382.0" x2="2105.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2138.0" y1="382.0" x2="2138.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2171.0" y1="382.0" x2="2171.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2204.0" y1="382.0" x2="2204.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2237.0" y1="382.0" x2="2237.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2270.0" y1="382.0" x2="2270.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2303.0" y1="382.0" x2="2303.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2336.0" y1="382.0" x2="2336.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2369.0" y1="382.0" x2="2369.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2402.0" y1="382.0" x2="2402.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2435.0" y1="382.0" x2="2435.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2468.0" y1="382.0" x2="2468.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2501.0" y1="382.0" x2="2501.0" y2="310.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2294.0" y1="346.0" x2="2438.0" y2="346.0" stroke="#c0392b" stroke-width="2" />
+<path d="M2456.0,346.0 l-12,-6 v12 z" fill="#c0392b" stroke="#c0392b" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="2216.0" y="338.8" font-size="10" fill="#6a3b00" text-anchor="middle" font-weight="700" >ทางเดินเขา 3: +3.50 → +1.75</text>
+<rect x="1916.0" y="199.0" width="600.0" height="78.0" fill="#f6e3c0" stroke="#8a5a1a" stroke-width="1.4"  />
+<line x1="1940.0" y1="274.0" x2="1940.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="1973.0" y1="274.0" x2="1973.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2006.0" y1="274.0" x2="2006.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2039.0" y1="274.0" x2="2039.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2072.0" y1="274.0" x2="2072.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2105.0" y1="274.0" x2="2105.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2138.0" y1="274.0" x2="2138.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2171.0" y1="274.0" x2="2171.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2204.0" y1="274.0" x2="2204.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2237.0" y1="274.0" x2="2237.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2270.0" y1="274.0" x2="2270.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2303.0" y1="274.0" x2="2303.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2336.0" y1="274.0" x2="2336.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2369.0" y1="274.0" x2="2369.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2402.0" y1="274.0" x2="2402.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2435.0" y1="274.0" x2="2435.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2468.0" y1="274.0" x2="2468.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2501.0" y1="274.0" x2="2501.0" y2="202.0" stroke="#8a5a1a" stroke-width="0.5" />
+<line x1="2138.0" y1="238.0" x2="1994.0" y2="238.0" stroke="#c0392b" stroke-width="2" />
+<path d="M1976.0,238.0 l12,-6 v12 z" fill="#c0392b" stroke="#c0392b" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="2216.0" y="230.8" font-size="10" fill="#6a3b00" text-anchor="middle" font-weight="700" >ทางเดินเขา 4: +1.75 → +0.00</text>
+<rect x="2516.0" y="415.0" width="96.0" height="186.0" fill="#f1d9b0" stroke="#8a5a1a" stroke-width="1.4"  />
+<rect x="1820.0" y="307.0" width="96.0" height="186.0" fill="#f1d9b0" stroke="#8a5a1a" stroke-width="1.4"  />
+<rect x="2516.0" y="199.0" width="96.0" height="186.0" fill="#f1d9b0" stroke="#8a5a1a" stroke-width="1.4"  />
+<rect x="1760.0" y="199.0" width="156.0" height="78.0" fill="#d9d5cc" stroke="#444" stroke-width="1.2"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1838.0" y="187.0" font-size="10" fill="#111" text-anchor="middle" font-weight="700" >Trailhead ±0.00</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="2216.0" y="637.0" font-size="11" fill="#6a3b00" text-anchor="middle" font-weight="700" >SKY TRAIL 48 ม. · ลาด 17.5% · กว้าง 1.30 ม. · ต่อจากลานฟิตเนสชั้น 3 (+7.00) ลงพื้นดิน</text>
 <rect x="1709.0" y="670.0" width="18.0" height="198.0" fill="#c2561f" stroke="#222" stroke-width="1.4"  />
 <text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1718.0" y="556.0" font-size="9" fill="#111" text-anchor="start"  >กำแพงปีนผา 3.30×10.50</text>
 <rect x="1727.0" y="652.0" width="132.0" height="258.0" fill="#2c3e8c" stroke="#111" stroke-width="1.4"  opacity="0.65"/>

@@ -27,6 +27,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
 import { buildModel, SHOTS, TIMES } from './model.js';
+import { exportDAE } from './export_dae.js';
+import { ColladaLoader } from 'three/addons/loaders/ColladaLoader.js';
 
 const q = new URLSearchParams(location.search);
 const shotId = q.get('shot');
@@ -48,6 +50,17 @@ scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture;
 
 const { root, layers } = buildModel({ scheme: q.get('scheme') });
 scene.add(root);
+window.exportDAE = () => { const r = exportDAE(root, { name: 'MyPlace_Master_vE1' }); return r; };
+// validation: ?dae=<file> loads an exported COLLADA file instead of the procedural model (checks what SketchUp will import)
+if (q.get('dae')) {
+  root.visible = false;
+  window.__daeLoading = true;
+  new ColladaLoader().load(q.get('dae'), (c) => {
+    const s = c.scene; s.rotation.x = -Math.PI / 2; // Z-up file → Y-up viewer; spec (x,y,z) → (x, z, −y)
+    s.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; o.material.side = THREE.DoubleSide; } });
+    scene.add(s); window.__daeLoading = false;
+  });
+}
 
 let camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 600);
 camera.filmGauge = 36;
@@ -139,7 +152,7 @@ window.exportGLB = () => new Promise((res, rej) => {
 
 applyShot(shotId || 's7');
 function frame() { controls.update(); renderer.render(scene, camera); }
-if (shotId) { frame(); frame(); window.__ready = true; }
+if (shotId) { const wait = () => { if (window.__daeLoading) return setTimeout(wait, 200); frame(); frame(); window.__ready = true; }; wait(); }
 else renderer.setAnimationLoop(frame);
 </script>
 </body>

@@ -88,3 +88,10 @@ R2 moves:
 4. New single-storey Thermal Pavilion (x 23.2–33.2, y 28.6–34.0, green roof): changing W/M, Finnish sauna, steam, 2 cold-plunge tubs, outdoor showers, rest deck — a contrast-therapy loop with the pool and the rehab gym.
 5. Yoga terrace moves to the quiet west end of L3 under the palm crowns; L3 WC + tenant store next to the new core.
 Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit; badminton players' changing is far from the hall (use west-wing/lobby WCs or add lockers in the lobby).
+
+## REV E — wellness L2 · fitness L3 (indoor + outdoor) · Sky Trail · SketchUp package
+- No new buildings at the rear (R2 is parked, `?scheme=r2`). L2 is a pure wellness centre (red-light ×2, HBOT ×2, cold plunge, dual sauna, lounge, new massage/manual-therapy suite — chiller plant moved to the roof screen). L3 = indoor fitness studio 13×6 m + **outdoor functional-fitness deck** 5×6 m (sled lane, rig with pull-up bars/rings/TRX, plyo boxes, kettlebell rack, battle rope), with a glass door between them.
+- **Sky Trail** (landscape structure, layer `hiking_trail`): a 1.30 m teak boardwalk leaves the L3 fitness deck at +7.00, 4 switch-back runs of 10 m at 17.5 % (cleated, rails, LED under-strip, km-posts) and lands at a trailhead (water fountain, boot-wash, bench, sign) beside the pool court. The MRL lift remains the step-free link.
+- **SketchUp:** `sketchup/MyPlace_Master_vE1.dae` (+ `textures/`) and `MyPlace_Master_vE1_SketchUp.zip`, see `sketchup/README_SKETCHUP.md`. Exporter: `export_dae.js` (`DAE=1 node render.mjs`).
+- Plans `plans/rear_GF|L2|L3` updated (REV E).
+- Check: trail is 7 m tall at its start (structural design, wind, fall protection, fire egress from L3), climbing tower and trail share the NE corner, trail grade is steeper than a ramp — fine for training, not for accessibility.

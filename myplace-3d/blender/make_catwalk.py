@@ -60,7 +60,7 @@ class Batch:
 # ── context: hall east side ─────────────────────────────────────────────────────
 HY0, HY1, XE, EAVE = -10.15, 24.1, 22.3, 8.6
 site = Batch('Site'); hall = Batch('Hall_east_side'); court = Batch('Pickleball_courts')
-site.box(8, 42, -14, 36, -0.3, -0.02, MT['grass'])
+site.box(-60, 130, -90, 110, -0.3, -0.02, MT['grass'])
 site.box(XE, 24.2, HY0, HY1, -0.02, 0.0, MT['paving']); site.box(8, XE, -13, 25.1, -0.1, 0.0, MT['hall_floor'])
 # existing portal columns on the east wall line (the catwalk outriggers bolt to them)
 COLS = [-8.0, -3.0, 2.0, 12.5, 17.5, 22.0]
@@ -178,10 +178,12 @@ w = bpy.data.worlds.new('Sky'); sc.world = w; w.use_nodes = True
 sky = w.node_tree.nodes.new('ShaderNodeTexSky')
 try: sky.sky_type = 'MULTIPLE_SCATTERING'
 except Exception: pass
-sky.sun_elevation = math.radians(28); sky.sun_rotation = math.radians(250)
+sky.sun_intensity = 0.7; sky.sun_elevation = math.radians(28); sky.sun_rotation = math.radians(250)
 w.node_tree.links.new(sky.outputs['Color'], w.node_tree.nodes['Background'].inputs['Color'])
 sc.render.engine = 'CYCLES'; sc.cycles.device = 'CPU'; sc.cycles.samples = int(os.environ.get('SAMPLES', 40)); sc.cycles.use_denoising = True
-sc.render.resolution_x, sc.render.resolution_y = 1600, 900; sc.view_settings.view_transform = 'AgX'
+sc.render.resolution_x, sc.render.resolution_y = 1600, 900; sc.view_settings.view_transform = 'AgX'; sc.view_settings.exposure = -1.3
+try: sc.view_settings.look = 'AgX - Medium High Contrast'
+except Exception: pass
 sc.render.filepath = os.path.join(OUT, 'x.png')
 sc.camera = bpy.data.objects['aerial_NE']
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, 'MyPlace_Catwalk.blend'))

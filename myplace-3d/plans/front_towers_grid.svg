@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2700" height="1830" viewBox="0 0 2700 1830" font-family="Loma, 'Noto Sans Thai', sans-serif"><rect width="100%" height="100%" fill="#fff"/>
+<text x="70" y="62" font-size="34" font-weight="700">ผังตำแหน่งหอคอยด้านหน้า C1 / C2 + กริดเสาชั้นล่าง</text>
+<text x="70" y="94" font-size="16" fill="#555">MY PLACE REV E · ทิศเหนืออยู่ด้านบน · หน่วย เมตร · ผังตามโมเดล 3 มิติ (ไม่ใช่แบบก่อสร้าง)</text>
+<g transform="translate(2550,30)"><circle cx="30" cy="40" r="26" fill="none" stroke="#111" stroke-width="2"/><path d="M30,12 L22,48 L30,40 L38,48 Z" fill="#111"/><text x="66" y="46" font-size="14">N</text></g>
+<g transform="translate(70,120)"><line x1="0" y1="0" x2="130" y2="0" stroke="#111" stroke-width="3"/><text x="65" y="-6" font-size="12" text-anchor="middle">5 ม.</text></g>
+<rect x="70.0" y="150.0" width="1066.0" height="1580.8" fill="#f3f6ee" stroke="none" stroke-width="1"  />
+<rect x="124.6" y="1396.7" width="1011.4" height="308.1" fill="#ebe6da" stroke="none" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="213.0" y="1699.6" font-size="12" fill="#777" text-anchor="middle"  >ลานหน้าอาคาร / ทางเข้าจากถนน</text>
+<line x1="124.6" y1="1730.8" x2="124.6" y2="150.0" stroke="#666" stroke-width="1.4" stroke-dasharray="14 4 2 4"/>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="120.7" y="274.8" font-size="11" fill="#555" text-anchor="middle"  transform="rotate(-90 120.7 274.8)">เขตที่ดินตะวันตก −4.40</text>
+<rect x="137.6" y="350.2" width="80.6" height="1016.6" fill="#f6efe2" stroke="#777" stroke-width="1.2"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="177.9" y="1080.8" font-size="11" fill="#777" text-anchor="middle"  transform="rotate(-90 177.9 1080.8)">ปีกตะวันตก</text>
+<rect x="218.2" y="506.2" width="600.6" height="890.5" fill="#eef2f0" stroke="#222" stroke-width="2.4"  />
+<rect x="249.4" y="1002.8" width="158.6" height="348.4" fill="#cfe6d3" stroke="#8fbf9a" stroke-width="0.8"  />
+<rect x="424.9" y="1002.8" width="158.6" height="348.4" fill="#cfe6d3" stroke="#8fbf9a" stroke-width="0.8"  />
+<rect x="600.4" y="1002.8" width="158.6" height="348.4" fill="#cfe6d3" stroke="#8fbf9a" stroke-width="0.8"  />
+<rect x="249.4" y="532.2" width="158.6" height="348.4" fill="#cfe6d3" stroke="#8fbf9a" stroke-width="0.8"  />
+<rect x="424.9" y="532.2" width="158.6" height="348.4" fill="#cfe6d3" stroke="#8fbf9a" stroke-width="0.8"  />
+<rect x="600.4" y="532.2" width="158.6" height="348.4" fill="#cfe6d3" stroke="#8fbf9a" stroke-width="0.8"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="517.2" y="941.7" font-size="11" fill="#666" text-anchor="middle"  >โถงแบดมินตัน 6 คอร์ท · ทางเดินกลาง 4.70 ม.</text>
+<rect x="192.2" y="350.2" width="624.0" height="156.0" fill="#f7f4ee" stroke="#444" stroke-width="1.6"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="504.2" y="415.2" font-size="11" fill="#777" text-anchor="middle"  >อาคารหลัง (คลินิก · เปลี่ยนชุด · ปีนผา)</text>
+<rect x="137.6" y="350.2" width="54.6" height="210.6" fill="#e6e8ea" stroke="#666" stroke-width="1"  />
+<rect x="876.0" y="992.4" width="171.6" height="374.4" fill="#cfdcf0" stroke="#8aa" stroke-width="1"  />
+<rect x="876.0" y="618.0" width="171.6" height="374.4" fill="#cfdcf0" stroke="#8aa" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="961.8" y="1132.8" font-size="11" fill="#678" text-anchor="middle"  transform="rotate(-90 961.8 1132.8)">พิกเคิลบอล</text>
+<path d="M337.8,1403.2 L337.8,1486.4 Q337.8,1533.2 384.6,1533.2 L652.4,1533.2 Q699.2,1533.2 699.2,1486.4 L699.2,1403.2 Z" fill="#e6dcc6" stroke="#9a8a66" stroke-width="1.2"/>
+<rect x="480.8" y="1403.2" width="75.4" height="130.0" fill="#b9b2a2" stroke="none" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="518.5" y="1502.0" font-size="10" fill="#555" text-anchor="middle"  >ทางเข้า</text>
+<rect x="349.5" y="1396.7" width="338.0" height="61.1" fill="rgba(40,50,70,0.10)" stroke="#1e293b" stroke-width="1.4" stroke-dasharray="8 4" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="518.5" y="1469.5" font-size="10" fill="#1e293b" text-anchor="middle"  >หลังคา Solar Ribbon (สันจั่ว +10.75)</text>
+<ellipse cx="430.1" cy="1444.8" rx="54.6" ry="53.3" fill="#d8cdb8" stroke="#8a7a55" stroke-width="1.2"/>
+<ellipse cx="430.1" cy="1444.8" rx="41.6" ry="40.3" fill="#7fb0b8" stroke="#4a7f88" stroke-width="1"/>
+<ellipse cx="606.9" cy="1444.8" rx="54.6" ry="53.3" fill="#d8cdb8" stroke="#8a7a55" stroke-width="1.2"/>
+<ellipse cx="606.9" cy="1444.8" rx="41.6" ry="40.3" fill="#7fb0b8" stroke="#4a7f88" stroke-width="1"/>
+<rect x="376.8" y="1508.5" width="104.0" height="13.0" fill="#c9b89a" stroke="#8a7a55" stroke-width="1"  />
+<rect x="556.2" y="1508.5" width="104.0" height="13.0" fill="#c9b89a" stroke="#8a7a55" stroke-width="1"  />
+<line x1="218.2" y1="1396.7" x2="818.8" y2="1396.7" stroke="#222" stroke-width="3" />
+<rect x="487.3" y="1392.8" width="62.4" height="11.7" fill="#cfe6f2" stroke="#0b57d0" stroke-width="1.4"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="518.5" y="1382.4" font-size="10" fill="#0b57d0" text-anchor="middle"  >ประตูอัตโนมัติ 2.40 ม.</text>
+<rect x="275.4" y="1392.8" width="135.2" height="10.4" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<rect x="626.4" y="1392.8" width="135.2" height="10.4" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<circle cx="135.0" cy="514.0" r="5.7" fill="#8a6d4b" stroke="#4a3920" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="116.8" y="514.0" font-size="9" fill="#4a3920" text-anchor="middle"  >P1</text>
+<circle cx="143.6" cy="730.8" r="5.7" fill="#8a6d4b" stroke="#4a3920" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="125.4" y="730.8" font-size="9" fill="#4a3920" text-anchor="middle"  >P2</text>
+<circle cx="154.8" cy="818.7" r="5.7" fill="#8a6d4b" stroke="#4a3920" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="136.6" y="818.7" font-size="9" fill="#4a3920" text-anchor="middle"  >P3</text>
+<line x1="244.2" y1="1424.0" x2="244.2" y2="321.6" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="244.2" cy="300.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="244.2" y="305.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">1</text>
+<circle cx="244.2" cy="1574.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="244.2" y="1579.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">1</text>
+<line x1="374.2" y1="1424.0" x2="374.2" y2="321.6" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="374.2" cy="300.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="374.2" y="305.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">2</text>
+<circle cx="374.2" cy="1574.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="374.2" y="1579.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">2</text>
+<line x1="504.2" y1="1424.0" x2="504.2" y2="321.6" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="504.2" cy="300.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="504.2" y="305.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">3</text>
+<circle cx="504.2" cy="1574.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="504.2" y="1579.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">3</text>
+<line x1="634.2" y1="1424.0" x2="634.2" y2="321.6" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="634.2" cy="300.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="634.2" y="305.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">4</text>
+<circle cx="634.2" cy="1574.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="634.2" y="1579.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">4</text>
+<line x1="764.2" y1="1424.0" x2="764.2" y2="321.6" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="764.2" cy="300.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="764.2" y="305.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">5</text>
+<circle cx="764.2" cy="1574.8" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="764.2" y="1579.3" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">5</text>
+<line x1="103.8" y1="1175.7" x2="876.0" y2="1175.7" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="85.6" cy="1175.7" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="85.6" y="1180.2" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">A</text>
+<circle cx="894.2" cy="1175.7" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="894.2" y="1180.2" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">A</text>
+<line x1="103.8" y1="941.7" x2="876.0" y2="941.7" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="85.6" cy="941.7" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="85.6" y="946.2" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">B</text>
+<circle cx="894.2" cy="941.7" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="894.2" y="946.2" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">B</text>
+<line x1="103.8" y1="707.7" x2="876.0" y2="707.7" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="85.6" cy="707.7" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="85.6" y="712.2" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">C</text>
+<circle cx="894.2" cy="707.7" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="894.2" y="712.2" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">C</text>
+<line x1="103.8" y1="480.2" x2="876.0" y2="480.2" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="85.6" cy="480.2" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="85.6" y="484.7" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">D</text>
+<circle cx="894.2" cy="480.2" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="894.2" y="484.7" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">D</text>
+<line x1="103.8" y1="402.2" x2="876.0" y2="402.2" stroke="#b3a000" stroke-width="0.9" stroke-dasharray="14 4 2 4"/>
+<circle cx="85.6" cy="402.2" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="85.6" y="406.7" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">E</text>
+<circle cx="894.2" cy="402.2" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="894.2" y="406.7" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">E</text>
+<line x1="430.1" y1="1587.8" x2="430.1" y2="1379.8" stroke="#b3a000" stroke-width="0.8" stroke-dasharray="6 3"/>
+<line x1="606.9" y1="1587.8" x2="606.9" y2="1379.8" stroke="#b3a000" stroke-width="0.8" stroke-dasharray="6 3"/>
+<line x1="291.0" y1="1426.6" x2="746.0" y2="1426.6" stroke="#b3a000" stroke-width="0.8" stroke-dasharray="6 3"/>
+<circle cx="430.1" cy="1611.2" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="430.1" y="1615.7" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">C1</text>
+<circle cx="606.9" cy="1611.2" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="606.9" y="1615.7" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">C2</text>
+<circle cx="756.4" cy="1426.6" r="12" fill="#fff" stroke="#8a7a00" stroke-width="1.4"/><text x="756.4" y="1431.1" font-size="12" font-weight="700" text-anchor="middle" fill="#6a5d00">F</text>
+<rect x="218.2" y="1336.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="811.0" y="1336.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="218.2" y="1206.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="811.0" y="1206.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="218.2" y="1076.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="811.0" y="1076.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="218.2" y="803.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="811.0" y="803.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="218.2" y="673.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="811.0" y="673.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="218.2" y="556.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="811.0" y="556.9" width="7.8" height="7.8" fill="#d9d9d9" stroke="#777" stroke-width="1.6"  />
+<rect x="239.0" y="1170.5" width="10.4" height="10.4" fill="#fff" stroke="#b00" stroke-width="1.6" stroke-dasharray="3 2" />
+<rect x="239.0" y="702.5" width="10.4" height="10.4" fill="#fff" stroke="#b00" stroke-width="1.6" stroke-dasharray="3 2" />
+<rect x="759.0" y="1170.5" width="10.4" height="10.4" fill="#fff" stroke="#b00" stroke-width="1.6" stroke-dasharray="3 2" />
+<rect x="759.0" y="702.5" width="10.4" height="10.4" fill="#fff" stroke="#b00" stroke-width="1.6" stroke-dasharray="3 2" />
+<rect x="240.3" y="476.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="240.3" y="398.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="370.3" y="476.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="370.3" y="398.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="500.3" y="476.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="500.3" y="398.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="630.3" y="476.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="630.3" y="398.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="760.3" y="476.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<rect x="760.3" y="398.3" width="7.8" height="7.8" fill="#111" stroke="#000" stroke-width="1"  />
+<circle cx="244.2" cy="941.7" r="15.6" fill="#e9b88f" stroke="#8a3a12" stroke-width="1.6" />
+<circle cx="244.2" cy="941.7" r="4.2" fill="#222" stroke="#555" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="244.2" y="971.6" font-size="12" fill="#8a3a12" text-anchor="middle" font-weight="700" >W0</text>
+<circle cx="502.4" cy="941.7" r="16.1" fill="#e9b88f" stroke="#8a3a12" stroke-width="1.6" />
+<circle cx="502.4" cy="941.7" r="4.2" fill="#222" stroke="#555" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="502.4" y="971.6" font-size="12" fill="#8a3a12" text-anchor="middle" font-weight="700" >C0</text>
+<circle cx="764.2" cy="941.7" r="16.1" fill="#e9b88f" stroke="#8a3a12" stroke-width="1.6" />
+<circle cx="764.2" cy="941.7" r="4.2" fill="#222" stroke="#555" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="764.2" y="971.6" font-size="12" fill="#8a3a12" text-anchor="middle" font-weight="700" >E0</text>
+<circle cx="430.1" cy="1426.6" r="18.7" fill="#e9b88f" stroke="#8a3a12" stroke-width="1.8" />
+<circle cx="430.1" cy="1426.6" r="11.7" fill="#c7683a" stroke="#661a09" stroke-width="1.2" />
+<rect x="426.8" y="1423.3" width="6.5" height="6.5" fill="#111" stroke="none" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="430.1" y="1369.4" font-size="14" fill="#8a3a12" text-anchor="middle" font-weight="700" >C1</text>
+<circle cx="430.1" cy="1426.6" r="23.4" fill="none" stroke="#4a7f88" stroke-width="1" stroke-dasharray="3 2"/>
+<rect x="409.3" y="1405.8" width="41.6" height="41.6" fill="none" stroke="#0b57d0" stroke-width="1" stroke-dasharray="4 3" />
+<circle cx="606.9" cy="1426.6" r="18.7" fill="#e9b88f" stroke="#8a3a12" stroke-width="1.8" />
+<circle cx="606.9" cy="1426.6" r="11.7" fill="#c7683a" stroke="#661a09" stroke-width="1.2" />
+<rect x="603.6" y="1423.3" width="6.5" height="6.5" fill="#111" stroke="none" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="606.9" y="1369.4" font-size="14" fill="#8a3a12" text-anchor="middle" font-weight="700" >C2</text>
+<circle cx="606.9" cy="1426.6" r="23.4" fill="none" stroke="#4a7f88" stroke-width="1" stroke-dasharray="3 2"/>
+<rect x="586.1" y="1405.8" width="41.6" height="41.6" fill="none" stroke="#0b57d0" stroke-width="1" stroke-dasharray="4 3" />
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="244.2" y1="1642.4" x2="374.2" y2="1642.4"/><line x1="244.2" y1="1636.4" x2="244.2" y2="1648.4"/><line x1="374.2" y1="1636.4" x2="374.2" y2="1648.4"/><text x="309.2" y="1637.4" font-size="12" text-anchor="middle" stroke="none">5.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="374.2" y1="1642.4" x2="504.2" y2="1642.4"/><line x1="374.2" y1="1636.4" x2="374.2" y2="1648.4"/><line x1="504.2" y1="1636.4" x2="504.2" y2="1648.4"/><text x="439.2" y="1637.4" font-size="12" text-anchor="middle" stroke="none">5.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="504.2" y1="1642.4" x2="634.2" y2="1642.4"/><line x1="504.2" y1="1636.4" x2="504.2" y2="1648.4"/><line x1="634.2" y1="1636.4" x2="634.2" y2="1648.4"/><text x="569.2" y="1637.4" font-size="12" text-anchor="middle" stroke="none">5.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="634.2" y1="1642.4" x2="764.2" y2="1642.4"/><line x1="634.2" y1="1636.4" x2="634.2" y2="1648.4"/><line x1="764.2" y1="1636.4" x2="764.2" y2="1648.4"/><text x="699.2" y="1637.4" font-size="12" text-anchor="middle" stroke="none">5.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="244.2" y1="1673.6" x2="764.2" y2="1673.6"/><line x1="244.2" y1="1667.6" x2="244.2" y2="1679.6"/><line x1="764.2" y1="1667.6" x2="764.2" y2="1679.6"/><text x="504.2" y="1668.6" font-size="12" text-anchor="middle" stroke="none">20.00 ม. (กริด 1–5)</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="430.1" y1="1546.2" x2="606.9" y2="1546.2"/><line x1="430.1" y1="1540.2" x2="430.1" y2="1552.2"/><line x1="606.9" y1="1540.2" x2="606.9" y2="1552.2"/><text x="518.5" y="1541.2" font-size="12" text-anchor="middle" stroke="none">C1–C2 = 6.80 ม. (กึ่งกลาง x = 10.75)</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="911.2" y1="1175.7" x2="911.2" y2="941.7"/><line x1="905.2" y1="1175.7" x2="917.2" y2="1175.7"/><line x1="905.2" y1="941.7" x2="917.2" y2="941.7"/><text x="905.2" y="1058.7" font-size="12" text-anchor="middle" stroke="none" transform="rotate(-90 905.2 1058.7)">9.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="911.2" y1="941.7" x2="911.2" y2="707.7"/><line x1="905.2" y1="941.7" x2="917.2" y2="941.7"/><line x1="905.2" y1="707.7" x2="917.2" y2="707.7"/><text x="905.2" y="824.7" font-size="12" text-anchor="middle" stroke="none" transform="rotate(-90 905.2 824.7)">9.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="911.2" y1="707.7" x2="911.2" y2="480.2"/><line x1="905.2" y1="707.7" x2="917.2" y2="707.7"/><line x1="905.2" y1="480.2" x2="917.2" y2="480.2"/><text x="905.2" y="593.9" font-size="12" text-anchor="middle" stroke="none" transform="rotate(-90 905.2 593.9)">8.75</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="911.2" y1="480.2" x2="911.2" y2="402.2"/><line x1="905.2" y1="480.2" x2="917.2" y2="480.2"/><line x1="905.2" y1="402.2" x2="917.2" y2="402.2"/><text x="905.2" y="441.2" font-size="12" text-anchor="middle" stroke="none" transform="rotate(-90 905.2 441.2)">3.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="847.4" y1="1426.6" x2="847.4" y2="1396.7"/><line x1="841.4" y1="1426.6" x2="853.4" y2="1426.6"/><line x1="841.4" y1="1396.7" x2="853.4" y2="1396.7"/><text x="841.4" y="1411.6" font-size="12" text-anchor="middle" stroke="none" transform="rotate(-90 841.4 1411.6)">1.15</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="96.0" y1="1396.7" x2="96.0" y2="1175.7"/><line x1="90.0" y1="1396.7" x2="102.0" y2="1396.7"/><line x1="90.0" y1="1175.7" x2="102.0" y2="1175.7"/><text x="90.0" y="1286.2" font-size="12" text-anchor="middle" stroke="none" transform="rotate(-90 90.0 1286.2)">8.50 (ผนังหน้า → A)</text></g>
+<g transform="translate(1220,125)" font-size="13"><g transform="translate(0,0)"><rect width="16" height="16" fill="#111" stroke="#000"  stroke-width="1.6"/><text x="26" y="13">เสาตามสเปก (แถว D/E · 10 ต้น 0.30×0.30)</text></g><g transform="translate(0,24)"><circle cx="9" cy="8" r="8" fill="#e9b88f" stroke="#8a3a12"/><text x="26" y="13">ไส้เหล็กหอ C1/C2 (H250) และเสาแกน W0/C0/E0</text></g><g transform="translate(0,48)"><rect width="16" height="16" fill="#fff" stroke="#b00" stroke-dasharray="3 2" stroke-width="1.6"/><text x="26" y="13">เสาพอร์ทัล Grid 1 และ 5 — สมมติ ต้องยืนยัน</text></g><g transform="translate(0,72)"><rect width="16" height="16" fill="#d9d9d9" stroke="#777"  stroke-width="1.6"/><text x="26" y="13">เสาริมผนังโถงตามโมเดล (ใช้ยึดทางเดิน +4.50) — ต้องยืนยัน</text></g></g>
+<g transform="translate(1220,300)" font-size="12"><text x="0" y="-14" font-size="18" font-weight="700">ตารางเสา/หอ (พิกัด x, y เมตร)</text><text x="0" y="0" font-weight="700">รหัส</text><text x="70" y="0" font-weight="700">กริด</text><text x="160" y="0" font-weight="700">x</text><text x="400" y="0" font-weight="700">y</text><text x="560" y="0" font-weight="700">ชนิด</text><text x="860" y="0" font-weight="700">ที่มา</text><line x1="0" y1="6" x2="960" y2="6" stroke="#333"/><text x="0" y="26" >D1–D5</text><text x="70" y="26" >D / 1–5</text><text x="160" y="26" >0.20 · 5.20 · 10.20 · 15.20 · 20.20</text><text x="400" y="26" >25.10</text><text x="560" y="26" >เสา คสล. 0.30 (แถว A อาคารหลัง)</text><text x="860" y="26" >สเปก §3.2</text><text x="0" y="52" >E1–E5</text><text x="70" y="52" >E / 1–5</text><text x="160" y="52" >0.20 … 20.20</text><text x="400" y="52" >28.10</text><text x="560" y="52" >เสา คสล. 0.30 ฝังในผนังห้อง</text><text x="860" y="52" >สเปก §3.2</text><text x="0" y="78" >W0</text><text x="70" y="78" >B / 1</text><text x="160" y="78" >0.20</text><text x="400" y="78" >7.35</text><text x="560" y="78" >แกนหอ W0 (ครึ่งซีก→ใช้เต็มวงกลมในโมเดล)</text><text x="860" y="78" >สเปก §2.3</text><text x="0" y="104" >C0</text><text x="70" y="104" >B / 3 (−0.07)</text><text x="160" y="104" >10.13</text><text x="400" y="104" >7.35</text><text x="560" y="104" >แกนกลมหอ C0 (เปียก)</text><text x="860" y="104" >สเปก §2.3</text><text x="0" y="130" >E0</text><text x="70" y="130" >B / 5</text><text x="160" y="130" >20.20</text><text x="400" y="130" >7.35</text><text x="560" y="130" >แกนหอ E0</text><text x="860" y="130" >สเปก §2.3</text><text x="0" y="156" >C1</text><text x="70" y="156" >F / —</text><text x="160" y="156" >7.35</text><text x="400" y="156" >−11.30</text><text x="560" y="156" >H250 + ฐานรากเฉพาะ (ฐานแผ่/เสาเข็ม)</text><text x="860" y="156" >สเปก §3.3</text><text x="0" y="182" >C2</text><text x="70" y="182" >F / —</text><text x="160" y="182" >14.15</text><text x="400" y="182" >−11.30</text><text x="560" y="182" >H250 + ฐานรากเฉพาะ</text><text x="860" y="182" >สเปก §3.3</text><text x="0" y="208" fill="#b00">พอร์ทัล</text><text x="70" y="208" fill="#b00">A,C / 1,5</text><text x="160" y="208" fill="#b00">0.20 · 20.20</text><text x="400" y="208" fill="#b00">−1.65 · 16.35</text><text x="560" y="208" fill="#b00">เสาพอร์ทัล (สมมติ)</text><text x="860" y="208" fill="#b00">ยืนยัน</text><text x="0" y="234" fill="#b00">ริมผนัง</text><text x="70" y="234" fill="#b00">— / ขอบ</text><text x="160" y="234" fill="#b00">−0.65 · 22.15</text><text x="400" y="234" fill="#b00">−8, −3, 2, 12.5, 17.5, 22</text><text x="560" y="234" fill="#b00">เสาริมผนังตามโมเดล</text><text x="860" y="234" fill="#b00">ยืนยัน</text></g>
+<text x="1260" y="660" font-size="18" font-weight="700">ด้านหน้า (Front elevation) — หอ C1 / C2 + Solar Ribbon</text>
+<line x1="1235" y1="1290" x2="2020" y2="1290" stroke="#333" stroke-width="2.5"/>
+<path d="M1070,1290 L1070,860 L1647.5,727.5 L2225,860 L2225,1290 Z" fill="#eef0ee" stroke="#555" stroke-width="1.5"/>
+<rect x="1587.5" y="1140" width="120" height="150" fill="#cfe6f2" stroke="#0b57d0"/>
+<text x="1647.5" y="1220" font-size="11" text-anchor="middle" fill="#0b57d0">ประตู 2.40</text>
+<path d="M1322.5,826.4375 L1647.5,752.5 L1972.5,826.4375 L1972.5,833.4375 L1647.5,759.5 L1322.5,833.4375 Z" fill="#1e293b" stroke="#000"/>
+<rect x="1471.25" y="798.1750000000001" width="12.5" height="491.82499999999993" fill="#2b3544"/>
+<path d="M1455,1247.5 L1441.5,860 L1513.5,860 L1500,1247.5 Z" fill="#c7683a" stroke="#661a09" stroke-width="1.2"/>
+<line x1="1445" y1="1247.5" x2="1480" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1450" y1="1247.5" x2="1485" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1455" y1="1247.5" x2="1490" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1460" y1="1247.5" x2="1495" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1465" y1="1247.5" x2="1500" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1470" y1="1247.5" x2="1505" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1475" y1="1247.5" x2="1510" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1449.4967741935484" y1="1190" x2="1505.5032258064516" y2="1190" stroke="#aaa" stroke-width="2"/>
+<line x1="1446.883870967742" y1="1115" x2="1508.116129032258" y2="1115" stroke="#aaa" stroke-width="2"/>
+<line x1="1444.4451612903226" y1="1045" x2="1510.5548387096774" y2="1045" stroke="#aaa" stroke-width="2"/>
+<line x1="1441.832258064516" y1="970" x2="1513.1677419354837" y2="970" stroke="#aaa" stroke-width="2"/>
+<line x1="1439.2193548387097" y1="895" x2="1515.7806451612903" y2="895" stroke="#aaa" stroke-width="2"/>
+<rect x="1447.5" y="1249" width="60" height="33.5" fill="#8e9296" stroke="#444"/>
+<rect x="1372.5" y="1260" width="210" height="22.5" fill="#d8cdb8" stroke="#8a7a55"/>
+<rect x="1397.5" y="1272" width="160" height="10.5" fill="#7fb0b8" opacity="0.8"/>
+<text x="1477.5" y="1312.5" font-size="14" font-weight="700" text-anchor="middle" fill="#8a3a12">C1</text>
+<rect x="1811.25" y="798.1750000000001" width="12.5" height="491.82499999999993" fill="#2b3544"/>
+<path d="M1795,1247.5 L1781.5,860 L1853.5,860 L1840,1247.5 Z" fill="#c7683a" stroke="#661a09" stroke-width="1.2"/>
+<line x1="1820" y1="1247.5" x2="1785" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1825" y1="1247.5" x2="1790" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1830" y1="1247.5" x2="1795" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1835" y1="1247.5" x2="1800" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1840" y1="1247.5" x2="1805" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1845" y1="1247.5" x2="1810" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1850" y1="1247.5" x2="1815" y2="860" stroke="#7a2a0a" stroke-width="0.8" opacity="0.6"/>
+<line x1="1789.4967741935484" y1="1190" x2="1845.5032258064516" y2="1190" stroke="#aaa" stroke-width="2"/>
+<line x1="1786.883870967742" y1="1115" x2="1848.116129032258" y2="1115" stroke="#aaa" stroke-width="2"/>
+<line x1="1784.4451612903226" y1="1045" x2="1850.5548387096774" y2="1045" stroke="#aaa" stroke-width="2"/>
+<line x1="1781.832258064516" y1="970" x2="1853.167741935484" y2="970" stroke="#aaa" stroke-width="2"/>
+<line x1="1779.2193548387097" y1="895" x2="1855.7806451612903" y2="895" stroke="#aaa" stroke-width="2"/>
+<rect x="1787.5" y="1249" width="60" height="33.5" fill="#8e9296" stroke="#444"/>
+<rect x="1712.5" y="1260" width="210" height="22.5" fill="#d8cdb8" stroke="#8a7a55"/>
+<rect x="1737.5" y="1272" width="160" height="10.5" fill="#7fb0b8" opacity="0.8"/>
+<text x="1817.5" y="1312.5" font-size="14" font-weight="700" text-anchor="middle" fill="#8a3a12">C2</text>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1240" y1="1290" x2="1290" y2="1290" stroke-dasharray="4 3"/><text x="1237.5" y="1294" font-size="11" text-anchor="end" stroke="none">±0.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1240" y1="1247.5" x2="1290" y2="1247.5" stroke-dasharray="4 3"/><text x="1237.5" y="1251.5" font-size="11" text-anchor="end" stroke="none">+0.85 เริ่มกระเบื้อง</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1240" y1="1190" x2="1290" y2="1190" stroke-dasharray="4 3"/><text x="1237.5" y="1194" font-size="11" text-anchor="end" stroke="none">ห่วงรัด</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1240" y1="860" x2="1290" y2="860" stroke-dasharray="4 3"/><text x="1237.5" y="864" font-size="11" text-anchor="end" stroke="none">+8.60 ยอดกระเบื้อง</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1240" y1="798.1750000000001" x2="1290" y2="798.1750000000001" stroke-dasharray="4 3"/><text x="1237.5" y="802.1750000000001" font-size="11" text-anchor="end" stroke="none">+9.84 ยอดไส้ H250</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1240" y1="752.5" x2="1290" y2="752.5" stroke-dasharray="4 3"/><text x="1237.5" y="756.5" font-size="11" text-anchor="end" stroke="none">+10.75 สัน Ribbon</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1240" y1="727.5" x2="1290" y2="727.5" stroke-dasharray="4 3"/><text x="1237.5" y="731.5" font-size="11" text-anchor="end" stroke="none">+11.25 สันโถง</text></g>
+<g stroke="#0b57d0" fill="#0b57d0" font-size="12"><line x1="1477.5" y1="1335" x2="1817.5" y2="1335"/><line x1="1477.5" y1="1330" x2="1477.5" y2="1340"/><line x1="1817.5" y1="1330" x2="1817.5" y2="1340"/><text x="1647.5" y="1330" text-anchor="middle" stroke="none">6.80</text></g>
+<text x="1260" y="1375" font-size="12" fill="#444">หอ C1/C2: ทรงกรวยบิดเกลียว ±128°, r 0.45 → 0.72, กระเบื้อง +0.85 … +8.60 (22 เส้น × 24 แผ่น), ไส้ H250 ขึ้นถึงใต้ Ribbon รับแรงลมที่ปลาย</text>
+<g transform="translate(1220,1560)" font-size="13" fill="#222"><text y="0" font-weight="700" font-size="17">หมายเหตุ</text><text y="30" >1. "เสาส่งสัญญาณด้านหน้า" ตีความว่าคือหอดินเผา C1/C2 หน้าอาคาร (เสาสองต้นหน้า) — ถ้าหมายถึงเสาอากาศ/เสาโทรคมนาคม แจ้งเพื่อทำแบบใหม่</text><text y="60" >2. กริด 1–5 = x 0.20…20.20 (ห่าง 5.00); A, B, C = y −1.65, 7.35, 16.35; D, E = เสาแถว A/B อาคารหลัง y 25.10, 28.10 (สเปก §1.2)</text><text y="90" >3. เสาที่ "ตามสเปก" มีเพียงแถว D/E ของอาคารหลัง (10 ต้น) กับแกนหอ — ตำแหน่งเสาโถงพอร์ทัลจริงสเปกไม่ระบุ เสาสีแดงเส้นประเป็นสมมติ</text><text y="120" >4. ฐานราก C1/C2: สเปกระบุฐานแผ่หรือเสาเข็มเฉพาะตัว ไม่ฝากน้ำหนักกับโถง · ขนาดฐานรากต้องให้วิศวกรโครงสร้างกำหนด (ในผังไม่ได้วาด)</text><text y="150" >5. ไส้ H250 ยึดโยงยอดเข้าทรัสหน้าจั่ว (สเปก §3.3) และรับ Solar Ribbon (REV D.7) · พิกัดอ้างอิง origin = ขอบสนามซ้าย B1/B4 ที่แนวเสา 1</text></g></svg>

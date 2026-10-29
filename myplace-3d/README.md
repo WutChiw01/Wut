@@ -101,3 +101,6 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 
 ### REV R35 — compact toilets/lockers + lease unit
 `node plan_gf_r35.mjs` → `plans/rear_GF_R35.{svg,png}`. Prefab WC modules 2.99×2.44 (F 3 WC, M 2 WC+U) stacked on the passage, accessible WC 2.05×2.00 clear (Ø1.50), lockers 2.4×4.9 with 3 showers each, 15.7 m² FOR-LEASE unit with aisle shopfront. 3D model not yet updated.
+
+### REV R36 — no lift, all WCs on one side, 2-shower lockers
+`node plan_gf_r36.mjs` → `plans/rear_GF_R36.{svg,png}`. Lift removed; accessible + F + M WC west of a 1.20 m passage to S1; F/M lockers (2 showers each) stacked east of it; gift shop, clinic 24.5 m², lease units L1/L2 17.2 m² each. 3D model not yet updated.

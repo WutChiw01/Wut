@@ -1,0 +1,285 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1761" height="1347" viewBox="0 0 1761 1347" font-family="Loma, 'Noto Sans Thai', sans-serif">
+<rect width="100%" height="100%" fill="#fff"/>
+<text x="80" y="56" font-size="30" font-weight="700" fill="#111">MY PLACE / R36 — No lift · all WCs on one side · 2-shower lockers (±0.00)</text>
+<text x="80" y="86" font-size="15" fill="#555">Rear ground floor, 3rd pass · North up · metres · S1 stair kept · lift removed · accessible + F + M WC together west of the passage · lockers 2 showers each · 2 lease units</text>
+<g transform="translate(1561,24)"><circle cx="30" cy="40" r="26" fill="none" stroke="#111" stroke-width="2"/><path d="M30,12 L22,48 L30,40 L38,48 Z" fill="#111"/><text x="68" y="46" font-size="14" fill="#111">N</text></g>
+<line x1="360.5" y1="1000.5" x2="360.5" y2="203.0" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
+<circle cx="360.5" cy="192.0" r="11" fill="#fff" stroke="#999"/><text x="360.5" y="196.0" font-size="11" text-anchor="middle" fill="#666">A</text>
+<line x1="635.5" y1="1000.5" x2="635.5" y2="203.0" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
+<circle cx="635.5" cy="192.0" r="11" fill="#fff" stroke="#999"/><text x="635.5" y="196.0" font-size="11" text-anchor="middle" fill="#666">B</text>
+<line x1="910.5" y1="1000.5" x2="910.5" y2="203.0" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
+<circle cx="910.5" cy="192.0" r="11" fill="#fff" stroke="#999"/><text x="910.5" y="196.0" font-size="11" text-anchor="middle" fill="#666">C</text>
+<line x1="1185.5" y1="1000.5" x2="1185.5" y2="203.0" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
+<circle cx="1185.5" cy="192.0" r="11" fill="#fff" stroke="#999"/><text x="1185.5" y="196.0" font-size="11" text-anchor="middle" fill="#666">D</text>
+<line x1="1460.5" y1="1000.5" x2="1460.5" y2="203.0" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
+<circle cx="1460.5" cy="192.0" r="11" fill="#fff" stroke="#999"/><text x="1460.5" y="196.0" font-size="11" text-anchor="middle" fill="#666">E</text>
+<line x1="107.5" y1="846.5" x2="1636.5" y2="846.5" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
+<circle cx="93.8" cy="846.5" r="11" fill="#fff" stroke="#999"/><text x="93.8" y="850.5" font-size="11" text-anchor="middle" fill="#666">4</text>
+<line x1="107.5" y1="681.5" x2="1636.5" y2="681.5" stroke="#cc5" stroke-width="0.6" stroke-dasharray="10 4 2 4"/>
+<circle cx="93.8" cy="681.5" r="11" fill="#fff" stroke="#999"/><text x="93.8" y="685.5" font-size="11" text-anchor="middle" fill="#666">5</text>
+<rect x="250.5" y="846.5" width="1320.0" height="159.5" fill="#fdf0d5" stroke="none" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="954.5" y="912.5" font-size="11" fill="#a07a30" text-anchor="middle"  >ทางเดินหลังคอร์ท / back-of-court aisle (2.00 + slab edge)</text>
+<rect x="250.5" y="571.5" width="1320.0" height="330.0" fill="none" stroke="#b44" stroke-width="1.4" stroke-dasharray="12 5" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1427.5" y="511.0" font-size="10" fill="#b44" text-anchor="middle"  >ขอบพื้น คสล. เดิม (ห้ามเจาะ)</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1427.5" y="527.5" font-size="9" fill="#b44" text-anchor="middle"  >existing slab edge x −1.80…22.20 / y 24.10…30.10</text>
+<rect x="921.5" y="395.5" width="275.0" height="137.5" fill="#dcecf8" stroke="#0b57d0" stroke-width="1" stroke-dasharray="4 3" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1059.0" y="467.0" font-size="10" fill="#0b57d0" text-anchor="middle"  >สระ ตามแบบเดิม</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1059.0" y="486.3" font-size="9" fill="#0b57d0" text-anchor="middle"  >pool per D8 / R33 (unchanged)</text>
+<path d="M360.5,365.2 L1460.5,200.2" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-dasharray="6 4"/>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="360.5" y="354.2" font-size="9" fill="#c0392b" text-anchor="middle"  >5.75</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="635.5" y="313.0" font-size="9" fill="#c0392b" text-anchor="middle"  >6.50</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="910.5" y="271.7" font-size="9" fill="#c0392b" text-anchor="middle"  >7.25</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1185.5" y="230.5" font-size="9" fill="#c0392b" text-anchor="middle"  >8.00</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1460.5" y="189.2" font-size="9" fill="#c0392b" text-anchor="middle"  >8.75</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="910.5" y="236.0" font-size="10" fill="#c0392b" text-anchor="middle"  transform="rotate(-8 910.5 236.0)">รั้วลาด / sloped fence (gross distance from line 5)</text>
+<rect x="250.5" y="423.0" width="275.0" height="148.5" fill="#fff4e2" stroke="#b8731a" stroke-width="2"  />
+<rect x="316.5" y="502.7" width="143.0" height="60.5" fill="none" stroke="#b8731a" stroke-width="1"  />
+<line x1="316.5" y1="563.3" x2="316.5" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="330.8" y1="563.3" x2="330.8" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="345.1" y1="563.3" x2="345.1" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="359.4" y1="563.3" x2="359.4" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="373.7" y1="563.3" x2="373.7" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="388.0" y1="563.3" x2="388.0" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="402.3" y1="563.3" x2="402.3" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="416.6" y1="563.3" x2="416.6" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="430.9" y1="563.3" x2="430.9" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="445.2" y1="563.3" x2="445.2" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<line x1="459.5" y1="563.3" x2="459.5" y2="502.7" stroke="#b8731a" stroke-width="0.8" />
+<rect x="316.5" y="431.3" width="143.0" height="60.5" fill="none" stroke="#b8731a" stroke-width="1"  />
+<line x1="316.5" y1="491.7" x2="316.5" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="330.8" y1="491.7" x2="330.8" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="345.1" y1="491.7" x2="345.1" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="359.4" y1="491.7" x2="359.4" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="373.7" y1="491.7" x2="373.7" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="388.0" y1="491.7" x2="388.0" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="402.3" y1="491.7" x2="402.3" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="416.6" y1="491.7" x2="416.6" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="430.9" y1="491.7" x2="430.9" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="445.2" y1="491.7" x2="445.2" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<line x1="459.5" y1="491.7" x2="459.5" y2="431.3" stroke="#b8731a" stroke-width="0.8" />
+<rect x="256.0" y="431.3" width="60.5" height="132.0" fill="none" stroke="#b8731a" stroke-width="1"  />
+<rect x="459.5" y="431.3" width="60.5" height="132.0" fill="none" stroke="#b8731a" stroke-width="1"  />
+<line x1="327.5" y1="533.0" x2="448.5" y2="533.0" stroke="#b8731a" stroke-width="2" />
+<line x1="448.5" y1="461.5" x2="327.5" y2="461.5" stroke="#b8731a" stroke-width="2" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="388.0" y="409.3" font-size="10" fill="#b8731a" text-anchor="middle" font-weight="700" >S1 บันไดเดิม — คงตำแหน่ง (frozen)</text>
+<line x1="404.5" y1="582.5" x2="404.5" y2="544.0" stroke="#b8731a" stroke-width="2.2" />
+<rect x="140.5" y="588.0" width="110.0" height="104.5" fill="none" stroke="#bbb" stroke-width="1" stroke-dasharray="4 4" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="195.5" y="634.8" font-size="9" fill="#999" text-anchor="middle"  >ลิฟต์ตัดออก</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="195.5" y="651.3" font-size="8.5" fill="#999" text-anchor="middle"  >(lift removed)</text>
+<rect x="250.5" y="577.0" width="1320.0" height="269.5" fill="#fbfaf7" stroke="none" stroke-width="1"  />
+<rect x="250.5" y="577.0" width="5.5" height="269.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="1565.0" y="577.0" width="11.0" height="269.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="250.5" y="571.5" width="1325.5" height="5.5" fill="#bcd" stroke="#333" stroke-width="0.4"  />
+<rect x="250.5" y="570.4" width="1320.0" height="7.7" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<defs><pattern id="lease" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="#fff3c4"/><line x1="0" y1="0" x2="0" y2="9" stroke="#e0b93a" stroke-width="2"/></pattern></defs>
+<rect x="250.5" y="733.8" width="121.0" height="112.7" fill="#efe6f7" stroke="none" stroke-width="1"  />
+<rect x="250.5" y="577.0" width="121.0" height="156.8" fill="#e4e4e4" stroke="none" stroke-width="1"  />
+<rect x="371.5" y="711.7" width="154.0" height="134.7" fill="#f8e6ee" stroke="none" stroke-width="1"  />
+<rect x="371.5" y="577.0" width="154.0" height="134.7" fill="#e0ecf7" stroke="none" stroke-width="1"  />
+<rect x="525.5" y="577.0" width="66.0" height="269.5" fill="#e9eef2" stroke="none" stroke-width="1"  />
+<rect x="591.5" y="711.7" width="165.0" height="134.7" fill="#f8e8ef" stroke="none" stroke-width="1"  />
+<rect x="591.5" y="577.0" width="165.0" height="134.7" fill="#e4eef8" stroke="none" stroke-width="1"  />
+<rect x="756.5" y="577.0" width="154.0" height="269.5" fill="#fcefd3" stroke="none" stroke-width="1"  />
+<rect x="910.5" y="577.0" width="275.0" height="269.5" fill="#e4f2e7" stroke="none" stroke-width="1"  />
+<rect x="1185.5" y="577.0" width="379.5" height="269.5" fill="url(#lease)" stroke="none" stroke-width="1"  />
+<rect x="368.8" y="577.0" width="5.5" height="269.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="522.8" y="577.0" width="5.5" height="269.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="588.8" y="577.0" width="5.5" height="269.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="753.8" y="577.0" width="5.5" height="269.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="907.7" y="577.0" width="5.5" height="269.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="1182.7" y="577.0" width="5.5" height="269.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<line x1="1378.0" y1="841.0" x2="1378.0" y2="577.0" stroke="#b8901a" stroke-width="2" stroke-dasharray="8 5"/>
+<rect x="250.5" y="731.0" width="121.0" height="5.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="374.3" y="709.0" width="148.5" height="5.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="594.3" y="709.0" width="159.5" height="5.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="250.5" y="841.0" width="33.0" height="11.0" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="333.0" y="841.0" width="198.0" height="11.0" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="586.0" y="841.0" width="214.5" height="11.0" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="866.5" y="841.0" width="121.0" height="11.0" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="1053.5" y="841.0" width="198.0" height="11.0" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="1306.5" y="841.0" width="88.0" height="11.0" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="1444.0" y="841.0" width="132.0" height="11.0" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="767.5" y="842.6" width="33.0" height="7.7" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<rect x="866.5" y="842.6" width="33.0" height="7.7" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<rect x="1196.5" y="842.6" width="55.0" height="7.7" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<rect x="1306.5" y="842.6" width="66.0" height="7.7" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<rect x="1383.5" y="842.6" width="11.0" height="7.7" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<rect x="1444.0" y="842.6" width="115.5" height="7.7" fill="#cfe6f2" stroke="#7fb5d6" stroke-width="1"  />
+<line x1="283.5" y1="841.0" x2="333.0" y2="841.0" stroke="#222" stroke-width="2" />
+<path d="M333.0,841.0 A49.5,49.5 0 0 0 291.2,792.1" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="531.0" y1="841.0" x2="586.0" y2="841.0" stroke="#222" stroke-width="2" />
+<path d="M586.0,841.0 A55.0,55.0 0 0 0 539.6,786.7" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="800.5" y1="841.0" x2="833.5" y2="841.0" stroke="#222" stroke-width="2" />
+<path d="M833.5,841.0 A33.0,33.0 0 0 0 805.7,808.4" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="866.5" y1="841.0" x2="833.5" y2="841.0" stroke="#222" stroke-width="2" />
+<path d="M833.5,841.0 A33.0,33.0 0 0 1 861.3,808.4" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="987.5" y1="841.0" x2="1020.5" y2="841.0" stroke="#222" stroke-width="2" />
+<path d="M1020.5,841.0 A33.0,33.0 0 0 0 992.7,808.4" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1053.5" y1="841.0" x2="1020.5" y2="841.0" stroke="#222" stroke-width="2" />
+<path d="M1020.5,841.0 A33.0,33.0 0 0 1 1048.3,808.4" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1251.5" y1="841.0" x2="1306.5" y2="841.0" stroke="#222" stroke-width="2" />
+<path d="M1306.5,841.0 A55.0,55.0 0 0 0 1260.1,786.7" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1394.5" y1="841.0" x2="1444.0" y2="841.0" stroke="#222" stroke-width="2" />
+<path d="M1444.0,841.0 A49.5,49.5 0 0 0 1402.2,792.1" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="525.5" y1="810.7" x2="525.5" y2="766.7" stroke="#fff" stroke-width="7" />
+<line x1="525.5" y1="810.7" x2="525.5" y2="766.7" stroke="#222" stroke-width="2" />
+<path d="M525.5,766.7 A44.0,44.0 0 0 0 483.7,797.2" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="525.5" y1="645.8" x2="525.5" y2="601.7" stroke="#fff" stroke-width="7" />
+<line x1="525.5" y1="645.8" x2="525.5" y2="601.7" stroke="#222" stroke-width="2" />
+<path d="M525.5,601.7 A44.0,44.0 0 0 0 483.7,632.2" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="591.5" y1="772.3" x2="591.5" y2="728.2" stroke="#fff" stroke-width="7" />
+<line x1="591.5" y1="772.3" x2="591.5" y2="728.2" stroke="#222" stroke-width="2" />
+<path d="M591.5,728.2 A44.0,44.0 0 0 1 633.3,758.7" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="591.5" y1="695.2" x2="591.5" y2="651.3" stroke="#fff" stroke-width="7" />
+<line x1="591.5" y1="695.2" x2="591.5" y2="651.3" stroke="#222" stroke-width="2" />
+<path d="M591.5,651.3 A44.0,44.0 0 0 1 633.3,681.7" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="533.8" y1="574.2" x2="583.3" y2="574.2" stroke="#fff" stroke-width="7" />
+<line x1="533.8" y1="577.0" x2="583.3" y2="577.0" stroke="#222" stroke-width="2" />
+<path d="M583.3,577.0 A49.5,49.5 0 0 1 541.5,625.9" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="283.5" y1="574.2" x2="333.0" y2="574.2" stroke="#fff" stroke-width="7" />
+<line x1="283.5" y1="577.0" x2="333.0" y2="577.0" stroke="#222" stroke-width="2" />
+<path d="M333.0,577.0 A49.5,49.5 0 0 1 291.2,625.9" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="602.5" y1="574.2" x2="646.5" y2="574.2" stroke="#fff" stroke-width="7" />
+<line x1="602.5" y1="577.0" x2="646.5" y2="577.0" stroke="#222" stroke-width="2" />
+<path d="M646.5,577.0 A44.0,44.0 0 0 1 609.4,620.5" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<circle cx="308.3" cy="788.8" r="41.3" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="333.0" y="745.3" width="33.0" height="20.9" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="352.3" cy="755.7" r="7.2" fill="none" stroke="#555" stroke-width="1" />
+<rect x="253.3" y="747.5" width="27.5" height="22.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="267.0" cy="758.5" r="5.0" fill="none" stroke="#555" stroke-width="1" />
+<line x1="368.8" y1="786.0" x2="368.8" y2="744.8" stroke="#222" stroke-width="2.2" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="311.0" y="799.8" font-size="9" fill="#111" text-anchor="middle" font-weight="700" >WC อารยสถาปัตย์</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="311.0" y="816.3" font-size="8.5" fill="#111" text-anchor="middle"  >Accessible 2.05×2.00</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="311.0" y="645.8" font-size="9" fill="#111" text-anchor="middle" font-weight="700" >ห้องสำรอง / เก็บของสระ</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="311.0" y="662.3" font-size="8.5" fill="#111" text-anchor="middle"  >spare · pool store 6.3</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="311.0" y="678.8" font-size="8" fill="#0b57d0" text-anchor="middle"  >door to pool deck</text>
+<rect x="377.0" y="811.3" width="33.0" height="20.9" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="396.3" cy="821.7" r="7.2" fill="none" stroke="#555" stroke-width="1" />
+<line x1="456.8" y1="841.0" x2="456.8" y2="802.5" stroke="#888" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="374.3" y="798.1" width="82.5" height="3.3" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="377.0" y="767.3" width="33.0" height="20.9" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="396.3" cy="777.7" r="7.2" fill="none" stroke="#555" stroke-width="1" />
+<line x1="456.8" y1="797.0" x2="456.8" y2="758.5" stroke="#888" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="374.3" y="754.1" width="82.5" height="3.3" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="377.0" y="723.3" width="33.0" height="20.9" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="396.3" cy="733.8" r="7.2" fill="none" stroke="#555" stroke-width="1" />
+<line x1="456.8" y1="753.0" x2="456.8" y2="714.5" stroke="#888" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="465.0" y="821.7" width="27.5" height="22.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="478.8" cy="832.7" r="5.0" fill="none" stroke="#555" stroke-width="1" />
+<rect x="495.3" y="821.7" width="27.5" height="22.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="509.0" cy="832.7" r="5.0" fill="none" stroke="#555" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="489.8" y="768.1" font-size="10" fill="#111" text-anchor="middle" font-weight="700" >WC หญิง</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="489.8" y="784.6" font-size="8.5" fill="#111" text-anchor="middle"  >3 WC · 2 อ่าง</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="489.8" y="800.0" font-size="8.5" fill="#111" text-anchor="middle"  >2.8×2.45 = 6.9</text>
+<rect x="377.0" y="676.5" width="33.0" height="20.9" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="396.3" cy="687.0" r="7.2" fill="none" stroke="#555" stroke-width="1" />
+<line x1="456.8" y1="706.2" x2="456.8" y2="667.7" stroke="#888" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="374.3" y="663.3" width="82.5" height="3.3" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="377.0" y="632.5" width="33.0" height="20.9" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="396.3" cy="643.0" r="7.2" fill="none" stroke="#555" stroke-width="1" />
+<line x1="456.8" y1="662.2" x2="456.8" y2="623.7" stroke="#888" stroke-width="1" stroke-dasharray="2 2"/>
+<rect x="374.3" y="619.3" width="82.5" height="3.3" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="377.0" y="585.3" width="22.0" height="27.5" fill="#fff" stroke="#555" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="421.0" y="601.7" font-size="9" fill="#111" text-anchor="middle"  >U</text>
+<rect x="465.0" y="579.8" width="27.5" height="22.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="478.8" cy="590.8" r="5.0" fill="none" stroke="#555" stroke-width="1" />
+<rect x="495.3" y="579.8" width="27.5" height="22.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="509.0" cy="590.8" r="5.0" fill="none" stroke="#555" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="489.8" y="633.4" font-size="10" fill="#111" text-anchor="middle" font-weight="700" >WC ชาย</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="489.8" y="649.9" font-size="8.5" fill="#111" text-anchor="middle"  >2 WC · 1 U · 2 อ่าง</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="489.8" y="665.3" font-size="8.5" fill="#111" text-anchor="middle"  >2.8×2.45 = 6.9</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="558.5" y="709.0" font-size="9.5" fill="#111" text-anchor="middle" font-weight="700" transform="rotate(-90 558.5 709.0)">ทางเดิน → S1  1.20</text>
+<path d="M558.5,593.5 l-4,8 h8 z" fill="#4c8a3a" stroke="#4c8a3a" stroke-width="1" />
+<rect x="704.3" y="783.2" width="49.5" height="57.8" fill="#d6e6f8" stroke="#2a5db0" stroke-width="1"  />
+<circle cx="729.0" cy="812.1" r="7.2" fill="none" stroke="#2a5db0" stroke-width="1" />
+<rect x="704.3" y="722.7" width="49.5" height="57.8" fill="#d6e6f8" stroke="#2a5db0" stroke-width="1"  />
+<circle cx="729.0" cy="751.6" r="7.2" fill="none" stroke="#2a5db0" stroke-width="1" />
+<line x1="704.3" y1="841.0" x2="704.3" y2="722.7" stroke="#2a5db0" stroke-width="2" stroke-dasharray="4 2"/>
+<rect x="597.0" y="819.0" width="101.7" height="24.7" fill="#c9b99d" stroke="#6b5a3a" stroke-width="1"  />
+<line x1="613.5" y1="843.7" x2="613.5" y2="819.0" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="630.0" y1="843.7" x2="630.0" y2="819.0" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="646.5" y1="843.7" x2="646.5" y2="819.0" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="663.0" y1="843.7" x2="663.0" y2="819.0" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="679.5" y1="843.7" x2="679.5" y2="819.0" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="696.0" y1="843.7" x2="696.0" y2="819.0" stroke="#6b5a3a" stroke-width="0.6" />
+<rect x="619.0" y="758.5" width="66.0" height="19.3" fill="#e9d9c4" stroke="#555" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="643.8" y="748.9" font-size="9.5" fill="#111" text-anchor="middle" font-weight="700" >ล็อกเกอร์ หญิง</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="674.0" y="725.5" font-size="8.5" fill="#111" text-anchor="middle"  >2 SH · 7.4</text>
+<rect x="704.3" y="648.5" width="49.5" height="57.8" fill="#d6e6f8" stroke="#2a5db0" stroke-width="1"  />
+<circle cx="729.0" cy="677.4" r="7.2" fill="none" stroke="#2a5db0" stroke-width="1" />
+<rect x="704.3" y="588.0" width="49.5" height="57.8" fill="#d6e6f8" stroke="#2a5db0" stroke-width="1"  />
+<circle cx="729.0" cy="616.9" r="7.2" fill="none" stroke="#2a5db0" stroke-width="1" />
+<line x1="704.3" y1="706.2" x2="704.3" y2="588.0" stroke="#2a5db0" stroke-width="2" stroke-dasharray="4 2"/>
+<rect x="597.0" y="579.8" width="101.7" height="24.7" fill="#c9b99d" stroke="#6b5a3a" stroke-width="1"  />
+<line x1="613.5" y1="604.5" x2="613.5" y2="579.8" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="630.0" y1="604.5" x2="630.0" y2="579.8" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="646.5" y1="604.5" x2="646.5" y2="579.8" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="663.0" y1="604.5" x2="663.0" y2="579.8" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="679.5" y1="604.5" x2="679.5" y2="579.8" stroke="#6b5a3a" stroke-width="0.6" />
+<line x1="696.0" y1="604.5" x2="696.0" y2="579.8" stroke="#6b5a3a" stroke-width="0.6" />
+<rect x="619.0" y="645.8" width="66.0" height="19.2" fill="#e9d9c4" stroke="#555" stroke-width="1"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="643.8" y="614.1" font-size="9.5" fill="#111" text-anchor="middle" font-weight="700" >ล็อกเกอร์ ชาย</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="674.0" y="698.0" font-size="8.5" fill="#111" text-anchor="middle"  >2 SH · 7.4</text>
+<rect x="759.3" y="582.5" width="24.8" height="214.5" fill="#e9d9c4" stroke="#555" stroke-width="1"  />
+<rect x="759.3" y="579.8" width="148.5" height="22.0" fill="#e9d9c4" stroke="#555" stroke-width="1"  />
+<rect x="883.0" y="604.5" width="24.8" height="192.5" fill="#e9d9c4" stroke="#555" stroke-width="1"  />
+<rect x="806.0" y="692.5" width="55.0" height="38.5" fill="#f3d7a1" stroke="#555" stroke-width="1"  />
+<rect x="806.0" y="626.5" width="55.0" height="38.5" fill="#f3d7a1" stroke="#555" stroke-width="1"  />
+<rect x="872.0" y="808.0" width="33.0" height="27.5" fill="#d9b36b" stroke="#6b4a1a" stroke-width="1.4"  />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="833.5" y="764.0" font-size="10" fill="#111" text-anchor="middle" font-weight="700" >ร้านของที่ระลึก</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="833.5" y="780.5" font-size="8.5" fill="#111" text-anchor="middle"  >Gift shop · 13.7</text>
+<rect x="913.3" y="722.7" width="269.5" height="5.5" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="1045.3" y="577.0" width="5.5" height="145.7" fill="#333" stroke="#333" stroke-width="0.4"  />
+<rect x="932.5" y="805.2" width="44.0" height="27.5" fill="#e9d9c4" stroke="#555" stroke-width="1"  />
+<rect x="1075.5" y="805.2" width="99.0" height="27.5" fill="#e9d9c4" stroke="#555" stroke-width="1"  />
+<rect x="1097.5" y="744.8" width="49.5" height="27.5" fill="#e9d9c4" stroke="#555" stroke-width="1"  />
+<rect x="924.3" y="599.0" width="27.5" height="77.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<rect x="1012.3" y="582.5" width="27.5" height="22.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="1026.0" cy="593.5" r="5.0" fill="none" stroke="#555" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="991.6" y="695.2" font-size="10" fill="#111" text-anchor="middle" font-weight="700" >ตรวจ 1</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="991.6" y="711.7" font-size="8.5" fill="#111" text-anchor="middle"  >exam 1</text>
+<rect x="1059.0" y="599.0" width="27.5" height="77.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<rect x="1147.0" y="582.5" width="27.5" height="22.0" fill="#fff" stroke="#555" stroke-width="1"  />
+<circle cx="1160.8" cy="593.5" r="5.0" fill="none" stroke="#555" stroke-width="1" />
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1126.4" y="695.2" font-size="10" fill="#111" text-anchor="middle" font-weight="700" >ตรวจ 2</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1126.4" y="711.7" font-size="8.5" fill="#111" text-anchor="middle"  >exam 2</text>
+<line x1="954.5" y1="725.5" x2="998.5" y2="725.5" stroke="#222" stroke-width="2" />
+<path d="M998.5,725.5 A44.0,44.0 0 0 0 961.4,682.0" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<line x1="1086.5" y1="725.5" x2="1130.5" y2="725.5" stroke="#222" stroke-width="2" />
+<path d="M1130.5,725.5 A44.0,44.0 0 0 0 1093.4,682.0" fill="none" stroke="#888" stroke-width="1" stroke-dasharray="3 3"/>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1048.0" y="766.7" font-size="10" fill="#2f6b3a" text-anchor="middle" font-weight="700" >คลินิก Clinic · 24.5 ตร.ม.</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1048.0" y="783.2" font-size="8.5" fill="#111" text-anchor="middle"  >reception / waiting</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1281.8" y="742.0" font-size="11" fill="#111" text-anchor="middle" font-weight="700" >พื้นที่ให้เช่า L1</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1281.8" y="761.3" font-size="10" fill="#111" text-anchor="middle" font-weight="700" >FOR LEASE · 17.2 ตร.ม.</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1281.8" y="780.5" font-size="8.5" fill="#111" text-anchor="middle"  >3.50 × 4.90 · shopfront</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1474.3" y="742.0" font-size="11" fill="#111" text-anchor="middle" font-weight="700" >พื้นที่ให้เช่า L2</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1474.3" y="761.3" font-size="10" fill="#111" text-anchor="middle" font-weight="700" >FOR LEASE · 17.2 ตร.ม.</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1474.3" y="780.5" font-size="8.5" fill="#111" text-anchor="middle"  >3.50 × 4.90 · shopfront</text>
+<text paint-order="stroke" stroke="#fff" stroke-width="3.5" stroke-linejoin="round" x="1378.0" y="610.0" font-size="8.5" fill="#111" text-anchor="middle"  >L1+L2 รวมเป็นห้องเดียวได้ 34.3 ตร.ม. (ร้านค้า/นวด/บูลเดอร์/กาแฟ)</text>
+<rect x="352.3" y="838.2" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="627.3" y="838.2" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="902.3" y="838.2" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="1177.3" y="838.2" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="1452.3" y="838.2" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="352.3" y="673.3" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="627.3" y="673.3" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="902.3" y="673.3" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="1177.3" y="673.3" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<rect x="1452.3" y="673.3" width="16.5" height="16.5" fill="#222" stroke="#000" stroke-width="1"  />
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="250.5" y1="986.7" x2="371.5" y2="986.7"/><line x1="250.5" y1="980.7" x2="250.5" y2="992.7"/><line x1="371.5" y1="980.7" x2="371.5" y2="992.7"/><text x="311.0" y="981.7" font-size="12" text-anchor="middle" stroke="none">2.20</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="371.5" y1="986.7" x2="525.5" y2="986.7"/><line x1="371.5" y1="980.7" x2="371.5" y2="992.7"/><line x1="525.5" y1="980.7" x2="525.5" y2="992.7"/><text x="448.5" y="981.7" font-size="12" text-anchor="middle" stroke="none">2.80</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="525.5" y1="986.7" x2="591.5" y2="986.7"/><line x1="525.5" y1="980.7" x2="525.5" y2="992.7"/><line x1="591.5" y1="980.7" x2="591.5" y2="992.7"/><text x="558.5" y="981.7" font-size="12" text-anchor="middle" stroke="none">1.20</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="591.5" y1="986.7" x2="756.5" y2="986.7"/><line x1="591.5" y1="980.7" x2="591.5" y2="992.7"/><line x1="756.5" y1="980.7" x2="756.5" y2="992.7"/><text x="674.0" y="981.7" font-size="12" text-anchor="middle" stroke="none">3.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="756.5" y1="986.7" x2="910.5" y2="986.7"/><line x1="756.5" y1="980.7" x2="756.5" y2="992.7"/><line x1="910.5" y1="980.7" x2="910.5" y2="992.7"/><text x="833.5" y="981.7" font-size="12" text-anchor="middle" stroke="none">2.80</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="910.5" y1="986.7" x2="1185.5" y2="986.7"/><line x1="910.5" y1="980.7" x2="910.5" y2="992.7"/><line x1="1185.5" y1="980.7" x2="1185.5" y2="992.7"/><text x="1048.0" y="981.7" font-size="12" text-anchor="middle" stroke="none">5.00</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1185.5" y1="986.7" x2="1378.0" y2="986.7"/><line x1="1185.5" y1="980.7" x2="1185.5" y2="992.7"/><line x1="1378.0" y1="980.7" x2="1378.0" y2="992.7"/><text x="1281.8" y="981.7" font-size="12" text-anchor="middle" stroke="none">3.50</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1378.0" y1="986.7" x2="1570.5" y2="986.7"/><line x1="1378.0" y1="980.7" x2="1378.0" y2="992.7"/><line x1="1570.5" y1="980.7" x2="1570.5" y2="992.7"/><text x="1474.3" y="981.7" font-size="12" text-anchor="middle" stroke="none">3.50</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="250.5" y1="1008.8" x2="1570.5" y2="1008.8"/><line x1="250.5" y1="1002.8" x2="250.5" y2="1014.8"/><line x1="1570.5" y1="1002.8" x2="1570.5" y2="1014.8"/><text x="910.5" y="1003.8" font-size="12" text-anchor="middle" stroke="none">24.00 m</text></g>
+<g stroke="#0b57d0" fill="#0b57d0"><line x1="1614.5" y1="846.5" x2="1614.5" y2="577.0"/><line x1="1608.5" y1="846.5" x2="1620.5" y2="846.5"/><line x1="1608.5" y1="577.0" x2="1620.5" y2="577.0"/><text x="1608.5" y="711.8" font-size="12" text-anchor="middle" stroke="none" transform="rotate(-90 1608.5 711.8)">4.90</text></g>
+<g transform="translate(80,1047)" font-size="12.5" fill="#222">
+<text font-weight="700" font-size="14">ROOM SCHEDULE</text>
+<text y="22">1. Accessible WC (left of A, 4–5) · WC อารยสถาปัตย์</text><text x="470" y="22">2.20×2.05 m</text><text x="640" y="22" text-anchor="end" font-weight="700">4.5 m²</text><text y="41">2. Female WC · ห้องน้ำหญิง 3 WC</text><text x="470" y="41">2.80×2.45 m</text><text x="640" y="41" text-anchor="end" font-weight="700">6.9 m²</text><text y="60">3. Male WC · ห้องน้ำชาย 2 WC+U</text><text x="470" y="60">2.80×2.45 m</text><text x="640" y="60" text-anchor="end" font-weight="700">6.9 m²</text><text y="79">4. Passage → S1 · ทางเดิน</text><text x="470" y="79">1.20×4.90 m</text><text x="640" y="79" text-anchor="end" font-weight="700">5.9 m²</text><text y="98">5. Locker + 2 showers, Female · ล็อกเกอร์ หญิง</text><text x="470" y="98">3.00×2.45 m</text><text x="640" y="98" text-anchor="end" font-weight="700">7.4 m²</text><text y="117">6. Locker + 2 showers, Male · ล็อกเกอร์ ชาย</text><text x="470" y="117">3.00×2.45 m</text><text x="640" y="117" text-anchor="end" font-weight="700">7.4 m²</text><text y="136">7. Spare / pool store · ห้องสำรอง/เก็บของสระ</text><text x="470" y="136">2.20×2.85 m</text><text x="640" y="136" text-anchor="end" font-weight="700">6.3 m²</text><text y="155">8. Gift shop · ร้านของที่ระลึก</text><text x="470" y="155">2.80×4.90 m</text><text x="640" y="155" text-anchor="end" font-weight="700">13.7 m²</text><text y="174">9. Clinic · คลินิก</text><text x="470" y="174">5.00×4.90 m</text><text x="640" y="174" text-anchor="end" font-weight="700">24.5 m²</text><text y="193">10. FOR LEASE L1 · พื้นที่ให้เช่า</text><text x="470" y="193">3.50×4.90 m</text><text x="640" y="193" text-anchor="end" font-weight="700">17.2 m²</text><text y="212">11. FOR LEASE L2 · พื้นที่ให้เช่า</text><text x="470" y="212">3.50×4.90 m</text><text x="640" y="212" text-anchor="end" font-weight="700">17.2 m²</text>
+<text y="235" font-weight="700">TOTAL 117.9 m² · rentable ≈ 17.2 + 17.2 + 13.7 = 48.1 m²</text>
+<g transform="translate(700,0)"><text font-weight="700" font-size="14">NOTES</text><text y="22" font-size="11.5"><tspan x="0" dy="0">WHAT CHANGED vs R35: lift removed (lobby gone) · accessible, female and male WC all on the WEST side of the passage · lockers cut to 2 showers each and</tspan><tspan x="0" dy="14">stacked F/M back-to-back (3.0 × 2.45 each).</tspan></text><text y="53" font-size="11.5"><tspan x="0" dy="0">Whole wet block (3 WC rooms + 2 locker rooms + passage) now x −1.80…7.40 = 9.2 m wide (R35: 11.5 m incl. lift lobby) → wet + service area 45.3 m² vs 56.1</tspan><tspan x="0" dy="14">m²; all drains in one zone between grid A and B.</tspan></text><text y="84" font-size="11.5"><tspan x="0" dy="0">RENTABLE: L1 + L2 = 34.3 m² (can merge or split, shopfront on the aisle) + gift shop 13.7 m² ≈ 48 m² (R35: 37.7 m²). Clinic grows to 5.0 m (between grid</tspan><tspan x="0" dy="14">C and D).</tspan></text><text y="115" font-size="11.5"><tspan x="0" dy="0">S1 stair kept in place: the 1.20 m passage (x 3.20…4.40) ends with a door beside the S1 east landing. Accessible WC opens straight onto the aisle; F/M</tspan><tspan x="0" dy="14">WC and F/M lockers open onto the passage; male locker has a wet door to the pool deck.</tspan></text><text y="146" font-size="11.5"><tspan x="0" dy="0">TO CONFIRM: no lift now → upper floors (future) are not wheelchair-accessible; passage 1.20 m is the minimum; fixtures schematic — fire exits, drains,</tspan><tspan x="0" dy="14">ventilation still to be checked.</tspan></text></g>
+</g>
+</svg>

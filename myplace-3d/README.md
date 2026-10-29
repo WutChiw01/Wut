@@ -95,3 +95,6 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - **SketchUp:** `sketchup/MyPlace_Master_vE1.dae` (+ `textures/`) and `MyPlace_Master_vE1_SketchUp.zip`, see `sketchup/README_SKETCHUP.md`. Exporter: `export_dae.js` (`DAE=1 node render.mjs`).
 - Plans `plans/rear_GF|L2|L3` updated (REV E).
 - Check: trail is 7 m tall at its start (structural design, wind, fall protection, fire egress from L3), climbing tower and trail share the NE corner, trail grade is steeper than a ramp — fine for training, not for accessibility.
+
+### REV R34 — rear ground-floor re-plan (from user's R33 sheet)
+`node plan_gf_r34.mjs` → `plans/rear_GF_R34.{svg,png}`. S1 stair + lift frozen; Acc/F/M WC at west end (accessible WC between lines 4–5 left of A), gift shop, locker+shower M/F, clinic (old Boulder slot), spare room (old storage slot). Boulder room assumed moved to L2/L3. 3D model (`rear_GF`) NOT yet updated to match.

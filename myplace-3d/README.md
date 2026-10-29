@@ -104,3 +104,6 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 
 ### REV R36 — no lift, all WCs on one side, 2-shower lockers
 `node plan_gf_r36.mjs` → `plans/rear_GF_R36.{svg,png}`. Lift removed; accessible + F + M WC west of a 1.20 m passage to S1; F/M lockers (2 showers each) stacked east of it; gift shop, clinic 24.5 m², lease units L1/L2 17.2 m² each. 3D model not yet updated.
+
+### REV R37 — WCs in old pool-store spot, wet fixtures behind grid 5
+`node plan_gf_r37.mjs` → `plans/rear_GF_R37.{svg,png}`. Accessible WC kept; F (2 WC) / M (1 WC + 2 U) WC either side of the S1 passage at the north-west; pool store under S1; lockers 1.90 × 4.90 with 2 showers each behind grid 5 (no slab yet → buried drains); kiosk 4.1 m² + L1/L2 lease. 3D model not yet updated.

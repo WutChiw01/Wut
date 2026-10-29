@@ -98,3 +98,6 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 
 ### REV R34 — rear ground-floor re-plan (from user's R33 sheet)
 `node plan_gf_r34.mjs` → `plans/rear_GF_R34.{svg,png}`. S1 stair + lift frozen; Acc/F/M WC at west end (accessible WC between lines 4–5 left of A), gift shop, locker+shower M/F, clinic (old Boulder slot), spare room (old storage slot). Boulder room assumed moved to L2/L3. 3D model (`rear_GF`) NOT yet updated to match.
+
+### REV R35 — compact toilets/lockers + lease unit
+`node plan_gf_r35.mjs` → `plans/rear_GF_R35.{svg,png}`. Prefab WC modules 2.99×2.44 (F 3 WC, M 2 WC+U) stacked on the passage, accessible WC 2.05×2.00 clear (Ø1.50), lockers 2.4×4.9 with 3 showers each, 15.7 m² FOR-LEASE unit with aisle shopfront. 3D model not yet updated.

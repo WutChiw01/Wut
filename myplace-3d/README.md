@@ -148,3 +148,8 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - **Pickleball** court edge 1.50 m from the grid-E column face (x 21.85).
 - **Columns**: W-line all at x −3.13 (W0 moved 2.0 m north to y −8.15 for the telecom tower, W1, W2, W3, W4 at grid 4); A0, A1, A2 kept; A3 removed; E0–E3 kept; C2 (under C0) still to confirm. Summary sheets `plans/summary_{GF,L2,L3}_R47`.
 - Exports: `sketchup/MyPlace_Master_vR47.dae`, `MyPlace_Master_vR47_SketchUp.zip`, `MyPlace_Master_vD6.glb`.
+
+### REV R48 — catwalk as viewing gallery, pickleball on the badminton rows
+- Wall above +3.50 moved to the **outer edge of the catwalk** (x 21.15): the 0.80 m catwalk is now inside the hall with a 1.10 m glass balustrade + teak lean rail on the hall side (watch the badminton). Louvre screens outside the new wall. Bi-fold doors below +3.50 stay on the E column centreline.
+- **Pickleball courts on the same rows as the badminton courts** (y −8.40…5.00 / 9.70…23.10), fenced (3.0 m mesh east + ends, 1.2 m toward the hall, gates on the aisle side); shared cross-aisle garden (y 5.6…9.1) with planters + benches in line with the hall's cross-aisle.
+- Summary sheets `plans/summary_{GF,L2,L3}_R48`; exports `sketchup/MyPlace_Master_vR48.dae`, `MyPlace_Master_vR48_SketchUp.zip`, `MyPlace_Master_vD6.glb`.

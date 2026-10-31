@@ -335,13 +335,13 @@ export function buildModel(opts = {}) {
   const SLAB = { x0: -1.8, x1: 22.2, y0: 24.1, y1: 30.1 };
   const Z2 = 3.5, Z3 = 7.0, ZR = 10.5;
   // REV R45 (user's R33): the hall runs west to the solid boundary wall (x −3.90…−3.70); palms P2 / P3 stand in open notches of that wall
-  const XWALL = -3.7, PALM_NOTCH = [[11.45, 12.75], [14.8, 16.1]];
+  const XWALL = -3.7, PALM_NOTCH = [[22.6, 24.1]]; // REV R51: palms P2 / P3 removed → straight solid wall; only the hall's NW corner steps in round palm P1 (trunk 0.1 m from the wall line otherwise)
   // REV R47 (user): hall east wall on grid E (x 20.20): bi-fold doors below +3.50 on the column centreline; catwalk 0.80 m at +3.50 on the outer face of the E columns
   const XE = 20.2, CW = 0.8, ZCW = 3.5;
   const zRoofW = (x) => 11.25 - Math.abs(x - 10.75) * ((11.25 - 8.6) / (10.75 + 0.8)) - 0.05;
   // column schedule R47 (summary R46 + user's corrections): W-line all at x −3.13; W0 moved 2.0 m north (telecom tower); A3 removed
-  // R50: A1 removed (load to W1); W3 moved 1.10 m north (y 17.45) and W4 to x −2.40 so every column stands ≥ 2.0 m from palms P1–P3
-  const COLS_HALL = [[-3.13, -8.15, 'W0'], [-3.13, -1.65, 'W1'], [-3.13, 7.35, 'W2'], [-3.13, 17.45, 'W3'], [-2.4, 25.1, 'W4'], [0.2, -10.15, 'A0'], ...(C6 ? [] : [[0.2, -1.65, 'A1']]), [0.2, 7.35, 'A2'], [XE, -10.15, 'E0'], [XE, -1.65, 'E1'], [XE, 7.35, 'E2'], [XE, 16.35, 'E3']];
+  // R50: A1 removed (load to W1); W4 at x −2.40 (≥ 2.0 m from palm P1) · R51: P2/P3 gone → W3 back on grid 3
+  const COLS_HALL = [[-3.13, -8.15, 'W0'], [-3.13, -1.65, 'W1'], [-3.13, 7.35, 'W2'], [-3.13, 16.35, 'W3'], [-2.4, 25.1, 'W4'], [0.2, -10.15, 'A0'], ...(C6 ? [] : [[0.2, -1.65, 'A1']]), [0.2, 7.35, 'A2'], [XE, -10.15, 'E0'], [XE, -1.65, 'E1'], [XE, 7.35, 'E2'], [XE, 16.35, 'E3']];
 
   // ── site ────────────────────────────────────────────────────────
   {
@@ -1703,8 +1703,7 @@ export function buildModel(opts = {}) {
     };
     // P1 north-west corner, P2 / P3 in the garden — leaning gently towards the open pergola gap (east)
     palm(-4.0, 23.8, 12.5, rad(20), 0.7);
-    palm(-3.67, 15.46, 11.8, rad(10), 0.55);
-    palm(-3.24, 12.08, 10.8, rad(-10), 0.7);
+    // REV R51: P2 (−3.67, 15.46) and P3 (−3.24, 12.08) removed / transplanted — only P1 (rear) is kept
 
     const T = layer('trees');
     const tree = (x, y, s = 1) => {

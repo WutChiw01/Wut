@@ -163,3 +163,8 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - **A1 removed** (load to W1), A3 removed (load to W3).
 - Columns kept **≥ 2.0 m from the palm trunks**: W3 moved 1.10 m north to (−3.13, 17.45) — 2.0 m from P2; W4 moved to (−2.40, 25.10) — 2.1 m from P1. W0–W2 already clear. Boundary wall bridges the P2/P3 notches (no footing dug next to the trunks).
 - Summary sheets `plans/summary_{GF,L2,L3}_R50` (dashed 2.0 m circles round P1–P3); exports `sketchup/MyPlace_Master_vR50.dae`, `MyPlace_Master_vR50_SketchUp.zip`, `MyPlace_Master_vD6.glb`.
+
+### REV R51 — palms P2 / P3 removed
+- P2 and P3 removed (the boundary wall could not be built round them): the west wall is now straight and solid, no roof cut-outs. **Only P1 (rear) is kept**; the hall's NW corner steps in (1.1 × 1.5 m, open to the sky) so the wall clears its trunk.
+- W3 back on grid 3 (−3.13, 16.35); W4 stays at (−2.40, 25.10), 2.1 m from P1.
+- Summary sheets `plans/summary_{GF,L2,L3}_R51`; exports `sketchup/MyPlace_Master_vR51.dae`, `MyPlace_Master_vR51_SketchUp.zip`, `MyPlace_Master_vD6.glb`.

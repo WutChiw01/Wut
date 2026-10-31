@@ -110,3 +110,6 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 
 ### REV R38 — staff WC at 4–5/E, S1 stair made usable
 `node plan_gf_r38.mjs` → `plans/rear_GF_R38.{svg,png}`. Staff WC (2 WC, 2 U behind grid 5, basin counter) at x 20.2…22.2; lease L1/L2 2.50 m each. S1 redrawn as a working U-stair inside the same footprint: 2 × 10 risers 0.175, treads 0.26, width 1.20, mid-landing +1.75 (pool store under it), top landing +3.50 on the L2 slab edge; GF entry from the passage, under the upper flight, to the start zone. 3D model not yet updated.
+
+### REV R39 — existing staff WC
+`node plan_gf_r39.mjs` → `plans/rear_GF_R39.{svg,png}`. Staff WC at 4–5/E drawn as existing: 2 WC rooms with pans back-to-back, basin counter outside the WC rooms, 2 urinals behind grid 5, open entry. S1 U-stair as approved in R38.

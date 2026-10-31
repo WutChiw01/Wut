@@ -711,9 +711,11 @@ export function buildModel(opts = {}) {
     const b = layer('hall_interior');
     const courts = [];
     const xs = [-1.8, 5.55, 12.85]; // REV R45: court columns as the user's R33 (1.25 m gaps; B4 starts at x −1.80)
-    for (const [y0] of [[-8.4], [9.7]]) for (const x0 of xs) courts.push([x0, y0]);
+    // REV R52: every court sits 1.20 m off grid 2 (y 7.35) on both sides, like court B1 → front row y −7.25…6.15, rear row y 8.55…21.95
+    // (more space at the entrance and at the back; cross-aisle now 2.40 m on the grid-2 line with the W0 / C0 / E0 towers)
+    for (const [y0] of [[-7.25], [8.55]]) for (const x0 of xs) courts.push([x0, y0]);
     for (let [x0, y0] of courts) {
-      if (x0 === -1.8 && y0 === -8.4) { if (!C6) continue; y0 = -7.25; } // REV R44: court B1 → boxing zone (R33) · R49 option C6: court B1 back, baseline 1.20 m south of grid 2 (y −7.25…6.15)
+      if (x0 === -1.8 && y0 < 0 && !C6) continue; // court B1 (y −7.25…6.15) · scheme 'boxing' puts the rings there instead
       const g = new THREE.PlaneGeometry(6.1, 13.4);
       g.rotateX(-Math.PI / 2);
       g.translate(x0 + 3.05, 0.01, -(y0 + 6.7));
@@ -742,7 +744,7 @@ export function buildModel(opts = {}) {
     b.box(-1.8, 4.25, -8.7, -1.22, 0.0, 0.008, M.mat); // rubber training floor (R33 hatched zone)
     }
     // thin darker apron around the court group for tournament look
-    b.box(-2.2, 19.25, -9.2, 24.0, 0.0, 0.006, M.floorWet);
+    b.box(-2.2, 19.25, -8.05, 22.75, 0.0, 0.006, M.floorWet);
   }
 
   // ── REV R47 East catwalk: 0.80 m wide at +3.50 on the OUTER face of the grid-E columns (x 20.35 … 21.15), y −10.15 … 24.10,

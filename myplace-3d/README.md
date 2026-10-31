@@ -168,3 +168,8 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - P2 and P3 removed (the boundary wall could not be built round them): the west wall is now straight and solid, no roof cut-outs. **Only P1 (rear) is kept**; the hall's NW corner steps in (1.1 × 1.5 m, open to the sky) so the wall clears its trunk.
 - W3 back on grid 3 (−3.13, 16.35); W4 stays at (−2.40, 25.10), 2.1 m from P1.
 - Summary sheets `plans/summary_{GF,L2,L3}_R51`; exports `sketchup/MyPlace_Master_vR51.dae`, `MyPlace_Master_vR51_SketchUp.zip`, `MyPlace_Master_vD6.glb`.
+
+### REV R52 — all courts 1.20 m off grid 2
+- Every badminton court now sits 1.20 m from grid 2 on both sides (like B1): front row y −7.25…6.15, rear row y 8.55…21.95. Space at the entrance 2.90 m (was 1.75), behind the rear row 2.15 m to the hall's rear wall (was 1.00); cross-aisle on grid 2 = 2.40 m (was 4.70).
+- Watch-point: the W0 / C0 / E0 towers stand on grid 2, so their bodies (r ≈ 0.6 m) are ~0.6 m from the baselines and C0's net-catch tray (r 1.50 at +2.2) now reaches over the back of the courts by ~0.3 m — to be reduced or raised.
+- Pickleball unchanged (fence on grid 2, 2.35 m behind the inner baselines). Summary sheets `plans/summary_{GF,L2,L3}_R52`; exports refreshed (`MyPlace_Master_vR52`).

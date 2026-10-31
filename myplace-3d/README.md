@@ -141,3 +141,10 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - Courts re-spaced as R33: x −1.80 / 5.55 / 12.85 (1.25 m gaps); B1 = boxing: main ring 6×6 ropes, 7.80 platform +0.90 (x −3.72…4.08, y −1.22…6.58); practice ring 3×3 / 4×4 +0.30 (x −1.33…2.67, y −7.70…−3.70); rubber floor on the R33 hatched zone.
 - Rear L2: no bridge → solid west wall (`plans/rear_L2_R45`). Hall east side, catwalk at E and pickleball unchanged.
 - Exports: `sketchup/MyPlace_Master_vR45.dae`, `MyPlace_Master_vR45_SketchUp.zip`, `MyPlace_Master_vD6.glb`.
+
+### REV R47 — east side + column schedule (user corrections to summary R46)
+- Hall east wall moved to **grid E (x 20.20)**: bi-fold doors (บานเฟี่ยม) below +3.50 on the column centreline, fixed glass + louvre band above to the roof.
+- **Catwalk 0.80 m at +3.50** on the outer face of the E columns (x 20.35…21.15), y −10.15…24.10, outriggers at E0–E3 + hangers from the roof edge; it runs level into a new 0.90 m **link passage** in the rear L2 east bay (old massage room → link + linen; massage merged with the quiet lounge). Old +3.50 landing, 6-riser stair and L2 east door removed.
+- **Pickleball** court edge 1.50 m from the grid-E column face (x 21.85).
+- **Columns**: W-line all at x −3.13 (W0 moved 2.0 m north to y −8.15 for the telecom tower, W1, W2, W3, W4 at grid 4); A0, A1, A2 kept; A3 removed; E0–E3 kept; C2 (under C0) still to confirm. Summary sheets `plans/summary_{GF,L2,L3}_R47`.
+- Exports: `sketchup/MyPlace_Master_vR47.dae`, `MyPlace_Master_vR47_SketchUp.zip`, `MyPlace_Master_vD6.glb`.

@@ -334,6 +334,11 @@ export function buildModel(opts = {}) {
   const Z2 = 3.5, Z3 = 7.0, ZR = 10.5;
   // REV R45 (user's R33): the hall runs west to the solid boundary wall (x −3.90…−3.70); palms P2 / P3 stand in open notches of that wall
   const XWALL = -3.7, PALM_NOTCH = [[11.45, 12.75], [14.8, 16.1]];
+  // REV R47 (user): hall east wall on grid E (x 20.20): bi-fold doors below +3.50 on the column centreline; catwalk 0.80 m at +3.50 on the outer face of the E columns
+  const XE = 20.2, CW = 0.8, ZCW = 3.5;
+  const zRoofW = (x) => 11.25 - Math.abs(x - 10.75) * ((11.25 - 8.6) / (10.75 + 0.8)) - 0.05;
+  // column schedule R47 (summary R46 + user's corrections): W-line all at x −3.13; W0 moved 2.0 m north (telecom tower); A3 removed
+  const COLS_HALL = [[-3.13, -8.15, 'W0'], [-3.13, -1.65, 'W1'], [-3.13, 7.35, 'W2'], [-3.13, 16.35, 'W3'], [-3.13, 25.1, 'W4'], [0.2, -10.15, 'A0'], [0.2, -1.65, 'A1'], [0.2, 7.35, 'A2'], [XE, -10.15, 'E0'], [XE, -1.65, 'E1'], [XE, 7.35, 'E2'], [XE, 16.35, 'E3']];
 
   // ── site ────────────────────────────────────────────────────────
   {
@@ -360,7 +365,7 @@ export function buildModel(opts = {}) {
     b.box(-70, 90, -24.5, -22, -0.02, 0.12, M.concrete);
     // front plaza + side paths + rear yard paving
     b.box(-4.4, 38.5, -22, -10.15, -0.02, 0.02, M.paving);
-    b.box(22.3, 24.2, -10.15, 24.1, -0.02, 0.02, M.paving);
+    b.box(XE, 21.4, -10.15, 24.1, -0.02, 0.02, M.paving);
     b.box(-4.4, -3.9, -10.15, 30.1, -0.02, 0.02, M.paving);
     // concrete floor under hall + aisle
     b.box(XWALL, HALL.x1, HALL.y0, 25.1, -0.02, 0.0, M.concrete);
@@ -390,13 +395,26 @@ export function buildModel(opts = {}) {
     { let y = HALL.y0 - 0.25; for (const [n0, n1] of PALM_NOTCH) { b.box(XWALL - 0.2, XWALL, y, n0, 0, 7.4, M.plaster); b.box(XWALL - 0.2, -2.7, n0 - 0.2, n0, 0, 7.4, M.plaster); b.box(XWALL - 0.2, -2.7, n1, n1 + 0.2, 0, 7.4, M.plaster); b.box(-2.9, -2.7, n0, n1, 0, 7.4, M.plaster); y = n1; } b.box(XWALL - 0.2, XWALL, y, HALL.y1 + 0.1, 0, 7.4, M.plaster); }
     b.box(XWALL - 0.2, HALL.x0, HALL.y0 - 0.25, HALL.y0, 0, 8.4, M.plaster); // front wall extension
     b.box(XWALL - 0.2, -1.8, HALL.y1 - 0.1, HALL.y1 + 0.1, 0, 8.4, M.plaster); b.box(-1.8, HALL.x0, HALL.y1 - 0.1, HALL.y1 + 0.1, 7.0, 8.4, M.plaster); // rear wall extension
-    // east wall (x=22.3): full-height sliding glass, mullions every 2.5 m
-    for (let y = HALL.y0; y <= HALL.y1 + 0.01; y += 2.5) b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, y - 0.04, y + 0.04, 0, 7.4, M.charcoal);
-    b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, HALL.y0, HALL.y1, 0, 0.1, M.charcoal);
-    b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, HALL.y0, HALL.y1, 7.3, 7.4, M.charcoal);
-    b.box(HALL.x1 - 0.02, HALL.x1 + 0.02, HALL.y0, HALL.y1, 0.1, 7.3, M.glass);
+    // REV R47 east wall on grid E (x 20.20): bi-fold (บานเฟี่ยม) door leaves 0.90 m below +3.50 on the column centreline, fixed glass + louvre band above up to the roof
+    { const zT = ZCW, zR = 9.0;
+      b.box(XE - 0.06, XE + 0.06, HALL.y0, HALL.y1, zT - 0.1, zT + 0.15, M.charcoal); // head beam / catwalk ledger
+      let k = 0;
+      for (let y = HALL.y0 + 0.1; y < HALL.y1 - 0.1; y += 0.9, k++) {
+        const bay = Math.floor((y - HALL.y0) / 4.5);
+        const open = bay === 3 || bay === 6; // two bays shown folded open
+        if (open) { if (k % 5 === 0) for (let j = 0; j < 4; j++) b.box(XE + 0.05 + j * 0.06, XE + 0.1 + j * 0.06, y, y + 0.12, 0.05, zT - 0.12, M.teak); continue; }
+        const g = new THREE.BoxGeometry(0.05, zT - 0.17, 0.88); g.rotateY(k % 2 ? 0.12 : -0.12); g.translate(XE, (zT - 0.17) / 2 + 0.05, -(y + 0.45)); b.add(M.glassFrost, g);
+        b.box(XE - 0.04, XE + 0.04, y - 0.02, y + 0.02, 0.05, zT - 0.12, M.teak);
+      }
+      b.box(XE - 0.05, XE + 0.05, HALL.y0, HALL.y1, 0, 0.05, M.steel); // floor track
+      b.box(XE - 0.02, XE + 0.02, HALL.y0, HALL.y1, zT + 0.15, 7.4, M.glass);
+      for (let y = HALL.y0; y <= HALL.y1 + 0.01; y += 2.25) b.box(XE - 0.04, XE + 0.04, y - 0.03, y + 0.03, zT + 0.15, zR, M.charcoal);
+      for (let z = 7.45; z < zR; z += 0.16) b.box(XE - 0.08, XE + 0.08, HALL.y0, HALL.y1, z, z + 0.03, M.charcoal);
+    }
+    // hall columns R47 (portal frames, full height to the roof) — A3 removed (user R33), W-line at x −3.13
+    for (const [x, y] of COLS_HALL) b.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, 0, x === XE ? 9.0 : x > 0 ? 8.6 : zRoofW(x), M.concreteDark);
     // louvre bands 7.4 – 8.6
-    for (const x of [XWALL - 0.1, HALL.x1]) {
+    for (const x of [XWALL - 0.1]) {
       for (let z = 7.45; z < 8.6; z += 0.16) b.box(x - 0.08, x + 0.08, HALL.y0, HALL.y1, z, z + 0.03, M.charcoal);
     }
     // front wall y=-10.15 : plaster + gable, entrance + flanking glazing
@@ -443,11 +461,7 @@ export function buildModel(opts = {}) {
     }
     // ground-floor south wall of the hall behind courts is the clinic façade (built with rear complex)
 
-    // portal-frame columns on grids 1 & 5 (west + east wall lines) and C0/E0/W0 posts are in 'cyclones'
-    for (const y of [-8.0, -3.0, 2.0, 12.5, 17.5, 22.0]) {
-      b.box(XWALL, XWALL + 0.3, y - 0.15, y + 0.15, 0, 7.8, M.concreteDark); // REV R45: west portal line on the boundary wall
-      b.box(HALL.x1 - 0.3, HALL.x1, y - 0.15, y + 0.15, 0, 8.6, M.concreteDark);
-    }
+    // REV R47: portal columns are drawn from COLS_HALL in the wall block above
     // sign "MY PLACE"
     const signTex = canvasTex(1024, 192, (g, w, h) => {
       g.clearRect(0, 0, w, h);
@@ -723,70 +737,21 @@ export function buildModel(opts = {}) {
     b.box(-2.2, 19.25, -9.2, 24.0, 0.0, 0.006, M.floorWet);
   }
 
-  // ── East wall (hall ↔ pickleball): +4.50 m service catwalk 1.20 m wide + wind-block sliding louvre screens ──
-  // The catwalk is carried by cantilever outriggers bolted to the EXISTING portal columns, each with a diagonal knee brace
-  // back to the column shaft; a steel stair at the north end gives access. From the deck the operator reaches the upper
-  // sliding louvre panels (z 4.75 … 7.25) that close the hall against wind coming from the pickleball courts.
+  // ── REV R47 East catwalk: 0.80 m wide at +3.50 on the OUTER face of the grid-E columns (x 20.35 … 21.15), y −10.15 … 24.10,
+  // level with the rear L2 floor (it runs straight into the L2 east link); outriggers at E0–E3 + hangers from the roof edge beam every ~3 m.
   {
     const b = layer('east_catwalk');
-    const X0 = HALL.x1; // 22.3 glass line
-    const DZ = 4.5, dX0 = X0 + 0.2, dX1 = dX0 + 1.2; // deck 22.50 … 23.70
-    const cols = [-8.0, -3.0, 2.0, 12.5, 17.5, 22.0]; // existing portal columns (east line)
-    const yS = -9.2, yN = 21.85; // catwalk runs from the south end to the short stair up from the L2 landing
-    // deck: grating + two stringers + edge channels
-    b.box(dX0, dX1, yS, yN, DZ - 0.06, DZ, M.grating);
-    for (const x of [dX0 + 0.05, dX1 - 0.05]) b.box(x - 0.06, x + 0.06, yS, yN, DZ - 0.3, DZ - 0.06, M.charcoal);
-    // outriggers + knee braces at the existing columns (those inside the catwalk length)
-    for (const y of cols.filter((c) => c > yS && c < yN + 0.3)) {
-      b.box(X0 - 0.3, dX1 + 0.05, y - 0.07, y + 0.07, DZ - 0.34, DZ - 0.06, M.charcoal); // outrigger through the mullion line
-      b.member([dX1 - 0.1, y - 0.1, DZ - 0.3], [X0 - 0.15, y - 0.1, DZ - 2.5], 0.045, M.charcoal, 8); // knee brace to column
-      b.member([dX1 - 0.1, y + 0.1, DZ - 0.3], [X0 - 0.15, y + 0.1, DZ - 2.5], 0.045, M.charcoal, 8);
-      b.box(X0 - 0.35, X0 - 0.05, y - 0.2, y + 0.2, DZ - 2.65, DZ - 2.45, M.steel); // base plate on the column
-    }
-    // tie rods from the roof eave for the long 10.5 m bay between y = 2 and 12.5 (optional, to be checked by the structural engineer)
-    for (const y of [5.5, 9.0]) b.member([dX1 - 0.05, y, DZ - 0.05], [X0 + 0.5, y, HALL.eave + 0.05], 0.022, M.steel, 6);
-    // guard rail 1.10 m on the outer edge + kick plate; chain gate at the south end
-    for (let y = yS; y <= yN + 0.01; y += 2.0) b.box(dX1 - 0.04, dX1 + 0.01, y - 0.025, y + 0.025, DZ, DZ + 1.1, M.charcoal);
-    b.box(dX1 - 0.03, dX1 + 0.01, yS, yN, DZ + 1.05, DZ + 1.1, M.charcoal);
-    b.box(dX1 - 0.03, dX1 + 0.01, yS, yN, DZ + 0.55, DZ + 0.58, M.charcoal);
-    b.box(dX1 - 0.03, dX1 + 0.01, yS, yN, DZ, DZ + 0.12, M.charcoal);
-    // wind-block sliding louvre screens on two tracks in front of the upper glass (z 4.75 … 7.25)
-    const zb = 4.75, zt = 7.25;
-    b.box(X0 + 0.02, X0 + 0.1, HALL.y0, HALL.y1, zt, zt + 0.1, M.charcoal); // upper rail
-    b.box(X0 + 0.02, X0 + 0.1, HALL.y0, HALL.y1, zb - 0.1, zb, M.charcoal); // lower rail
-    const nP = 13, pw = (HALL.y1 - HALL.y0) / nP;
-    for (let i = 0; i < nP; i++) {
-      const open = i === 4 || i === 5 ? 1 : 0; // two panels shown slid open (stacked in front of the neighbour)
-      const x = X0 + 0.12 + (i % 2) * 0.09 + (open ? 0.09 : 0);
-      const ya = HALL.y0 + i * pw + 0.05 + (open ? 0 : 0), yb = ya + pw - 0.1;
-      b.box(x, x + 0.05, ya, yb, zb, zb + 0.06, M.charcoal); b.box(x, x + 0.05, ya, yb, zt - 0.06, zt, M.charcoal);
-      b.box(x, x + 0.05, ya, ya + 0.06, zb, zt, M.charcoal); b.box(x, x + 0.05, yb - 0.06, yb, zb, zt, M.charcoal);
-      for (let y = ya + 0.18; y < yb - 0.1; y += 0.19) { // fixed-pitch aluminium fins (louvre)
-        const g = new THREE.BoxGeometry(0.1, zt - zb - 0.12, 0.035); g.rotateY(0.9);
-        g.translate(x + 0.025, (zb + zt) / 2, -y); b.add(M.louvre, g);
-      }
-    }
-    if (!R2) {
-    // Access from the rear complex L2 floor (+3.50 / finish +3.56): door in the L2 east wall → free-standing landing → 6 risers (157 mm) up to the +4.50 deck.
-    // No climb from the ground floor; landing + stair stand on their own posts (the existing RC slab is not touched).
-    const LZ = 3.5, lx0 = 22.3, ly0 = 23.4, ly1 = 30.1; // REV R43: landing runs north along the east wall to the L2 corridor-end door (y 28.9…29.9)
-    b.box(lx0, dX1, ly0, ly1, LZ, LZ + 0.06, M.grating);
-    for (const x of [lx0 + 0.15, dX1 - 0.08]) b.box(x - 0.06, x + 0.06, ly0, ly1, LZ - 0.28, LZ, M.charcoal);
-    for (const py of [23.45, 26.3, 29.95]) for (const px of [dX1 - 0.1, lx0 + 0.2]) b.box(px - 0.08, px + 0.08, py - 0.08, py + 0.08, 0.0, LZ - 0.28, M.charcoal);
-    for (let y = 23.45; y <= 30.05; y += 1.1) b.box(dX1 - 0.03, dX1 + 0.01, y - 0.02, y + 0.02, LZ + 0.06, LZ + 1.15, M.charcoal);
-    b.box(dX1 - 0.03, dX1 + 0.01, ly0, ly1, LZ + 1.1, LZ + 1.15, M.charcoal);
-    b.box(lx0, dX1, ly1 - 0.03, ly1 + 0.01, LZ + 1.1, LZ + 1.15, M.charcoal);
-    for (const x of [lx0 + 0.5, 23.0, dX1 - 0.03]) b.box(x - 0.015, x + 0.015, ly1 - 0.03, ly1 + 0.01, LZ + 0.06, LZ + 1.15, M.charcoal);
-    const rise = (DZ - (LZ + 0.06)) / 6;
-    for (let i = 1; i <= 6; i++) {
-      const ya = ly0 - 0.26 * (i - 1), yb = ya - 0.26, z = LZ + 0.06 + rise * i;
-      b.box(dX0, dX1, yb, ya, z - 0.05, z, M.grating);
-    }
-    for (const x of [dX0 + 0.05, dX1 - 0.05]) b.member([x, ly0, LZ - 0.2], [x, ly0 - 1.56, DZ - 0.2], 0.05, M.charcoal, 8);
-    for (const x of [dX0 + 0.01, dX1 - 0.01]) { b.member([x, ly0, LZ + 1.15], [x, ly0 - 1.56, DZ + 1.1], 0.022, M.charcoal, 6); for (const t of [0.1, 0.8, 1.5]) b.cbox(x, ly0 - t, (LZ + 1.15 + (DZ + 1.1 - LZ - 1.15) * t / 1.56 + LZ + 0.06 + rise * (t / 0.26 + 1)) / 2, 0.035, 0.035, 1.0, M.charcoal); }
-    // "to catwalk" exit-style sign above the L2 door
-    b.box(22.28, 22.34, 29.0, 29.7, LZ + 2.3, LZ + 2.6, M.led);
-    }
+    const x0 = XE + 0.15, x1 = x0 + CW, y0 = HALL.y0, y1 = HALL.y1;
+    b.box(x0, x1, y0, y1, ZCW - 0.05, ZCW + 0.03, M.grating);
+    b.box(x1 - 0.06, x1, y0, y1, ZCW - 0.25, ZCW, M.charcoal); b.box(x0, x0 + 0.06, y0, y1, ZCW - 0.25, ZCW, M.charcoal);
+    for (const y of [-10.15, -1.65, 7.35, 16.35]) { b.box(XE + 0.15, x1, y - 0.08, y + 0.08, ZCW - 0.3, ZCW - 0.05, M.charcoal); b.member([x1 - 0.05, y, ZCW - 0.3], [XE + 0.16, y, ZCW - 1.2], 0.04, M.charcoal, 8); }
+    for (let y = y0 + 1.5; y < y1; y += 3.0) b.member([x1 - 0.05, y, ZCW], [x1 - 0.05, y, zRoofW(x1) - 0.3], 0.016, M.steel, 6); // hangers to the roof edge beam
+    for (let y = y0; y <= y1 + 0.01; y += 1.5) b.box(x1 - 0.04, x1, y - 0.025, y + 0.025, ZCW, ZCW + 1.1, M.charcoal);
+    b.box(x1 - 0.04, x1, y0, y1, ZCW + 1.05, ZCW + 1.1, M.charcoal); b.box(x1 - 0.04, x1, y0, y1, ZCW + 0.55, ZCW + 0.58, M.charcoal); b.box(x1 - 0.04, x1, y0, y1, ZCW, ZCW + 0.12, M.charcoal);
+    b.box(x0, x1, y0, y0 + 0.04, ZCW, ZCW + 1.1, M.charcoal); // south end guard
+    // wind-block louvre screens outside the upper glass, operated from the catwalk (z 4.75 … 7.25)
+    for (let y = y0; y < y1 - 2; y += 2.7) for (let yy = y + 0.15; yy < y + 2.55; yy += 0.19) { const g = new THREE.BoxGeometry(0.1, 2.38, 0.035); g.rotateY(0.9); g.translate(XE + 0.12, 6.0, -yy); b.add(M.louvre, g); }
+    b.box(XE + 0.08, XE + 0.16, y0, y1, 7.25, 7.33, M.charcoal); b.box(XE + 0.08, XE + 0.16, y0, y1, 4.67, 4.75, M.charcoal);
   }
 
   // ── REV R45: WEST WING REMOVED (user) — west of the hall only the coconut palms P1–P3 and the solid boundary wall remain ──
@@ -1224,7 +1189,7 @@ export function buildModel(opts = {}) {
     c.box(0.4, 22.2, yC, 30.0, Z2 + 0.06, Z2 + 0.15, M.floorWet); // raised corridor floor (pipe void)
     c.box(SLAB.x0, SLAB.x1, 24.0, 24.12, Z2 - 0.5, Z2, M.plaster); // slab edge fascia
     // court-side façade y = 24.1: clear glass at reception/lounge and quiet lounge, frosted at treatment rooms
-    for (const [a, e, m] of [[-1.8, 3.6, M.glass], [3.6, 17.6, M.glassFrost], [17.6, 20.2, M.glass], [20.2, 22.2, M.glassFrost]]) c.box(a, e, 24.06, 24.14, Z2 + 0.06, Hz, m);
+    for (const [a, e, m] of [[-1.8, 3.6, M.glass], [3.6, 17.6, M.glassFrost], [17.6, 20.2, M.glass], [21.15, 22.2, M.glassFrost]]) c.box(a, e, 24.06, 24.14, Z2 + 0.06, Hz, m);
     for (let x = SLAB.x0; x <= SLAB.x1 + 0.01; x += 1.2) c.box(x - 0.03, x + 0.03, 24.02, 24.18, Z2, Hz, M.charcoal);
     // north façade y = 30.1 (corridor glass), door to S1 landing x 1.85…3.1
     c.box(SLAB.x0, 1.85, 30.05, 30.15, Z2 + 0.06, Hz, M.glassFrost); c.box(3.1, SLAB.x1, 30.05, 30.15, Z2 + 0.06, Hz, M.glass);
@@ -1232,11 +1197,10 @@ export function buildModel(opts = {}) {
     for (let x = SLAB.x0; x <= SLAB.x1 + 0.01; x += 1.2) c.box(x - 0.03, x + 0.03, 30.0, 30.18, Z2, Hz, M.charcoal);
     // west wall with the door from the west-wing bridge (y 24.6…25.8); east wall with the corridor-end door (y 28.9…29.9)
     c.box(-1.8, -1.7, 24.1, 30.1, Z2, Hz, M.plaster); // REV R45: no west-wing bridge any more → solid west wall
-    c.box(22.1, 22.3, 24.1, 28.9, Z2, Hz, M.plaster); c.box(22.1, 22.3, 29.9, 30.1, Z2, Hz, M.plaster); c.box(22.1, 22.3, 28.9, 29.9, Z2 + 2.25, Hz, M.plaster);
-    c.box(22.18, 22.22, 28.93, 29.87, Z2 + 0.15, Z2 + 2.2, M.glass);
+    c.box(22.1, 22.3, 24.1, 30.1, Z2, Hz, M.plaster); // REV R47: east wall solid (exit is now the catwalk link)
     // partitions + corridor wall (door leaves teak)
     for (const x of [3.6, 5.8, 8.0, 10.6, 13.2, 17.6, 20.2]) c.box(x - 0.05, x + 0.05, 24.15, yC, Z2 + 0.06, Hz, M.wallInt);
-    const dC = [[4.3, 5.1], [6.5, 7.3], [8.9, 9.8], [11.5, 12.4], [15.7, 16.5], [18.4, 19.3], [20.8, 21.6]];
+    const dC = [[4.3, 5.1], [6.5, 7.3], [8.9, 9.8], [11.5, 12.4], [15.7, 16.5], [18.4, 19.3], [20.3, 21.1], [21.4, 22.0]];
     { let x = 0.4; for (const [a, e] of dC) { c.box(x, a, yC - 0.05, yC + 0.05, Z2 + 0.06, Hz, M.wallInt); c.box(a, e, yC - 0.05, yC + 0.05, Z2 + 2.2, Hz, M.wallInt); c.box(a + 0.03, e - 0.03, yC - 0.03, yC + 0.03, Z2 + 0.15, Z2 + 2.15, M.teak); x = e; } c.box(x, 22.1, yC - 0.05, yC + 0.05, Z2 + 0.06, Hz, M.wallInt); }
     c.box(-1.8, 0.4, 27.85, 27.95, Z2 + 0.06, Hz, M.wallInt); c.box(0.35, 0.45, 27.95, 30.0, Z2 + 0.06, Hz, M.wallInt); // WC
     // reception + lounge: counter, sofas facing the courts
@@ -1253,7 +1217,9 @@ export function buildModel(opts = {}) {
     c.box(13.6, 15.2, 24.5, 24.9, Z2 + 0.06, Z2 + 0.45, M.teakLight);
     // quiet lounge: 2 recliners; massage: bed
     for (const y of [26.3, 27.4]) c.box(17.9, 19.9, y, y + 0.6, Z2 + 0.06, Z2 + 0.55, M.bedBlue);
-    c.box(20.8, 21.5, 25.6, 27.6, Z2 + 0.5, Z2 + 0.8, M.bedWhite); c.box(20.85, 21.45, 25.7, 27.5, Z2 + 0.06, Z2 + 0.5, M.charcoal);
+    // REV R47: east bay = 0.90 m link passage from the +3.50 catwalk to the back corridor (x 20.25…21.15) + linen store (x 21.2…22.1)
+    c.box(21.15, 21.25, 24.15, 28.8, Z2 + 0.06, Hz, M.wallInt); c.box(21.3, 22.0, 24.4, 28.6, Z2 + 0.06, Z2 + 2.2, M.teakLight);
+    c.box(20.25, 21.15, 24.02, 24.2, Z2 + 2.25, Hz, M.plaster); c.box(20.28, 21.12, 24.08, 24.12, Z2 + 0.06, Z2 + 2.2, M.glass);
 
     // level 3 --------------------------------------------------------
     const d = L3r;
@@ -1438,16 +1404,17 @@ export function buildModel(opts = {}) {
     }
     // REV R43: outdoor climbing tower + crash pit removed (the L2 east exit landing now runs along the east wall to y 30.1)
     // pickleball courts PB1, PB2 along the hall's glass wall
+    const PX = XE + 0.15 + 1.5; // REV R47: court edge 1.50 m from the grid-E column face (x 21.85)
     for (const y0 of [-8.0, 6.4]) {
-      b.box(24.5, 31.1, y0 - 1.0, y0 + 14.4, 0.0, 0.015, M.pickleOut);
+      b.box(PX - 0.5, PX + 6.6, y0 - 1.0, y0 + 14.4, 0.0, 0.015, M.pickleOut);
       const g = new THREE.PlaneGeometry(6.1, 13.4);
       g.rotateX(-Math.PI / 2);
-      g.translate(24.5 + 0.5 + 3.05, 0.02, -(y0 + 6.7));
+      g.translate(PX + 3.05, 0.02, -(y0 + 6.7));
       b.add(M.pickleTex, g);
       const ny = y0 + 6.7;
-      for (const px of [25.0 - 0.0, 31.1 - 0.5 + 0.2]) b.cyl(px, ny, 0, 0.95, 0.03, 0.03, M.charcoal, 8);
-      b.cbox(28.05, ny, 0.5, 6.1, 0.02, 0.8, M.net);
-      for (const [lx, ly] of [[24.7, y0 - 0.8], [30.9, y0 - 0.8], [24.7, y0 + 14.2], [30.9, y0 + 14.2]]) {
+      for (const px of [PX - 0.3, PX + 6.4]) b.cyl(px, ny, 0, 0.95, 0.03, 0.03, M.charcoal, 8);
+      b.cbox(PX + 3.05, ny, 0.5, 6.1, 0.02, 0.8, M.net);
+      for (const [lx, ly] of [[PX + 6.4, y0 - 0.8], [PX + 6.4, y0 + 14.2]]) {
         b.cyl(lx, ly, 0, 6.0, 0.06, 0.05, M.charcoal, 8);
         b.box(lx - 0.25, lx + 0.25, ly - 0.1, ly + 0.1, 5.9, 6.0, M.led);
       }
@@ -1843,6 +1810,10 @@ export const SHOTS = {
   r44_rear: { title: 'R44 · rear without the Sky Trail, catwalk kept', pos: [36.0, 44.0, 16.0], target: [14.0, 22.0, 4.0], focal: 24, time: 'golden' },
   r45_west: { title: 'R45 · west side: wing removed, hall to the boundary wall, palms P1–P3', pos: [-15.0, -2.0, 7.0], target: [-3.5, 11.0, 4.0], focal: 20, time: 'golden', hide: ['fences'] },
   r45_hall: { title: 'R45 · inside the hall looking west: boxing rings + courts as R33', pos: [17.0, -6.5, 5.5], target: [0.0, 4.0, 1.0], focal: 16, time: 'day' },
+  r47_east: { title: 'R47 · east side: bi-fold wall on grid E, catwalk 0.80 m at +3.50, pickleball 1.50 m off the columns', pos: [33.0, -14.0, 6.5], target: [20.5, 4.0, 2.8], focal: 20, time: 'golden', hide: ['fences'] },
+  r47_east_in: { title: 'R47 · inside: bi-fold doors on the E column line (two bays open)', pos: [12.0, 2.0, 1.7], target: [20.2, 10.0, 2.2], focal: 18, time: 'day' },
+  r47_catwalk: { title: 'R47 · on the +3.50 catwalk looking north to the L2 link', pos: [20.75, -6.0, 5.1], target: [20.75, 24.0, 4.6], focal: 18, time: 'day' },
+  r47_cols: { title: 'R47 · column layout (roof hidden)', pos: [9.0, -24.0, 26.0], target: [9.0, 9.0, 0.0], focal: 22, time: 'day', hide: ['hall_roof', 'rear_L2', 'rear_L3', 'rear_roof', 'cyclones', 'front_facade', 'entrance_court', 'trees'] },
   r2_climb: { title: 'R2 · east core = fire stair + catwalk access + 12 m climbing wall', pos: [33.5, 15.5, 2.0], target: [25.0, 25.0, 6.5], focal: 20, time: 'golden' },
   r2_cut_GF: { title: 'R2 · GF cut-away: reception, HBOT, treatment, rehab, pavilion', pos: [14.0, 21.0, 30.0], target: [14.0, 29.5, 0.0], focal: 26, time: 'day', hide: ['rear_L2', 'rear_L3', 'rear_roof', 'hall_roof', 'r2_core', 'r2_pav_roof', 'fences', 'trees'] },
   r2_cut_L2: { title: 'R2 · L2 cut-away: gallery, lounge, sports-science lab, massage', pos: [10.2, 18.0, 25.0], target: [10.2, 27.5, 3.5], focal: 24, time: 'day', hide: ['rear_L3', 'rear_roof', 'hall_roof', 'fences', 'trees'] },

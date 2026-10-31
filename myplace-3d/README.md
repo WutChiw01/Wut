@@ -153,3 +153,7 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - Wall above +3.50 moved to the **outer edge of the catwalk** (x 21.15): the 0.80 m catwalk is now inside the hall with a 1.10 m glass balustrade + teak lean rail on the hall side (watch the badminton). Louvre screens outside the new wall. Bi-fold doors below +3.50 stay on the E column centreline.
 - **Pickleball courts on the same rows as the badminton courts** (y −8.40…5.00 / 9.70…23.10), fenced (3.0 m mesh east + ends, 1.2 m toward the hall, gates on the aisle side); shared cross-aisle garden (y 5.6…9.1) with planters + benches in line with the hall's cross-aisle.
 - Summary sheets `plans/summary_{GF,L2,L3}_R48`; exports `sketchup/MyPlace_Master_vR48.dae`, `MyPlace_Master_vR48_SketchUp.zip`, `MyPlace_Master_vD6.glb`.
+
+### REV R49 — pickleball fence on grid 2, east plot line; option "C6" (6th badminton court)
+- Pickleball: one 3.0 m chain-link fence on **grid 2 (y 7.35)** between the two courts → 2.35 m run-off behind each inner baseline (the aisle garden is gone); east side 1.50 m beyond the courts = **east plot line x 29.45** (site fence moved there), 1.2 m fence toward the hall with two gates beside grid 2.
+- **Option C6** (`?scheme=c6`, `SCHEME=c6 node render.mjs …` → `snapshots_c6/`): court B1 replaces both boxing rings, north baseline 1.20 m south of grid 2 (y −7.25…6.15) to stay clear of the telecom tower zone. Column **A1 falls inside this court** (shown red) → it would have to be removed / transferred if this option is chosen. Plan: `plans/summary_GF_R49_opt6`.

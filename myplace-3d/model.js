@@ -322,7 +322,9 @@ function towerHardware(b, o) {
 
 // ───────────────────────────── model ─────────────────────────────
 export function buildModel(opts = {}) {
-  const R2 = opts.scheme === 'r2'; // REV R2 'Recovery Courtyard' scheme for the rear zone (see README)
+  const R2 = opts.scheme === 'r2';
+  const C6 = opts.scheme === 'c6'; // REV R49 option: 6th badminton court instead of the boxing rings
+  const XEAST = 20.2 + 0.15 + 1.5 + 6.1 + 1.5; // REV R49: east plot line 1.50 m beyond the pickleball courts (x 29.45) // REV R2 'Recovery Courtyard' scheme for the rear zone (see README)
   const root = new THREE.Group();
   root.name = 'MyPlace_Master_vD6';
   const G = {}; // named layers
@@ -378,9 +380,9 @@ export function buildModel(opts = {}) {
       G.fences.add(M.charcoal, g);
     };
     fence(-4.4, -12.5, -4.4, 33.45, 0.9);
-    fence(-4.4, 33.45, 38.5, 39.9, 0.5); // slope 3/20 through (0.2,34.1) and (20.2,37.1)
-    fence(38.5, 39.9, 38.5, -12.5);
-    b.box(-4.4, 3.2, -12.6, -12.4, 0, 0.6, M.hedge); b.box(18.3, 38.5, -12.6, -12.4, 0, 0.6, M.hedge);
+    fence(-4.4, 33.45, XEAST, 33.45 + (XEAST + 4.4) * 0.15, 0.5); // slope 3/20 through (0.2,34.1) and (20.2,37.1)
+    fence(XEAST, 33.45 + (XEAST + 4.4) * 0.15, XEAST, 23.7); fence(XEAST, -9.0, XEAST, -12.5); // east plot line (the pickleball chain-link takes y −9.0…23.7)
+    b.box(-4.4, 3.2, -12.6, -12.4, 0, 0.6, M.hedge); b.box(18.3, XEAST, -12.6, -12.4, 0, 0.6, M.hedge);
     // boundary markers (setbacks)
     b.box(-4.45, -4.35, -12.5, 34, 0.0, 0.03, M.holdY);
   }
@@ -415,7 +417,7 @@ export function buildModel(opts = {}) {
       b.box(XE + 0.15, XO, HALL.y0 - 0.25, HALL.y0, zT, zRo, M.plaster); // front end closed
     }
     // hall columns R47 (portal frames, full height to the roof) — A3 removed (user R33), W-line at x −3.13
-    for (const [x, y] of COLS_HALL) b.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, 0, x === XE ? 9.0 : x > 0 ? 8.6 : zRoofW(x), M.concreteDark);
+    for (const [x, y, id] of COLS_HALL) b.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, 0, x === XE ? 9.0 : x > 0 ? 8.6 : zRoofW(x), C6 && id === 'A1' ? M.holdR : M.concreteDark); // C6: A1 falls inside court B1 → shown red
     // louvre bands 7.4 – 8.6
     for (const x of [XWALL - 0.1]) {
       for (let z = 7.45; z < 8.6; z += 0.16) b.box(x - 0.08, x + 0.08, HALL.y0, HALL.y1, z, z + 0.03, M.charcoal);
@@ -709,8 +711,8 @@ export function buildModel(opts = {}) {
     const courts = [];
     const xs = [-1.8, 5.55, 12.85]; // REV R45: court columns as the user's R33 (1.25 m gaps; B4 starts at x −1.80)
     for (const [y0] of [[-8.4], [9.7]]) for (const x0 of xs) courts.push([x0, y0]);
-    for (const [x0, y0] of courts) {
-      if (x0 === -1.8 && y0 === -8.4) continue; // REV R44: court B1 → boxing zone (user's R33 layout)
+    for (let [x0, y0] of courts) {
+      if (x0 === -1.8 && y0 === -8.4) { if (!C6) continue; y0 = -7.25; } // REV R44: court B1 → boxing zone (R33) · R49 option C6: court B1 back, baseline 1.20 m south of grid 2 (y −7.25…6.15)
       const g = new THREE.PlaneGeometry(6.1, 13.4);
       g.rotateX(-Math.PI / 2);
       g.translate(x0 + 3.05, 0.01, -(y0 + 6.7));
@@ -731,11 +733,13 @@ export function buildModel(opts = {}) {
       }
       for (let k = 1; k <= nRope; k++) { const z = H + 0.15 + k * (1.2 / nRope); for (const sy of [-1, 1]) b.box(cx - hIn, cx + hIn, cy + sy * hIn - 0.02, cy + sy * hIn + 0.02, z - 0.02, z + 0.02, M.holdR); for (const sx of [-1, 1]) b.box(cx + sx * hIn - 0.02, cx + sx * hIn + 0.02, cy - hIn, cy + hIn, z - 0.02, z + 0.02, M.holdR); }
     };
+    if (!C6) {
     ring(0.18, 2.68, 3.9, 3.0, 0.9, M.holdB, 4); // main ring (R33): platform x −3.72…4.08, y −1.22…6.58, +0.90, ropes 6 × 6
     for (let i = 1; i <= 4; i++) b.box(3.2, 4.0, -1.22 - 0.3 * (5 - i), -1.22 - 0.3 * (4 - i), 0, 0.225 * i - 0.02, M.steel); // steps up at the SE corner
     ring(0.67, -5.7, 2.0, 1.5, 0.3, M.holdR, 3); // practice ring (existing, R33): x −1.33…2.67, y −7.70…−3.70, +0.30
     for (let i = 1; i <= 2; i++) b.box(2.67 + 0.3 * (2 - i), 2.67 + 0.3 * (3 - i), -6.3, -5.2, 0, 0.15 * i, M.steel); // steps (R33)
     b.box(-1.8, 4.25, -8.7, -1.22, 0.0, 0.008, M.mat); // rubber training floor (R33 hatched zone)
+    }
     // thin darker apron around the court group for tournament look
     b.box(-2.2, 19.25, -9.2, 24.0, 0.0, 0.006, M.floorWet);
   }
@@ -1409,12 +1413,12 @@ export function buildModel(opts = {}) {
     // REV R43: outdoor climbing tower + crash pit removed (the L2 east exit landing now runs along the east wall to y 30.1)
     // pickleball courts PB1, PB2 along the hall's glass wall
     const PX = XE + 0.15 + 1.5; // REV R47: court edge 1.50 m from the grid-E column face (x 21.85)
-    // REV R48: courts on the SAME rows as the badminton courts (y −8.40…5.00 and 9.70…23.10) → one cross-aisle y 5.0…9.7 through hall and pickleball
-    const FX0 = PX - 0.5, FX1 = PX + 6.6;
+    // REV R49: courts on the badminton rows; ONE chain-link fence on grid 2 (y 7.35) between them → 2.35 m run-off behind each inner baseline;
+    // east side 1.50 m beyond the courts = plot line (x 29.45) with the 3.0 m chain-link on it; 1.2 m fence toward the hall with two gates by grid 2
+    const FX0 = PX - 0.5, FX1 = XEAST, FY0 = -9.0, FY1 = 23.7, GY = 7.35;
     const MESH = std({ color: 0x1f2937, roughness: 0.8, transparent: true, opacity: 0.28, side: THREE.DoubleSide, depthWrite: false });
+    b.box(FX0, FX1, FY0, FY1, 0.0, 0.015, M.pickleOut);
     for (const y0 of [-8.4, 9.7]) {
-      const fy0 = y0 - 0.6, fy1 = y0 + 14.0;
-      b.box(FX0, FX1, fy0, fy1, 0.0, 0.015, M.pickleOut);
       const g = new THREE.PlaneGeometry(6.1, 13.4);
       g.rotateX(-Math.PI / 2);
       g.translate(PX + 3.05, 0.02, -(y0 + 6.7));
@@ -1422,19 +1426,13 @@ export function buildModel(opts = {}) {
       const ny = y0 + 6.7;
       for (const px of [PX - 0.3, PX + 6.4]) b.cyl(px, ny, 0, 0.95, 0.03, 0.03, M.charcoal, 8);
       b.cbox(PX + 3.05, ny, 0.5, 6.1, 0.02, 0.8, M.net);
-      for (const [lx, ly] of [[FX1 - 0.1, fy0 + 0.2], [FX1 - 0.1, fy1 - 0.2]]) { b.cyl(lx, ly, 0, 6.0, 0.06, 0.05, M.charcoal, 8); b.box(lx - 0.25, lx + 0.25, ly - 0.1, ly + 0.1, 5.9, 6.0, M.led); }
-      // fence: 3.0 m black mesh on the east side and the ends, 1.2 m on the hall side (keeps the view), 1.2 m gate on the aisle side
-      const fence = (xa, ya, xb, yb, h) => { b.box(Math.min(xa, xb) - 0.01, Math.max(xa, xb) + 0.01, Math.min(ya, yb) - 0.01, Math.max(ya, yb) + 0.01, 0.05, h, MESH); for (let t = 0; t <= 1.0001; t += 1 / Math.max(1, Math.round(Math.hypot(xb - xa, yb - ya) / 2.5))) b.cyl(xa + (xb - xa) * t, ya + (yb - ya) * t, 0, h + 0.05, 0.03, 0.03, M.charcoal, 8); b.box(Math.min(xa, xb), Math.max(xa, xb), Math.min(ya, yb) - 0.025, Math.max(ya, yb) + 0.025, h - 0.04, h + 0.04, M.charcoal); };
-      fence(FX1, fy0, FX1, fy1, 3.0); fence(FX0, fy0, FX0, fy1, 1.2);
-      const ya = y0 < 0 ? fy1 : fy0, yo = y0 < 0 ? fy0 : fy1, gx = (FX0 + FX1) / 2;
-      fence(FX0, yo, FX1, yo, 3.0); fence(FX0, ya, gx - 0.6, ya, 3.0); fence(gx + 0.6, ya, FX1, ya, 3.0);
     }
-    // shared cross-aisle garden y 5.6 … 9.1 between the two fenced courts (in line with the hall's cross-aisle)
-    b.box(FX0, FX1, 5.6, 9.1, 0.0, 0.03, M.turf); b.box(FX0, FX1, 7.0, 7.7, 0.0, 0.05, M.paving);
-    for (const x of [FX0 + 0.8, FX1 - 0.8]) { b.box(x - 0.5, x + 0.5, 5.8, 6.6, 0, 0.5, M.concrete); b.box(x - 0.5, x + 0.5, 8.1, 8.9, 0, 0.5, M.concrete); for (const y of [6.2, 8.5]) for (let k = 0; k < 6; k++) { const cg = new THREE.ConeGeometry(0.1, 0.8, 6); cg.translate(x - 0.35 + k * 0.14, 0.9, -y); b.add(M.hedge, cg); } }
-    b.box(FX0 + 2.2, FX1 - 2.2, 6.0, 6.45, 0, 0.45, M.teak); b.box(FX0 + 2.2, FX1 - 2.2, 8.25, 8.7, 0, 0.45, M.teak); // benches facing the courts
+    for (const [lx, ly] of [[FX1 - 0.15, FY0 + 0.2], [FX1 - 0.15, GY - 0.25], [FX1 - 0.15, FY1 - 0.2]]) { b.cyl(lx, ly, 0, 6.0, 0.06, 0.05, M.charcoal, 8); b.box(lx - 0.25, lx + 0.25, ly - 0.1, ly + 0.1, 5.9, 6.0, M.led); }
+    const fence = (xa, ya, xb, yb, h) => { b.box(Math.min(xa, xb) - 0.01, Math.max(xa, xb) + 0.01, Math.min(ya, yb) - 0.01, Math.max(ya, yb) + 0.01, 0.05, h, MESH); for (let t = 0; t <= 1.0001; t += 1 / Math.max(1, Math.round(Math.hypot(xb - xa, yb - ya) / 2.5))) b.cyl(xa + (xb - xa) * t, ya + (yb - ya) * t, 0, h + 0.05, 0.03, 0.03, M.charcoal, 8); b.box(Math.min(xa, xb), Math.max(xa, xb), Math.min(ya, yb) - 0.025, Math.max(ya, yb) + 0.025, h - 0.04, h + 0.04, M.charcoal); };
+    fence(FX1, FY0, FX1, FY1, 3.0); fence(FX0, FY0, FX1, FY0, 3.0); fence(FX0, FY1, FX1, FY1, 3.0); fence(FX0, GY, FX1, GY, 3.0); // east (plot line), ends, grid 2
+    fence(FX0, FY0, FX0, 5.9, 1.2); fence(FX0, 6.9, FX0, 7.8, 1.2); fence(FX0, 8.8, FX0, FY1, 1.2); // toward the hall, gates y 5.9…6.9 and 7.8…8.8
     // senior parkour & active-aging garden along the rear fence (grass beds + handrail path)
-    if (!R2) b.box(24.5, 38.0, 29.5, 38.4, 0.0, 0.02, M.turf);
+    if (!R2) b.box(22.4, XEAST, 24.2, 37.5, 0.0, 0.02, M.turf);
     if (!R2) b.box(-3.9, -1.95, 30.2, 33.0, 0.0, 0.02, M.turf);
   }
 
@@ -1829,6 +1827,8 @@ export const SHOTS = {
   r47_cols: { title: 'R47 · column layout (roof hidden)', pos: [9.0, -24.0, 26.0], target: [9.0, 9.0, 0.0], focal: 22, time: 'day', hide: ['hall_roof', 'rear_L2', 'rear_L3', 'rear_roof', 'cyclones', 'front_facade', 'entrance_court', 'trees'] },
   r48_gallery: { title: 'R48 · catwalk = viewing gallery inside the hall (+3.50)', pos: [20.75, -7.5, 5.15], target: [12.0, 8.0, 1.0], focal: 16, time: 'day' },
   r48_pb_aisle: { title: 'R48 · pickleball cross-aisle garden in line with the hall aisle', pos: [32.5, 7.35, 2.2], target: [20.0, 7.35, 1.5], focal: 18, time: 'golden', hide: ['fences'] },
+  r49_pb: { title: 'R49 · pickleball: chain-link on grid 2, plot line 1.50 m east of the courts', pos: [36.0, -13.0, 9.0], target: [24.0, 7.0, 0.5], focal: 20, time: 'golden', hide: ['fences'] },
+  r49_top: { title: 'R49 · hall + pickleball from above (roof hidden)', pos: [12.0, -22.0, 30.0], target: [12.0, 6.5, 0.0], focal: 20, time: 'day', hide: ['hall_roof', 'cyclones', 'front_facade', 'entrance_court', 'trees', 'rear_L2', 'rear_L3', 'rear_roof'] },
   r2_climb: { title: 'R2 · east core = fire stair + catwalk access + 12 m climbing wall', pos: [33.5, 15.5, 2.0], target: [25.0, 25.0, 6.5], focal: 20, time: 'golden' },
   r2_cut_GF: { title: 'R2 · GF cut-away: reception, HBOT, treatment, rehab, pavilion', pos: [14.0, 21.0, 30.0], target: [14.0, 29.5, 0.0], focal: 26, time: 'day', hide: ['rear_L2', 'rear_L3', 'rear_roof', 'hall_roof', 'r2_core', 'r2_pav_roof', 'fences', 'trees'] },
   r2_cut_L2: { title: 'R2 · L2 cut-away: gallery, lounge, sports-science lab, massage', pos: [10.2, 18.0, 25.0], target: [10.2, 27.5, 3.5], focal: 24, time: 'day', hide: ['rear_L3', 'rear_roof', 'hall_roof', 'fences', 'trees'] },

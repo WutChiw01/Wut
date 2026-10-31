@@ -157,3 +157,9 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 ### REV R49 — pickleball fence on grid 2, east plot line; option "C6" (6th badminton court)
 - Pickleball: one 3.0 m chain-link fence on **grid 2 (y 7.35)** between the two courts → 2.35 m run-off behind each inner baseline (the aisle garden is gone); east side 1.50 m beyond the courts = **east plot line x 29.45** (site fence moved there), 1.2 m fence toward the hall with two gates beside grid 2.
 - **Option C6** (`?scheme=c6`, `SCHEME=c6 node render.mjs …` → `snapshots_c6/`): court B1 replaces both boxing rings, north baseline 1.20 m south of grid 2 (y −7.25…6.15) to stay clear of the telecom tower zone. Column **A1 falls inside this court** (shown red) → it would have to be removed / transferred if this option is chosen. Plan: `plans/summary_GF_R49_opt6`.
+
+### REV R50 — 6 badminton courts adopted, columns clear of the palms
+- **Option C6 is now the main scheme**: court B1 (x −1.80…4.30, y −7.25…6.15, baseline 1.20 m south of grid 2) replaces the boxing rings; the rings remain as `?scheme=boxing`.
+- **A1 removed** (load to W1), A3 removed (load to W3).
+- Columns kept **≥ 2.0 m from the palm trunks**: W3 moved 1.10 m north to (−3.13, 17.45) — 2.0 m from P2; W4 moved to (−2.40, 25.10) — 2.1 m from P1. W0–W2 already clear. Boundary wall bridges the P2/P3 notches (no footing dug next to the trunks).
+- Summary sheets `plans/summary_{GF,L2,L3}_R50` (dashed 2.0 m circles round P1–P3); exports `sketchup/MyPlace_Master_vR50.dae`, `MyPlace_Master_vR50_SketchUp.zip`, `MyPlace_Master_vD6.glb`.

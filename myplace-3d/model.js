@@ -323,7 +323,7 @@ function towerHardware(b, o) {
 // ───────────────────────────── model ─────────────────────────────
 export function buildModel(opts = {}) {
   const R2 = opts.scheme === 'r2';
-  const C6 = opts.scheme === 'c6'; // REV R49 option: 6th badminton court instead of the boxing rings
+  const C6 = opts.scheme !== 'boxing'; // REV R50: 6th badminton court (B1) is now the main scheme; the boxing rings stay as ?scheme=boxing
   const XEAST = 20.2 + 0.15 + 1.5 + 6.1 + 1.5; // REV R49: east plot line 1.50 m beyond the pickleball courts (x 29.45) // REV R2 'Recovery Courtyard' scheme for the rear zone (see README)
   const root = new THREE.Group();
   root.name = 'MyPlace_Master_vD6';
@@ -340,7 +340,8 @@ export function buildModel(opts = {}) {
   const XE = 20.2, CW = 0.8, ZCW = 3.5;
   const zRoofW = (x) => 11.25 - Math.abs(x - 10.75) * ((11.25 - 8.6) / (10.75 + 0.8)) - 0.05;
   // column schedule R47 (summary R46 + user's corrections): W-line all at x −3.13; W0 moved 2.0 m north (telecom tower); A3 removed
-  const COLS_HALL = [[-3.13, -8.15, 'W0'], [-3.13, -1.65, 'W1'], [-3.13, 7.35, 'W2'], [-3.13, 16.35, 'W3'], [-3.13, 25.1, 'W4'], [0.2, -10.15, 'A0'], [0.2, -1.65, 'A1'], [0.2, 7.35, 'A2'], [XE, -10.15, 'E0'], [XE, -1.65, 'E1'], [XE, 7.35, 'E2'], [XE, 16.35, 'E3']];
+  // R50: A1 removed (load to W1); W3 moved 1.10 m north (y 17.45) and W4 to x −2.40 so every column stands ≥ 2.0 m from palms P1–P3
+  const COLS_HALL = [[-3.13, -8.15, 'W0'], [-3.13, -1.65, 'W1'], [-3.13, 7.35, 'W2'], [-3.13, 17.45, 'W3'], [-2.4, 25.1, 'W4'], [0.2, -10.15, 'A0'], ...(C6 ? [] : [[0.2, -1.65, 'A1']]), [0.2, 7.35, 'A2'], [XE, -10.15, 'E0'], [XE, -1.65, 'E1'], [XE, 7.35, 'E2'], [XE, 16.35, 'E3']];
 
   // ── site ────────────────────────────────────────────────────────
   {
@@ -417,7 +418,7 @@ export function buildModel(opts = {}) {
       b.box(XE + 0.15, XO, HALL.y0 - 0.25, HALL.y0, zT, zRo, M.plaster); // front end closed
     }
     // hall columns R47 (portal frames, full height to the roof) — A3 removed (user R33), W-line at x −3.13
-    for (const [x, y, id] of COLS_HALL) b.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, 0, x === XE ? 9.0 : x > 0 ? 8.6 : zRoofW(x), C6 && id === 'A1' ? M.holdR : M.concreteDark); // C6: A1 falls inside court B1 → shown red
+    for (const [x, y, id] of COLS_HALL) b.box(x - 0.15, x + 0.15, y - 0.15, y + 0.15, 0, x === XE ? 9.0 : x > 0 ? 8.6 : zRoofW(x), M.concreteDark); // R50: A1 removed (court B1); W3 / W4 kept ≥ 2.0 m from the palm trunks
     // louvre bands 7.4 – 8.6
     for (const x of [XWALL - 0.1]) {
       for (let z = 7.45; z < 8.6; z += 0.16) b.box(x - 0.08, x + 0.08, HALL.y0, HALL.y1, z, z + 0.03, M.charcoal);

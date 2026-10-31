@@ -116,3 +116,6 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 
 ### REV R40 — staff WC as built
 `node plan_gf_r40.mjs` → `plans/rear_GF_R40.{svg,png}`. Staff WC at 4–5/E: 2 WC back-to-back, doors open inward, basin on the door wall between the doors, no outer walls, 2 urinals on the grid-5 wall with a privacy screen on the door-wall line.
+
+### REV R41 — rear L2 / L3 matched to GF R40
+`node plan_upper_r41.mjs 2|3` → `plans/rear_L2_R41`, `plans/rear_L3_R41`. S1 continued as a stacked U-stair (+3.50 / +7.00 landings on the north wall). L2 wellness: balcony 43.2 m², reception, unisex WC, 2× Red Light, 2× HBOT, contrast (sauna + cold plunge + rinse), lounge, massage; wet rooms on the north wall, drains out through the façade (no coring). L3 fitness: lobby, WC+shower, tenant store, studio 78 m², terrace 30 m², Sky Trail. No lift. 3D model not yet updated.

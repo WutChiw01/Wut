@@ -686,6 +686,7 @@ export function buildModel(opts = {}) {
     const xs = [0.4, 7.15, 13.9];
     for (const [y0] of [[-8.4], [9.7]]) for (const x0 of xs) courts.push([x0, y0]);
     for (const [x0, y0] of courts) {
+      if (x0 === 0.4 && y0 === -8.4) continue; // REV R44: court B1 → boxing zone (user's R33 layout)
       const g = new THREE.PlaneGeometry(6.1, 13.4);
       g.rotateX(-Math.PI / 2);
       g.translate(x0 + 3.05, 0.01, -(y0 + 6.7));
@@ -697,6 +698,19 @@ export function buildModel(opts = {}) {
       b.cbox(x0 + 3.05, ny, 0.79, 6.7, 0.02, 0.76, M.net);
       b.box(x0 - 0.3, x0 + 6.4, ny - 0.015, ny + 0.015, 1.5, 1.55, M.white);
     }
+    // ── REV R44 boxing zone on the old court B1 (user's R33): main ring 6×6 inside the ropes, 7.80 × 7.80 platform; existing practice ring 3×3 / 4×4 ──
+    const ring = (cx, cy, hOut, hIn, H, canvas, nRope) => {
+      b.box(cx - hOut, cx + hOut, cy - hOut, cy + hOut, 0, H - 0.05, M.charcoal); // platform
+      b.box(cx - hOut, cx + hOut, cy - hOut, cy + hOut, H - 0.05, H, canvas); // canvas
+      for (const [sx, sy, m] of [[-1, -1, M.holdR], [1, 1, M.holdB], [1, -1, M.white], [-1, 1, M.white]]) {
+        const px = cx + sx * hIn, py = cy + sy * hIn; b.cyl(px, py, H, H + 1.45, 0.06, 0.06, M.steel, 10); b.box(px - 0.12, px + 0.12, py - 0.12, py + 0.12, H + 0.25, H + 1.35, m);
+      }
+      for (let k = 1; k <= nRope; k++) { const z = H + 0.15 + k * (1.2 / nRope); for (const sy of [-1, 1]) b.box(cx - hIn, cx + hIn, cy + sy * hIn - 0.02, cy + sy * hIn + 0.02, z - 0.02, z + 0.02, M.holdR); for (const sx of [-1, 1]) b.box(cx + sx * hIn - 0.02, cx + sx * hIn + 0.02, cy - hIn, cy + hIn, z - 0.02, z + 0.02, M.holdR); }
+    };
+    ring(2.8, 3.5, 3.9, 3.0, 0.9, M.holdB, 4); // main ring: platform x −1.1…6.7, y −0.4…7.4, +0.90
+    for (let i = 1; i <= 4; i++) b.box(-0.6 + 0.0, 0.4, -0.4 - 0.3 * (5 - i), -0.4 - 0.3 * (4 - i), 0, 0.225 * i - 0.02, M.steel); // steps up at the SW corner
+    ring(3.45, -5.4, 2.0, 1.5, 0.3, M.holdR, 3); // practice ring (existing): x 1.45…5.45, y −7.4…−3.4, +0.30
+    b.box(0.4, 6.5, -8.4, -0.6, 0.0, 0.008, M.mat); // rubber training floor round the rings
     // thin darker apron around the court group for tournament look
     b.box(0.0, 20.4, -9.2, 24.0, 0.0, 0.006, M.floorWet);
   }
@@ -1254,8 +1268,7 @@ export function buildModel(opts = {}) {
     // yoga terrace: balustrade, pergola, planters, retractable canopy
     d.box(17.2, 22.2, 24.0, 24.1, Z3, Z3 + 1.1, M.glass);
     d.box(17.2, 22.2, 30.1, 30.2, Z3, Z3 + 1.1, M.glass);
-    d.box(22.1, 22.2, 24.1, 29.2, Z3, Z3 + 1.1, M.glass); // east edge: open at y 29.2…30.1 where the hiking-trail bridge leaves the deck
-    for (const y of [29.2]) d.box(22.1, 22.2, y - 0.03, y + 0.03, Z3, Z3 + 1.1, M.steel);
+    d.box(22.1, 22.2, 24.1, 30.1, Z3, Z3 + 1.1, M.glass); // east edge closed (Sky Trail removed in R44)
     for (const x of [17.7, 22.0]) for (const y of [24.3, 29.9]) d.box(x - 0.08, x + 0.08, y - 0.08, y + 0.08, Z3, ZR - 0.4, M.teak);
     for (let x = 17.7; x <= 22.0; x += 0.45) d.box(x - 0.05, x + 0.05, 24.3, 29.9, ZR - 0.4, ZR - 0.3, M.teak);
     d.box(17.7, 22.0, 26.0, 28.4, ZR - 0.28, ZR - 0.25, M.glassFrost); // canopy sheet (retractable)
@@ -1282,7 +1295,7 @@ export function buildModel(opts = {}) {
 
   // ── SKY TRAIL (REV E): the L3 outdoor fitness deck links to the ground floor by a 48 m switch-back hiking trail (boardwalk 1.30 m wide, 17.5 % hill grade, 4 runs), trailhead at the pool court.
   // No new building: it is a landscape structure (steel posts + teak deck) in the rear garden. A step-free alternative remains the MRL lift.
-  {
+  if (false) { // REV R44: Sky Trail (long switch-back stairs at E/5) removed on request — block kept for reference only
     const T = layer('hiking_trail');
     const deck = std({ color: 0xb07a3c, roughness: 0.65, side: THREE.DoubleSide });
     const W = 1.3, TH = 0.14, ZB = 7.0;
@@ -1810,6 +1823,9 @@ export const SHOTS = {
   r43_l3_cut: { title: 'R43 · L3 cut-away (R41): lobby, studio, outdoor terrace', pos: [10.0, 15.5, 31.0], target: [10.0, 27.2, 7.0], focal: 24, time: 'day', hide: ['rear_roof', 'hall_roof', 'hall_shell', 'hall_interior', 'east_catwalk', 'cyclones', 'trees'] },
   r43_l2_corr: { title: 'R43 · L2 back corridor looking west', pos: [21.6, 29.4, 5.15], target: [2.0, 29.4, 5.0], focal: 16, time: 'day' },
   r43_l2_lounge: { title: 'R43 · L2 reception lounge, view down to the courts', pos: [3.0, 27.3, 5.25], target: [-0.5, 18.0, 2.6], focal: 14, time: 'day' },
+  r44_boxing: { title: 'R44 · boxing zone on old court B1: main ring 6×6 (+0.90) + practice ring', pos: [11.0, -7.5, 4.2], target: [2.8, 0.5, 0.8], focal: 18, time: 'day' },
+  r44_boxing_top: { title: 'R44 · boxing zone from above (roof hidden)', pos: [8.0, -12.0, 20.0], target: [3.0, 0.0, 0.0], focal: 22, time: 'day', hide: ['hall_roof', 'cyclones', 'front_facade'] },
+  r44_rear: { title: 'R44 · rear without the Sky Trail, catwalk kept', pos: [36.0, 44.0, 16.0], target: [14.0, 22.0, 4.0], focal: 24, time: 'golden' },
   r2_climb: { title: 'R2 · east core = fire stair + catwalk access + 12 m climbing wall', pos: [33.5, 15.5, 2.0], target: [25.0, 25.0, 6.5], focal: 20, time: 'golden' },
   r2_cut_GF: { title: 'R2 · GF cut-away: reception, HBOT, treatment, rehab, pavilion', pos: [14.0, 21.0, 30.0], target: [14.0, 29.5, 0.0], focal: 26, time: 'day', hide: ['rear_L2', 'rear_L3', 'rear_roof', 'hall_roof', 'r2_core', 'r2_pav_roof', 'fences', 'trees'] },
   r2_cut_L2: { title: 'R2 · L2 cut-away: gallery, lounge, sports-science lab, massage', pos: [10.2, 18.0, 25.0], target: [10.2, 27.5, 3.5], focal: 24, time: 'day', hide: ['rear_L3', 'rear_roof', 'hall_roof', 'fences', 'trees'] },

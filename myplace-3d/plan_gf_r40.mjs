@@ -1,5 +1,5 @@
 // Revised REAR GROUND FLOOR (R34, from user R33 layout) (north up, metres).
-// usage: node plan_gf_r34.mjs → plans/rear_GF_R40.{svg,png}
+// usage: node plan_gf_r34.mjs → plans/rear_GF_R44.{svg,png}
 import { chromium } from '/opt/node22/lib/node_modules/playwright/index.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -34,7 +34,7 @@ for (const [y, t] of [[yS, '4'], [yG, '5']]) { L(-4.4, y, 23.4, y, { stroke: '#c
 // ── context ──
 R(-1.8, 22.2, 22.2, yS, { fill: '#fdf0d5' }); T(11, 23.9, 'ทางเดินหลังคอร์ท / back-of-court aisle (2.00 + slab edge)', 11, { fill: '#a07a30' });
 R(-1.8, 22.2, 24.1, 30.1, { stroke: '#b44', sw: 1.4, dash: '12 5' }); T(19.6, 31.2, 'ขอบพื้น คสล. เดิม (ห้ามเจาะ)', 10, { fill: '#b44' }); T(19.6, 30.9, 'existing slab edge x −1.80…22.20 / y 24.10…30.10', 9, { fill: '#b44' });
-R(10.4, 15.4, 30.8, 33.3, { fill: '#dcecf8', stroke: COL.dim, dash: '4 3' }); T(12.9, 32.0, 'สระ ตามแบบเดิม', 10, { fill: COL.dim }); T(12.9, 31.65, 'pool per D8 / R33 (unchanged)', 9, { fill: COL.dim });
+R(3.4, 22.2, 30.2, 33.6, { fill: '#e3f0d8' }); T(12.9, 32.2, 'สนามหญ้า — พื้นที่จัดภูมิทัศน์ในอนาคต (ไม่มีสระ)', 10, { fill: COL.green }); T(12.9, 31.85, 'future landscape lawn · no pool (R44)', 9, { fill: COL.green });
 P(`M${f(X(0.2))},${f(Y(33.85))} L${f(X(20.2))},${f(Y(36.85))}`, { stroke: COL.red, sw: 1.8, dash: '6 4' });
 for (const [x, d] of [[0.2, '5.75'], [5.2, '6.50'], [10.2, '7.25'], [15.2, '8.00'], [20.2, '8.75']]) T(x, 33.85 + (x - 0.2) * 0.15 + 0.2, d, 9, { fill: COL.red });
 T(10.2, 36.2, 'รั้วลาด / sloped fence (gross distance from line 5)', 10, { fill: COL.red, rot: -8 });
@@ -160,7 +160,7 @@ const notes = [
   'DRAINS: new F/M urinals, WCs and all showers are behind grid 5. The staff WC is existing (drains already in place); only the accessible WC pan is in front of grid 5 → its drain must run through/under the existing floor.',
   'RENTABLE: L1 + L2 24.5 + gift shop 13.7 + kiosk 4.1 ≈ 42 m² (R37 52 m², the difference is the staff WC). Still to check: fire exits, exhaust fans for windowless WCs.',
 ];
-const title = 'MY PLACE / R40 — Existing staff WC at 4–5/E (as built) · S1 U-stair (±0.00)';
+const title = 'MY PLACE / R44 — Rear GF (= R40) · pool removed → future landscape (±0.00)';
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="Loma, 'Noto Sans Thai', sans-serif">
 <rect width="100%" height="100%" fill="#fff"/>
 <text x="${MX}" y="56" font-size="30" font-weight="700" fill="#111">${title}</text>
@@ -175,10 +175,10 @@ ${rooms.map((r, i) => `<text y="${22 + i * 19}">${i + 1}. ${r[0]} · ${r[1]}</te
 </g>
 </svg>`;
 fs.mkdirSync(path.join(here, 'plans'), { recursive: true });
-fs.writeFileSync(path.join(here, 'plans', 'rear_GF_R40.svg'), svg);
+fs.writeFileSync(path.join(here, 'plans', 'rear_GF_R44.svg'), svg);
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
 await page.setContent(`<html><body style="margin:0">${svg}</body></html>`);
-await page.screenshot({ path: path.join(here, 'plans', 'rear_GF_R40.png') });
+await page.screenshot({ path: path.join(here, 'plans', 'rear_GF_R44.png') });
 await browser.close();
 console.log('ok', W, H);

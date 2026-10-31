@@ -1,9 +1,9 @@
 # MY PLACE — SketchUp package (REV E)
 
-`MyPlace_Master_vR43.dae` is a COLLADA file written for SketchUp (Z-up, metres, quads instead of triangles). I could not write a native `.skp` (it is a closed binary format), so open it in SketchUp and **File → Save As** to get the `.skp`.
+`MyPlace_Master_vR44.dae` is a COLLADA file written for SketchUp (Z-up, metres, quads instead of triangles). I could not write a native `.skp` (it is a closed binary format), so open it in SketchUp and **File → Save As** to get the `.skp`.
 
 ## Import
-1. SketchUp → *File ▸ Import* → file type **COLLADA (*.dae)** → pick `MyPlace_Master_vR43.dae` (keep the `textures/` folder next to it).
+1. SketchUp → *File ▸ Import* → file type **COLLADA (*.dae)** → pick `MyPlace_Master_vR44.dae` (keep the `textures/` folder next to it).
 2. Options: tick **Merge coplanar faces** *off* (faces are already clean), units = metres (the file declares 1 unit = 1 m).
 3. The model arrives as one group per layer inside the scene: `site`, `hall_shell`, `hall_roof`, `hall_interior`, `cyclones`, `front_facade`, `entrance_court`, `east_catwalk`, `west_wing`, `ww_G`, `ww_L2`, `ww_roof`, `rear_structure`, `rear_GF`, `rear_L2`, `rear_L3`, `rear_roof`, `hiking_trail`, `outdoor`, `rear_services`, `vegetation`, `trees`, `fences`. Inside each, one child group per material (`rear_L2__teak`, …).
 4. *Window ▸ Outliner* → make each layer group a tag/layer if you want (**Right-click ▸ Make Group/Component**). The cut-away layers `ww_G`, `ww_L2`, `ww_roof`, `rear_L2`, `rear_L3`, `rear_roof` can be hidden to look into the floors.

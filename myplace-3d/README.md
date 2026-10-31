@@ -129,3 +129,8 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - **Prefab pool removed**: rear yard is lawn for a future landscape (gravel drip strip over the buried drains, temporary stepping pads). Coconut palms **P1–P3 kept**.
 - Outdoor climbing tower + crash pit removed (they clashed with the L2 east exit landing, now extended north along the east wall to the corridor-end door).
 - New shots `r43_*`; exports `MyPlace_Master_vD6.glb` (refreshed) and `sketchup/MyPlace_Master_vR43.dae` (+ `MyPlace_Master_vR43_SketchUp.zip`).
+
+### REV R44 — boxing zone, no Sky Trail
+- Court **B1 replaced by the boxing zone** from the user's R33 sheet: main ring 6×6 inside the ropes on a 7.80 × 7.80 platform +0.90 (x −1.1…6.7, y −0.4…7.4, steps at the SW corner) + existing practice ring 3×3 / 4×4 +0.30 (x 1.45…5.45, y −7.4…−3.4) on a rubber floor. Platform west edge reaches 0.3 m past the hall wall line — R33's "W3 moved out 0.90" assumed.
+- **Sky Trail (long stairs at E/5) removed**; L3 terrace closed by a 1.10 m guard. **East catwalk +4.50 between badminton and pickleball kept.**
+- Plan sheets refreshed without the pool: `rear_GF_R44`, `rear_L2_R44`, `rear_L3_R44`. Exports: `sketchup/MyPlace_Master_vR44.dae`, `MyPlace_Master_vR44_SketchUp.zip`, `MyPlace_Master_vD6.glb`.

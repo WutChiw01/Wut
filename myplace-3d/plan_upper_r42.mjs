@@ -36,7 +36,7 @@ const ST = '#b8731a';
 // ── context: below = courts / aisle, slab outline ──
 R(-1.8, 22.2, 22.2, 24.1, { fill: '#e7ecef' }); T(11, 23.0, LV === 2 ? 'ช่องเปิดเหนือทางเดินหลังคอร์ท (void) — คอร์ท B4–B6 ด้านล่าง' : 'void เหนือระเบียงชั้น 2 · มองลงคอร์ท', 11, { fill: '#667' });
 R(-1.8, 22.2, 24.1, 30.1, { fill: '#fbfaf7' });
-R(10.4, 15.4, 30.8, 33.3, { fill: '#dcecf8', stroke: COL.dim, dash: '4 3' }); T(12.9, 32.0, 'สระ (ชั้นล่าง)', 10, { fill: COL.dim });
+R(3.4, 22.2, 30.2, 33.6, { fill: '#e3f0d8' }); T(12.9, 32.0, 'สนามหญ้า — พื้นที่จัดภูมิทัศน์ในอนาคต (ไม่มีสระ)', 10, { fill: COL.green });
 P(`M${f(X(0.2))},${f(Y(33.85))} L${f(X(20.2))},${f(Y(36.85))}`, { stroke: COL.red, sw: 1.8, dash: '6 4' }); T(10.2, 36.2, 'รั้วลาด / sloped fence', 10, { fill: COL.red, rot: -8 });
 
 // ── S1 stacked U-stair (same footprint as GF R38–R40) ──
@@ -125,8 +125,6 @@ if (LV === 2) {
   furn(17.6, 21.8, 24.5, 25.4, '#8cc79b'); T(19.7, 24.95, 'เลนสเลด/สปรินต์', 8.5); furn(17.8, 21.6, 27.6, 27.75, '#555'); T(19.7, 27.95, 'Rig บาร์โหน/ห่วง/TRX', 8.5); furn(18.0, 18.6, 26.2, 26.8, '#e2a95c'); furn(18.8, 19.4, 26.2, 26.8, '#e2a95c'); T(18.7, 26.0, 'กล่อง Plyo', 8);
   L(22.2, 24.1, 22.2, 30.1, { stroke: '#555', sw: 3 }); L(17.2, 24.1, 22.2, 24.1, { stroke: '#555', sw: 3 }); L(17.2, 30.1, 22.2, 30.1, { stroke: '#555', sw: 3 }); T(19.7, 30.35, 'ราวกันตก 1.10', 8, { fill: '#555' });
   wall(17.15, 17.25, 24.1, 25.0); glass(17.15, 17.25, 25.0, 29.2); wall(17.15, 17.25, 29.2, 30.1); T(17.4, 27.0, 'บานเลื่อนกระจก', 8, { rot: -90 });
-  // Sky Trail
-  R(20.9, 22.2, 30.1, 31.4, { fill: '#f1d9b0', stroke: '#8a5a1a', sw: 1.4 }); R(22.2, 23.5, 30.1, 33.4, { fill: '#f1d9b0', stroke: '#8a5a1a', sw: 1.4 }); T(22.85, 33.7, 'Sky Trail ↓', 10, { bold: true, fill: '#8a5a1a' }); T(22.85, 33.95, '→ trailhead ลานสระ ±0.00', 8.5, { fill: '#8a5a1a' });
   for (const x of [0.4, 4.2]) wall(x - 0.05, x + 0.05, 24.1, yN); wall(-1.8, 0.4, 27.55, 27.65);
   const sd = (x, y0, y1, dir) => { L(x, y0, x, y1, { stroke: '#fff', sw: 7 }); door(x, y0, y1 - y0, Math.PI / 2, Math.PI / 2 + dir * Math.PI * 0.4); };
   sd(0.4, 25.0, 25.8, 1); sd(0.4, 27.9, 28.7, 1); L(4.2, 26.5, 4.2, 28.1, { stroke: '#cfe6f2', sw: 7 }); door(4.2, 26.5, 0.8, Math.PI / 2, Math.PI * 0.1); door(4.2, 28.1, 0.8, -Math.PI / 2, -Math.PI * 0.1);
@@ -134,15 +132,15 @@ if (LV === 2) {
   for (const y of [25.1, 28.1]) for (const x of [0.2, 5.2, 10.2, 15.2, 20.2]) col(x, y);
   for (const [a, b] of [[-1.8, 0.4], [0.4, 4.2], [4.2, 17.2], [17.2, 22.2]]) dimX(a, b, 22.55, (b - a).toFixed(2), 0);
   dimX(-1.8, 22.2, 22.15, '24.00 m', 0); dimY(24.1, 30.1, 23.0 + 0.8, '6.00', 0);
-  rooms = [['Lobby + S1 arrival', 'โถง/ล็อบบี้', '3.80×5.90', '22.4'], ['WC + shower', 'WC + ฝักบัว', '2.20×2.40', '5.3'], ['Tenant store', 'ห้องเก็บของผู้เช่า', '2.20×3.50', '7.7'], ['Indoor fitness studio (lease)', 'สตูดิโอฟิตเนส', '13.00×6.00', '78.0'], ['Outdoor fitness terrace', 'ลานฟิตเนสกลางแจ้ง', '5.00×6.00', '30.0'], ['Sky Trail start', 'ทางเดินลอยฟ้า', '1.30 wide', '—']];
+  rooms = [['Lobby + S1 arrival', 'โถง/ล็อบบี้', '3.80×5.90', '22.4'], ['WC + shower', 'WC + ฝักบัว', '2.20×2.40', '5.3'], ['Tenant store', 'ห้องเก็บของผู้เช่า', '2.20×3.50', '7.7'], ['Indoor fitness studio (lease)', 'สตูดิโอฟิตเนส', '13.00×6.00', '78.0'], ['Outdoor fitness terrace', 'ลานฟิตเนสกลางแจ้ง', '5.00×6.00', '30.0']];
   notes = [
     'L3 = FITNESS: one indoor studio for a single tenant (78.0 m², pilates reformer / functional / yoga — no heavy drop-lifting) + outdoor terrace 30.0 m² linked through a sliding glass wall. Same program as REV E.',
     'ARRIVAL: S1 continues in the same footprint (stacked U-stair, 40 risers × 0.175 = 7.00): flight 21–30 north row → landing +5.25 → flight 31–40 south row → floor landing +7.00 → north-wall door into the lobby. Open well beside the landing has a 1.10 guard.',
-    'HIKING LINK: Sky Trail starts at the terrace NE corner → timber bridge 1.30 m → zigzag ramps/steps down to the trailhead at the pool deck (±0.00), as REV E. It is also the 2nd way out of L3 (S1 is the 1st) — must be checked as a fire exit.',
+    'R44: Sky Trail (long stairs at E/5) REMOVED on request — terrace closed by a 1.10 m guard on all sides. S1 is the only stair of L3 (allowed: 3 storeys, no roof deck, ≤ 40 m travel, 1.20 m clear).',
     'WET: only the WC + shower at the north-west corner; its drain drops outside the north façade next to S1 (same riser line as the L2 WC). Old west core and lift are removed; tenant store takes their place.',
     'NO LIFT: L3 not wheelchair-accessible. Structure of L3 (new floor on top of the existing L2 slab) to be confirmed by the structural engineer.',
   ];
-  title = 'MY PLACE / R41 — Rear building L3 (+7.00) · Fitness indoor + outdoor + Sky Trail'; sub = 'Matched to GF R40 / L2 R41 · North up · metres · S1 stacked U-stair · no lift';
+  title = 'MY PLACE / R44 — Rear building L3 (+7.00) · Fitness indoor + outdoor (no Sky Trail)'; sub = 'Matched to GF R40 / L2 R42 · North up · metres · S1 stacked U-stair · no lift';
 }
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="Loma, 'Noto Sans Thai', sans-serif">
@@ -157,7 +155,7 @@ ${rooms.map((r, i) => `<text y="${22 + i * 19}">${i + 1}. ${r[0]} · ${r[1]}</te
 <g transform="translate(700,0)"><text font-weight="700" font-size="14">NOTES</text>${notes.map((n, i) => `<text y="${22 + i * 31}" font-size="11.5">${n.replace(/(.{150,}?) /g, '$1\u0001').split('\u0001').map((l, k) => `<tspan x="0" dy="${k ? 14 : 0}">${l}</tspan>`).join('')}</text>`).join('')}</g>
 </g>
 </svg>`;
-const name = `rear_L${LV}_R42`;
+const name = LV === 3 ? 'rear_L3_R44' : 'rear_L2_R44';
 fs.writeFileSync(path.join(here, 'plans', name + '.svg'), svg);
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });

@@ -332,6 +332,8 @@ export function buildModel(opts = {}) {
   const HALL = { x0: -0.8, x1: 22.3, y0: -10.15, y1: 24.1, eave: 8.6, ridge: 11.25, ridgeX: 10.75 };
   const SLAB = { x0: -1.8, x1: 22.2, y0: 24.1, y1: 30.1 };
   const Z2 = 3.5, Z3 = 7.0, ZR = 10.5;
+  // REV R45 (user's R33): the hall runs west to the solid boundary wall (x −3.90…−3.70); palms P2 / P3 stand in open notches of that wall
+  const XWALL = -3.7, PALM_NOTCH = [[11.45, 12.75], [14.8, 16.1]];
 
   // ── site ────────────────────────────────────────────────────────
   {
@@ -361,7 +363,7 @@ export function buildModel(opts = {}) {
     b.box(22.3, 24.2, -10.15, 24.1, -0.02, 0.02, M.paving);
     b.box(-4.4, -3.9, -10.15, 30.1, -0.02, 0.02, M.paving);
     // concrete floor under hall + aisle
-    b.box(HALL.x0, HALL.x1, HALL.y0, 25.1, -0.02, 0.0, M.concrete);
+    b.box(XWALL, HALL.x1, HALL.y0, 25.1, -0.02, 0.0, M.concrete);
     // plot boundary: west fence (x = -4.4), skewed rear fence, east + front low hedge
     const fence = (x0, y0, x1, y1, h = 1.8) => {
       const len = Math.hypot(x1 - x0, y1 - y0), ang = Math.atan2(y1 - y0, x1 - x0);
@@ -383,14 +385,18 @@ export function buildModel(opts = {}) {
     const b = layer('hall_shell');
     const t = 0.25;
     // west wall (x=-0.8) – solid to 7.4, louvre band above
-    for (const [ya, yb, za, zb] of [[HALL.y0, -9.0, 0, 7.4], [-9.0, 6.35, 3.35, 7.4], [8.35, 10.0, 0, 7.4], [22.0, HALL.y1, 0, 7.4]]) b.box(HALL.x0 - t, HALL.x0, ya, yb, za, zb, M.plaster); // D3 to the stair hall; NO wall at the 2.00 m wind lane (y 6.35…8.35) and none along the garden (y 10…22)
+    // REV R45 (user's R33): the west wing is gone — the hall's west wall IS the solid boundary wall x −3.90…−3.70 (full length, to the roof),
+    // with two open notches (1.0 × 1.3 m, open to the sky) where palms P2 / P3 stand; the old wall at x −0.8 is removed
+    { let y = HALL.y0 - 0.25; for (const [n0, n1] of PALM_NOTCH) { b.box(XWALL - 0.2, XWALL, y, n0, 0, 7.4, M.plaster); b.box(XWALL - 0.2, -2.7, n0 - 0.2, n0, 0, 7.4, M.plaster); b.box(XWALL - 0.2, -2.7, n1, n1 + 0.2, 0, 7.4, M.plaster); b.box(-2.9, -2.7, n0, n1, 0, 7.4, M.plaster); y = n1; } b.box(XWALL - 0.2, XWALL, y, HALL.y1 + 0.1, 0, 7.4, M.plaster); }
+    b.box(XWALL - 0.2, HALL.x0, HALL.y0 - 0.25, HALL.y0, 0, 8.4, M.plaster); // front wall extension
+    b.box(XWALL - 0.2, -1.8, HALL.y1 - 0.1, HALL.y1 + 0.1, 0, 8.4, M.plaster); b.box(-1.8, HALL.x0, HALL.y1 - 0.1, HALL.y1 + 0.1, 7.0, 8.4, M.plaster); // rear wall extension
     // east wall (x=22.3): full-height sliding glass, mullions every 2.5 m
     for (let y = HALL.y0; y <= HALL.y1 + 0.01; y += 2.5) b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, y - 0.04, y + 0.04, 0, 7.4, M.charcoal);
     b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, HALL.y0, HALL.y1, 0, 0.1, M.charcoal);
     b.box(HALL.x1 - 0.05, HALL.x1 + 0.05, HALL.y0, HALL.y1, 7.3, 7.4, M.charcoal);
     b.box(HALL.x1 - 0.02, HALL.x1 + 0.02, HALL.y0, HALL.y1, 0.1, 7.3, M.glass);
     // louvre bands 7.4 – 8.6
-    for (const x of [HALL.x0 - 0.05, HALL.x1]) {
+    for (const x of [XWALL - 0.1, HALL.x1]) {
       for (let z = 7.45; z < 8.6; z += 0.16) b.box(x - 0.08, x + 0.08, HALL.y0, HALL.y1, z, z + 0.03, M.charcoal);
     }
     // front wall y=-10.15 : plaster + gable, entrance + flanking glazing
@@ -439,7 +445,7 @@ export function buildModel(opts = {}) {
 
     // portal-frame columns on grids 1 & 5 (west + east wall lines) and C0/E0/W0 posts are in 'cyclones'
     for (const y of [-8.0, -3.0, 2.0, 12.5, 17.5, 22.0]) {
-      b.box(HALL.x0, HALL.x0 + 0.3, y - 0.15, y + 0.15, 0, 8.6, M.concreteDark);
+      b.box(XWALL, XWALL + 0.3, y - 0.15, y + 0.15, 0, 7.8, M.concreteDark); // REV R45: west portal line on the boundary wall
       b.box(HALL.x1 - 0.3, HALL.x1, y - 0.15, y + 0.15, 0, 8.6, M.concreteDark);
     }
     // sign "MY PLACE"
@@ -470,8 +476,9 @@ export function buildModel(opts = {}) {
     const zRoof = (x) => HALL.ridge - Math.abs(x - HALL.ridgeX) * slope;
     const yA = HALL.y0 - 0.5, yB = HALL.y1 + 0.0;
     // roof sheet (two planes)
-    const xw = HALL.x0 - ov, xe = HALL.x1 + ov;
-    b.quad(M.roofSheet, [xw, yA, zRoof(xw)], [HALL.ridgeX, yA, HALL.ridge], [HALL.ridgeX, yB, HALL.ridge], [xw, yB, zRoof(xw)]);
+    const xw = XWALL - 0.2 - ov, xe = HALL.x1 + ov, xn = -2.6; // REV R45: west eave beyond the boundary wall; roof strip x < −2.6 is cut open over the palm notches
+    b.quad(M.roofSheet, [xn, yA, zRoof(xn)], [HALL.ridgeX, yA, HALL.ridge], [HALL.ridgeX, yB, HALL.ridge], [xn, yB, zRoof(xn)]);
+    { let y = yA; for (const [n0, n1] of [...PALM_NOTCH, [yB, yB]]) { if (n0 > y) b.quad(M.roofSheet, [xw, y, zRoof(xw)], [xn, y, zRoof(xn)], [xn, n0, zRoof(xn)], [xw, n0, zRoof(xw)]); y = n1; } }
     b.quad(M.roofSheet, [HALL.ridgeX, yA, HALL.ridge], [xe, yA, zRoof(xe)], [xe, yB, zRoof(xe)], [HALL.ridgeX, yB, HALL.ridge]);
     // underside lining slightly below
     const u = 0.14;
@@ -683,10 +690,10 @@ export function buildModel(opts = {}) {
   {
     const b = layer('hall_interior');
     const courts = [];
-    const xs = [0.4, 7.15, 13.9];
+    const xs = [-1.8, 5.55, 12.85]; // REV R45: court columns as the user's R33 (1.25 m gaps; B4 starts at x −1.80)
     for (const [y0] of [[-8.4], [9.7]]) for (const x0 of xs) courts.push([x0, y0]);
     for (const [x0, y0] of courts) {
-      if (x0 === 0.4 && y0 === -8.4) continue; // REV R44: court B1 → boxing zone (user's R33 layout)
+      if (x0 === -1.8 && y0 === -8.4) continue; // REV R44: court B1 → boxing zone (user's R33 layout)
       const g = new THREE.PlaneGeometry(6.1, 13.4);
       g.rotateX(-Math.PI / 2);
       g.translate(x0 + 3.05, 0.01, -(y0 + 6.7));
@@ -707,12 +714,13 @@ export function buildModel(opts = {}) {
       }
       for (let k = 1; k <= nRope; k++) { const z = H + 0.15 + k * (1.2 / nRope); for (const sy of [-1, 1]) b.box(cx - hIn, cx + hIn, cy + sy * hIn - 0.02, cy + sy * hIn + 0.02, z - 0.02, z + 0.02, M.holdR); for (const sx of [-1, 1]) b.box(cx + sx * hIn - 0.02, cx + sx * hIn + 0.02, cy - hIn, cy + hIn, z - 0.02, z + 0.02, M.holdR); }
     };
-    ring(2.8, 3.5, 3.9, 3.0, 0.9, M.holdB, 4); // main ring: platform x −1.1…6.7, y −0.4…7.4, +0.90
-    for (let i = 1; i <= 4; i++) b.box(-0.6 + 0.0, 0.4, -0.4 - 0.3 * (5 - i), -0.4 - 0.3 * (4 - i), 0, 0.225 * i - 0.02, M.steel); // steps up at the SW corner
-    ring(3.45, -5.4, 2.0, 1.5, 0.3, M.holdR, 3); // practice ring (existing): x 1.45…5.45, y −7.4…−3.4, +0.30
-    b.box(0.4, 6.5, -8.4, -0.6, 0.0, 0.008, M.mat); // rubber training floor round the rings
+    ring(0.18, 2.68, 3.9, 3.0, 0.9, M.holdB, 4); // main ring (R33): platform x −3.72…4.08, y −1.22…6.58, +0.90, ropes 6 × 6
+    for (let i = 1; i <= 4; i++) b.box(3.2, 4.0, -1.22 - 0.3 * (5 - i), -1.22 - 0.3 * (4 - i), 0, 0.225 * i - 0.02, M.steel); // steps up at the SE corner
+    ring(0.67, -5.7, 2.0, 1.5, 0.3, M.holdR, 3); // practice ring (existing, R33): x −1.33…2.67, y −7.70…−3.70, +0.30
+    for (let i = 1; i <= 2; i++) b.box(2.67 + 0.3 * (2 - i), 2.67 + 0.3 * (3 - i), -6.3, -5.2, 0, 0.15 * i, M.steel); // steps (R33)
+    b.box(-1.8, 4.25, -8.7, -1.22, 0.0, 0.008, M.mat); // rubber training floor (R33 hatched zone)
     // thin darker apron around the court group for tournament look
-    b.box(0.0, 20.4, -9.2, 24.0, 0.0, 0.006, M.floorWet);
+    b.box(-2.2, 19.25, -9.2, 24.0, 0.0, 0.006, M.floorWet);
   }
 
   // ── East wall (hall ↔ pickleball): +4.50 m service catwalk 1.20 m wide + wind-block sliding louvre screens ──
@@ -781,10 +789,15 @@ export function buildModel(opts = {}) {
     }
   }
 
-  // ── West wing REV P6 + palms garden — detailed interior (REV D.9) ─────────────
-  // Layers (so the wing can be cut away): west_wing = shell/structure/jali/pergola frame, ww_G = ground-floor interiors,
-  // ww_L2 = upper-floor slabs + interiors + gallery walkway, ww_roof = roof slabs, skylight, PV, pergola slats.
+  // ── REV R45: WEST WING REMOVED (user) — west of the hall only the coconut palms P1–P3 and the solid boundary wall remain ──
   {
+    const W = layer('west_wing');
+    // the hall now runs to the boundary wall (see hall_shell); only planting beds in the two palm notches + the strip outside the wall
+    for (const [y0, y1] of PALM_NOTCH) W.box(-3.9, -2.9, y0, y1, 0.0, 0.12, M.turf);
+    W.box(-4.4, -3.9, 22.6, 25.0, 0.0, 0.12, M.turf); // bed round palm P1 (outside the wall)
+  }
+  // ── West wing REV P6 + palms garden — detailed interior (REV D.9) — DISABLED in R45, kept for reference ─────────────
+  if (false) {
     const W = layer('west_wing'), GI = layer('ww_G'), UI = layer('ww_L2'), RF = layer('ww_roof');
     layer('x_wind');
     const SW = new B('ww_stair_w'), SG = new B('ww_stair_g'), SU = new B('ww_stair_u'), SR = new B('ww_stair_r');
@@ -1218,7 +1231,7 @@ export function buildModel(opts = {}) {
     c.box(1.85, 3.1, 30.05, 30.15, Z2 + 2.25, Hz, M.plaster); c.box(1.88, 3.07, 30.07, 30.13, Z2 + 0.15, Z2 + 2.2, M.glass);
     for (let x = SLAB.x0; x <= SLAB.x1 + 0.01; x += 1.2) c.box(x - 0.03, x + 0.03, 30.0, 30.18, Z2, Hz, M.charcoal);
     // west wall with the door from the west-wing bridge (y 24.6…25.8); east wall with the corridor-end door (y 28.9…29.9)
-    c.box(-1.8, -1.7, 25.8, 30.1, Z2, Hz, M.plaster); c.box(-1.8, -1.7, 24.1, 24.6, Z2, Hz, M.plaster); c.box(-1.8, -1.7, 24.6, 25.8, Z2 + 2.25, Hz, M.plaster);
+    c.box(-1.8, -1.7, 24.1, 30.1, Z2, Hz, M.plaster); // REV R45: no west-wing bridge any more → solid west wall
     c.box(22.1, 22.3, 24.1, 28.9, Z2, Hz, M.plaster); c.box(22.1, 22.3, 29.9, 30.1, Z2, Hz, M.plaster); c.box(22.1, 22.3, 28.9, 29.9, Z2 + 2.25, Hz, M.plaster);
     c.box(22.18, 22.22, 28.93, 29.87, Z2 + 0.15, Z2 + 2.2, M.glass);
     // partitions + corridor wall (door leaves teak)
@@ -1404,10 +1417,12 @@ export function buildModel(opts = {}) {
     // west wing: sconces on the batten wall + PV on the flat roof (REV P6 wing, south-facing 10° arrays)
     {
       const b = G.west_wing, bR = G.ww_roof;
+      if (!bR) { /* REV R45: no wing */ } else {
       for (let y = -8.0; y < 10; y += 2.2) b.box(-3.98, -3.9, y - 0.05, y + 0.05, 3.0, 3.25, M.led);
       for (let y = 26.2; y < 30; y += 2.2) b.box(-3.98, -3.9, y - 0.05, y + 0.05, 3.0, 3.25, M.led);
       for (let y = -8.4; y < 9.2; y += 2.2) bR.quad(M.solar, [-3.6, y, 7.3 + 0.12], [-1.1, y, 7.3 + 0.12], [-1.1, y + 1.9, 7.3 + 0.45], [-3.6, y + 1.9, 7.3 + 0.45], [2, 1]);
       for (let y = -8.4; y < 9.2; y += 2.2) for (const x of [-3.5, -1.2]) bR.member([x, y + 0.1, 7.3], [x, y + 1.0, 7.3 + 0.28], 0.025, M.charcoal, 4);
+      }
     }
   }
 
@@ -1826,6 +1841,8 @@ export const SHOTS = {
   r44_boxing: { title: 'R44 · boxing zone on old court B1: main ring 6×6 (+0.90) + practice ring', pos: [11.0, -7.5, 4.2], target: [2.8, 0.5, 0.8], focal: 18, time: 'day' },
   r44_boxing_top: { title: 'R44 · boxing zone from above (roof hidden)', pos: [8.0, -12.0, 20.0], target: [3.0, 0.0, 0.0], focal: 22, time: 'day', hide: ['hall_roof', 'cyclones', 'front_facade'] },
   r44_rear: { title: 'R44 · rear without the Sky Trail, catwalk kept', pos: [36.0, 44.0, 16.0], target: [14.0, 22.0, 4.0], focal: 24, time: 'golden' },
+  r45_west: { title: 'R45 · west side: wing removed, hall to the boundary wall, palms P1–P3', pos: [-15.0, -2.0, 7.0], target: [-3.5, 11.0, 4.0], focal: 20, time: 'golden', hide: ['fences'] },
+  r45_hall: { title: 'R45 · inside the hall looking west: boxing rings + courts as R33', pos: [17.0, -6.5, 5.5], target: [0.0, 4.0, 1.0], focal: 16, time: 'day' },
   r2_climb: { title: 'R2 · east core = fire stair + catwalk access + 12 m climbing wall', pos: [33.5, 15.5, 2.0], target: [25.0, 25.0, 6.5], focal: 20, time: 'golden' },
   r2_cut_GF: { title: 'R2 · GF cut-away: reception, HBOT, treatment, rehab, pavilion', pos: [14.0, 21.0, 30.0], target: [14.0, 29.5, 0.0], focal: 26, time: 'day', hide: ['rear_L2', 'rear_L3', 'rear_roof', 'hall_roof', 'r2_core', 'r2_pav_roof', 'fences', 'trees'] },
   r2_cut_L2: { title: 'R2 · L2 cut-away: gallery, lounge, sports-science lab, massage', pos: [10.2, 18.0, 25.0], target: [10.2, 27.5, 3.5], focal: 24, time: 'day', hide: ['rear_L3', 'rear_roof', 'hall_roof', 'fences', 'trees'] },

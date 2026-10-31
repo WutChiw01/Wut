@@ -92,8 +92,7 @@ if (LV === 2) {
   for (const [a, b] of gaps.slice(1)) door(a, yC, b - a, 0, -Math.PI * 0.45 + Math.PI * 0.9);
   L(0.4, 29.0, 0.4, 29.8, { stroke: '#fff', sw: 7 }); door(0.4, 29.0, 0.8, Math.PI / 2, Math.PI * 0.9); northDoor(1.85, 3.1);
   // entries: west-wing bridge (west end), east exit at the corridor end → new landing +3.50 → catwalk +4.50
-  L(-1.8, 24.6, -1.8, 25.8, { stroke: '#fff', sw: 7 }); door(-1.8, 24.6, 1.2, Math.PI / 2, Math.PI * 0.1);
-  P(`M${f(X(-3.0))},${f(Y(25.2))} L${f(X(-1.9))},${f(Y(25.2))}`, { stroke: COL.green, sw: 2.5 }); T(-3.1, 25.55, 'สะพานจากปีกตะวันตก', 8.5, { anchor: 'end', fill: COL.green }); T(-3.1, 25.3, 'west-wing bridge', 8, { anchor: 'end', fill: COL.green });
+  T(-2.0, 25.2, 'ไม่มีสะพาน (R45)', 8.5, { anchor: 'end', fill: '#999' });
   L(22.15, 28.9, 22.15, 29.9, { stroke: '#fff', sw: 7 }); door(22.15, 28.9, 1.0, Math.PI / 2, Math.PI * 0.9);
   R(22.2, 23.6, 28.3, 30.1, { fill: '#ddd', stroke: '#555' }); T(22.9, 29.4, 'ชานพัก', 8.5, { bold: true }); T(22.9, 29.15, '+3.50', 8); T(22.9, 27.95, '↓ บันได → catwalk +4.50', 8, { fill: COL.red });
   for (const y of [25.1, 28.1]) for (const x of [0.2, 5.2, 10.2, 15.2, 20.2]) col(x, y);
@@ -105,7 +104,7 @@ if (LV === 2) {
   notes = [
     'WHAT CHANGED vs R41: the 1.80 m court-side balcony (43.2 m²) is gone. Circulation is now a 1.20 m corridor at the BACK (north) wall (26.2 m²), so every wellness room is 4.70 m deep (was 4.10) and gets the court-side façade.',
     'Net gain ≈ 17 m² of wellness space. Reception + lounge at the west end keeps a clear-glass view down to courts B4–B6; treatment rooms use frosted glass on the court side; the quiet lounge is clear glass.',
-    'ARRIVAL: S1 (+3.50) opens straight onto the corridor; the west-wing bridge enters the reception. The east exit moves to the corridor end → new landing +3.50 (x 22.2…23.6, y 28.3…30.1) → short stair to the catwalk +4.50 — the old landing at y 24.2…25.8 must move north.',
+    'ARRIVAL: S1 (+3.50) opens straight onto the corridor (R45: west wing and its bridge removed — solid west wall). The east exit moves to the corridor end → new landing +3.50 (x 22.2…23.6, y 28.3…30.1) → short stair to the catwalk +4.50 — the old landing at y 24.2…25.8 must move north.',
     'DRAINS: sauna, plunge, rinse shower and WC sit against the corridor; pipes run in the 150 mm raised corridor floor and leave through the north façade into external downpipes (no coring of the existing slab).',
     'Still to check: HBOT/plunge loads (≤ 300 kg/m²) · 2 exits (S1 + bridge + east stair) · no lift.',
   ];
@@ -155,7 +154,7 @@ ${rooms.map((r, i) => `<text y="${22 + i * 19}">${i + 1}. ${r[0]} · ${r[1]}</te
 <g transform="translate(700,0)"><text font-weight="700" font-size="14">NOTES</text>${notes.map((n, i) => `<text y="${22 + i * 31}" font-size="11.5">${n.replace(/(.{150,}?) /g, '$1\u0001').split('\u0001').map((l, k) => `<tspan x="0" dy="${k ? 14 : 0}">${l}</tspan>`).join('')}</text>`).join('')}</g>
 </g>
 </svg>`;
-const name = LV === 3 ? 'rear_L3_R44' : 'rear_L2_R44';
+const name = LV === 3 ? 'rear_L3_R44' : 'rear_L2_R45';
 fs.writeFileSync(path.join(here, 'plans', name + '.svg'), svg);
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });

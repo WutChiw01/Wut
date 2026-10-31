@@ -134,3 +134,10 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - Court **B1 replaced by the boxing zone** from the user's R33 sheet: main ring 6×6 inside the ropes on a 7.80 × 7.80 platform +0.90 (x −1.1…6.7, y −0.4…7.4, steps at the SW corner) + existing practice ring 3×3 / 4×4 +0.30 (x 1.45…5.45, y −7.4…−3.4) on a rubber floor. Platform west edge reaches 0.3 m past the hall wall line — R33's "W3 moved out 0.90" assumed.
 - **Sky Trail (long stairs at E/5) removed**; L3 terrace closed by a 1.10 m guard. **East catwalk +4.50 between badminton and pickleball kept.**
 - Plan sheets refreshed without the pool: `rear_GF_R44`, `rear_L2_R44`, `rear_L3_R44`. Exports: `sketchup/MyPlace_Master_vR44.dae`, `MyPlace_Master_vR44_SketchUp.zip`, `MyPlace_Master_vD6.glb`.
+
+### REV R45 — follow the user's R33 on the west side
+- **West wing removed** (café, stair block, garden pavilion, studio, old core/MDB). West of grid A only the **coconut palms P1–P3** and the **solid boundary wall** (x −3.90…−3.70) remain.
+- The hall now runs to that wall (as R33): wall full length to the roof, west portal columns on it, roof eave beyond it; palms P2 / P3 stand in two open notches (1.0 × 1.3 m, roof cut open), P1 stays outside.
+- Courts re-spaced as R33: x −1.80 / 5.55 / 12.85 (1.25 m gaps); B1 = boxing: main ring 6×6 ropes, 7.80 platform +0.90 (x −3.72…4.08, y −1.22…6.58); practice ring 3×3 / 4×4 +0.30 (x −1.33…2.67, y −7.70…−3.70); rubber floor on the R33 hatched zone.
+- Rear L2: no bridge → solid west wall (`plans/rear_L2_R45`). Hall east side, catwalk at E and pickleball unchanged.
+- Exports: `sketchup/MyPlace_Master_vR45.dae`, `MyPlace_Master_vR45_SketchUp.zip`, `MyPlace_Master_vD6.glb`.

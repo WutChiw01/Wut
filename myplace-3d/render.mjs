@@ -39,7 +39,7 @@ if (process.env.DAE) {
   await page.waitForFunction('window.__ready === true', null, { timeout: 300000 });
   const out = path.join(here, 'sketchup'); fs.mkdirSync(path.join(out, 'textures'), { recursive: true });
   const res = await page.evaluate(() => window.exportDAE());
-  fs.writeFileSync(path.join(out, 'MyPlace_Master_vE1.dae'), res.dae);
+  fs.writeFileSync(path.join(out, 'MyPlace_Master_vR43.dae'), res.dae);
   for (const t of res.textures) fs.writeFileSync(path.join(out, t.file), Buffer.from(t.url.split(',')[1], 'base64'));
   console.log('exported DAE', JSON.stringify(res.stats), (res.dae.length / 1e6).toFixed(1) + ' MB');
   await page.close();

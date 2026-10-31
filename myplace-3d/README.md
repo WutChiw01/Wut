@@ -122,3 +122,10 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 
 ### REV R42 — L2 without balcony
 `node plan_upper_r42.mjs 2` → `plans/rear_L2_R42`. Court-side balcony removed; 1.20 m corridor along the north wall; wellness rooms 4.70 m deep on the court side (+≈17 m²); east exit moved to the corridor end (new +3.50 landing). L3 unchanged (R41).
+
+### REV R43 — 3D model rebuilt to the approved plans, no pool
+- Rear complex in `model.js` rebuilt from **GF R40**, **L2 R42**, **L3 R41**; **S1** stacked U-stair behind the building (x −1.8…3.2, y 30.1…32.9; 4 × 10 risers 0.175, treads 0.26, 1.20 m clear / 1.30 gross), teak-batten screen, store under the mid-landing.
+- Old west corner fire stair + MRL lift removed (bay = GF store + L2 link floor to the west wing).
+- **Prefab pool removed**: rear yard is lawn for a future landscape (gravel drip strip over the buried drains, temporary stepping pads). Coconut palms **P1–P3 kept**.
+- Outdoor climbing tower + crash pit removed (they clashed with the L2 east exit landing, now extended north along the east wall to the corridor-end door).
+- New shots `r43_*`; exports `MyPlace_Master_vD6.glb` (refreshed) and `sketchup/MyPlace_Master_vR43.dae` (+ `MyPlace_Master_vR43_SketchUp.zip`).

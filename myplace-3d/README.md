@@ -113,3 +113,6 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 
 ### REV R39 — existing staff WC
 `node plan_gf_r39.mjs` → `plans/rear_GF_R39.{svg,png}`. Staff WC at 4–5/E drawn as existing: 2 WC rooms with pans back-to-back, basin counter outside the WC rooms, 2 urinals behind grid 5, open entry. S1 U-stair as approved in R38.
+
+### REV R40 — staff WC as built
+`node plan_gf_r40.mjs` → `plans/rear_GF_R40.{svg,png}`. Staff WC at 4–5/E: 2 WC back-to-back, doors open inward, basin on the door wall between the doors, no outer walls, 2 urinals on the grid-5 wall with a privacy screen on the door-wall line.

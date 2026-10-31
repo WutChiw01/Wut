@@ -173,3 +173,11 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - Every badminton court now sits 1.20 m from grid 2 on both sides (like B1): front row y −7.25…6.15, rear row y 8.55…21.95. Space at the entrance 2.90 m (was 1.75), behind the rear row 2.15 m to the hall's rear wall (was 1.00); cross-aisle on grid 2 = 2.40 m (was 4.70).
 - Watch-point: the W0 / C0 / E0 towers stand on grid 2, so their bodies (r ≈ 0.6 m) are ~0.6 m from the baselines and C0's net-catch tray (r 1.50 at +2.2) now reaches over the back of the courts by ~0.3 m — to be reduced or raised.
 - Pickleball unchanged (fence on grid 2, 2.35 m behind the inner baselines). Summary sheets `plans/summary_{GF,L2,L3}_R52`; exports refreshed (`MyPlace_Master_vR52`).
+
+### REV R53 — rear building pushed 1.0 m towards the courts, C0 tray r 1.0
+- C0 net-catch tray reduced to r 1.00.
+- Hall rear line above GF now **y 23.10** (`HALL.y1`): rear-row baselines (21.95) keep 1.15 m to the new L2 edge.
+- **GF**: façade moved from 25.10 to 24.10 (under the existing slab, no new structure) → every room 1.0 m deeper.
+- **L2**: new 1.0 m slab strip y 23.10…24.10 on steel cantilever beams fixed to the row-4 columns (existing slab not cored); rooms 5.70 m deep; x 17.6…20.2 becomes a rentable wellness suite (14.8 m²), massage moves to the lounge.
+- **L3**: floor to 23.10 → studio 91 m² (was 78), terrace 35 m² (was 30). Hall roof / trusses now end at 23.10; rear roof extended.
+- Rentable total ≈ 158 m² (GF L1 14.8 + L2 14.8 + gift 16.5 + kiosk 6.1, L2 suite 14.8, L3 studio 91) vs ≈ 120 m² before. Summary sheets `plans/summary_{GF,L2,L3}_R53`.

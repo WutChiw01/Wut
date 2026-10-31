@@ -331,11 +331,12 @@ export function buildModel(opts = {}) {
   const layer = (name) => (G[name] = new B(name));
 
   // geometry constants (spec §1.2)
-  const HALL = { x0: -0.8, x1: 22.3, y0: -10.15, y1: 24.1, eave: 8.6, ridge: 11.25, ridgeX: 10.75 };
+  const HALL = { x0: -0.8, x1: 22.3, y0: -10.15, y1: 23.1, // REV R53: rear line 24.10 → 23.10 (rear building L2/L3 extended 1.0 m towards the courts)
+  eave: 8.6, ridge: 11.25, ridgeX: 10.75 };
   const SLAB = { x0: -1.8, x1: 22.2, y0: 24.1, y1: 30.1 };
   const Z2 = 3.5, Z3 = 7.0, ZR = 10.5;
   // REV R45 (user's R33): the hall runs west to the solid boundary wall (x −3.90…−3.70); palms P2 / P3 stand in open notches of that wall
-  const XWALL = -3.7, PALM_NOTCH = [[22.6, 24.1]]; // REV R51: palms P2 / P3 removed → straight solid wall; only the hall's NW corner steps in round palm P1 (trunk 0.1 m from the wall line otherwise)
+  const XWALL = -3.7, PALM_NOTCH = []; // R53: the hall's NW corner now ends at y 23.10, palm P1 (y 23.8) stands outside it — // REV R51: palms P2 / P3 removed → straight solid wall; only the hall's NW corner steps in round palm P1 (trunk 0.1 m from the wall line otherwise)
   // REV R47 (user): hall east wall on grid E (x 20.20): bi-fold doors below +3.50 on the column centreline; catwalk 0.80 m at +3.50 on the outer face of the E columns
   const XE = 20.2, CW = 0.8, ZCW = 3.5;
   const zRoofW = (x) => 11.25 - Math.abs(x - 10.75) * ((11.25 - 8.6) / (10.75 + 0.8)) - 0.05;
@@ -397,7 +398,7 @@ export function buildModel(opts = {}) {
     // with two open notches (1.0 × 1.3 m, open to the sky) where palms P2 / P3 stand; the old wall at x −0.8 is removed
     { let y = HALL.y0 - 0.25; for (const [n0, n1] of PALM_NOTCH) { b.box(XWALL - 0.2, XWALL, y, n0, 0, 7.4, M.plaster); b.box(XWALL - 0.2, -2.7, n0 - 0.2, n0, 0, 7.4, M.plaster); b.box(XWALL - 0.2, -2.7, n1, n1 + 0.2, 0, 7.4, M.plaster); b.box(-2.9, -2.7, n0, n1, 0, 7.4, M.plaster); y = n1; } b.box(XWALL - 0.2, XWALL, y, HALL.y1 + 0.1, 0, 7.4, M.plaster); }
     b.box(XWALL - 0.2, HALL.x0, HALL.y0 - 0.25, HALL.y0, 0, 8.4, M.plaster); // front wall extension
-    b.box(XWALL - 0.2, -1.8, HALL.y1 - 0.1, HALL.y1 + 0.1, 0, 8.4, M.plaster); b.box(-1.8, HALL.x0, HALL.y1 - 0.1, HALL.y1 + 0.1, 7.0, 8.4, M.plaster); // rear wall extension
+    b.box(XWALL - 0.2, -1.8, HALL.y1 - 0.1, HALL.y1 + 0.1, 0, 8.4, M.plaster); // rear wall west of the rear building
     // REV R47 east wall on grid E (x 20.20): bi-fold (บานเฟี่ยม) door leaves 0.90 m below +3.50 on the column centreline, fixed glass + louvre band above up to the roof
     { const zT = ZCW, zR = 9.0;
       b.box(XE - 0.06, XE + 0.06, HALL.y0, HALL.y1, zT - 0.1, zT + 0.15, M.charcoal); // head beam / catwalk ledger
@@ -454,9 +455,7 @@ export function buildModel(opts = {}) {
       b.add(M.plaster, g);
     }
     // rear gable end above rear complex (y=24.1), L3 studio glazing in it
-    b.box(HALL.x0, HALL.x1, HALL.y1 - 0.1, HALL.y1 + 0.1, 7.0, 8.6, M.plaster);
-    b.box(4.2, 17.2, HALL.y1 - 0.06, HALL.y1 + 0.06, 7.3, 10.3, M.glass);
-    for (let x = 4.2; x <= 17.21; x += 1.3) b.box(x - 0.04, x + 0.04, HALL.y1 - 0.08, HALL.y1 + 0.08, 7.0, 10.5, M.charcoal);
+    // R53: the rear building's L2 / L3 façades now form the hall's rear wall below the gable (drawn with the rear complex)
     // gable rear (triangle above 8.6)
     {
       const shp = new THREE.Shape();
@@ -683,10 +682,10 @@ export function buildModel(opts = {}) {
       towerHardware(b, { cx: o.cx, cy: o.cy, zTop: 8.9, coreRound: true, hoops: hoopsFor(2.55, 8.6), rAt });
       b.torus(o.cx, o.cy, 8.75, 0.55, 0.03, new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2, metalness: 0.6 }), 36); // misting ring
       // net catch fan under the tray
-      const fan = new THREE.CylinderGeometry(1.5, 0.86, 0.35, 40, 1, true);
+      const fan = new THREE.CylinderGeometry(1.0, 0.75, 0.35, 40, 1, true); // REV R53: tray reduced to r 1.0 (rear-row baseline now 1.20 m from grid 2)
       fan.translate(o.cx, 2.38, -o.cy);
       b.add(new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 1, transparent: true, opacity: 0.35, side: THREE.DoubleSide, depthWrite: false }), fan);
-      b.torus(o.cx, o.cy, 2.2, 1.5, 0.02, M.ss316, 48);
+      b.torus(o.cx, o.cy, 2.2, 1.0, 0.02, M.ss316, 48);
     }
     // E0 dry twin tower on the east portal column (20.2, 7.35)
     {
@@ -1120,26 +1119,26 @@ export function buildModel(opts = {}) {
     // ═══ REV R43 — rear complex rebuilt from the approved plans: GF R40, L2 R42, L3 R41, S1 stacked U-stair (1.20 m clear) ═══
     // ground floor (R40) ------------------------------------------------
     const b = GFr, H = Z2 - 0.3;
-    b.box(SLAB.x0, SLAB.x1, 25.1, 30.1, -0.05, 0.0, M.floorInt);
-    b.box(-1.8, 7.4, 25.1, 30.0, -0.04, 0.005, M.floorWet); // wet block floor (WCs + lockers)
-    b.box(20.2, 22.2, 25.1, 30.1, -0.04, 0.005, M.floorWet); // existing staff WC
+    b.box(SLAB.x0, SLAB.x1, 24.1, 30.1, -0.05, 0.0, M.floorInt); // R53: GF façade 1.0 m forward to y 24.10 (under the existing slab)
+    b.box(-1.8, 7.4, 24.1, 30.0, -0.04, 0.005, M.floorWet); // wet block floor (WCs + lockers)
+    b.box(20.2, 22.2, 24.1, 30.1, -0.04, 0.005, M.floorWet); // existing staff WC
     // south façade y = 25.1 with doors / shopfronts (staff bay x 21.18 … 22.2 stays open)
     const doorsS = [[-1.2, -0.3, 't'], [0.5, 1.5, 't'], [1.9, 2.8, 't'], [3.9, 4.8, 't'], [6.3, 7.2, 't'], [8.2, 9.4, 'g'], [11.6, 12.8, 'g'], [16.0, 16.9, 'g'], [18.5, 19.4, 'g']];
     const glassS = [[7.6, 8.2], [9.4, 10.0], [15.4, 16.0], [16.9, 17.6], [17.8, 18.5], [19.4, 20.0], [12.8, 14.6]];
     { const cuts = doorsS.map(([a, c]) => [a, c]).concat(glassS).sort((p, q) => p[0] - q[0]); let x = SLAB.x0;
-      for (const [a, c] of cuts) { if (a > x) b.box(x, a, 25.0, 25.2, 0, H, M.plaster); b.box(a, c, 25.0, 25.2, 2.2, H, M.plaster); x = Math.max(x, c); }
-      b.box(x, 21.18, 25.0, 25.2, 0, H, M.plaster); }
-    for (const [a, c] of glassS) b.box(a, c, 25.06, 25.14, 0.0, 2.2, M.glass);
-    for (const [a, c, k] of doorsS) b.box(a + 0.03, c - 0.03, 25.07, 25.13, 0.0, 2.15, k === 'g' ? M.glass : M.teak);
-    b.box(21.18, 22.3, 25.0, 25.2, 2.2, H, M.plaster); // lintel over the open staff-WC entry
+      for (const [a, c] of cuts) { if (a > x) b.box(x, a, 24.0, 24.2, 0, H, M.plaster); b.box(a, c, 24.0, 24.2, 2.2, H, M.plaster); x = Math.max(x, c); }
+      b.box(x, 21.18, 24.0, 24.2, 0, H, M.plaster); }
+    for (const [a, c] of glassS) b.box(a, c, 24.06, 24.14, 0.0, 2.2, M.glass);
+    for (const [a, c, k] of doorsS) b.box(a + 0.03, c - 0.03, 24.07, 24.13, 0.0, 2.15, k === 'g' ? M.glass : M.teak);
+    b.box(21.18, 22.3, 24.0, 24.2, 2.2, H, M.plaster); // lintel over the open staff-WC entry
     // north façade y = 30.0…30.1: frosted over the wet block, clear elsewhere; passage door to S1 at x 0.5…1.5
     b.box(SLAB.x0, 0.5, 30.02, 30.1, 0, H, M.glassFrost); b.box(1.5, 7.4, 30.02, 30.1, 0, H, M.glassFrost); b.box(7.4, 20.2, 30.02, 30.1, 0, H, M.glass);
     b.box(0.5, 1.5, 30.02, 30.1, 2.2, H, M.plaster); b.box(0.53, 1.47, 30.03, 30.09, 0, 2.15, M.teak);
     for (let x = SLAB.x0; x <= 20.21; x += 1.2) b.box(x - 0.03, x + 0.03, 30.0, 30.15, 0, H, M.charcoal);
-    b.box(SLAB.x0, SLAB.x0 + 0.15, 25.1, 30.1, 0, H, M.plaster); // west wall
+    b.box(SLAB.x0, SLAB.x0 + 0.15, 24.1, 30.1, 0, H, M.plaster); // west wall
     // partitions
     const part = (x0, x1, y0, y1, z1 = H) => b.box(x0, x1, y0, y1, 0, z1, M.wallInt);
-    for (const x of [0.4, 1.6, 3.6, 5.5, 7.4, 10.2, 15.2, 20.2]) part(x - 0.05, x + 0.05, 25.2, 30.0);
+    for (const x of [0.4, 1.6, 3.6, 5.5, 7.4, 10.2, 15.2, 20.2]) part(x - 0.05, x + 0.05, 24.2, 30.0);
     part(-1.8, 0.4, 27.1, 27.2); part(1.6, 3.6, 27.1, 27.2); // accessible WC / kiosk back walls
     part(10.2, 15.2, 27.25, 27.35); part(12.65, 12.75, 27.35, 30.0); // clinic
     // accessible WC (−1.8…0.4 × 25.1…27.15): pan, basin, grab bars
@@ -1153,7 +1152,7 @@ export function buildModel(opts = {}) {
     part(1.65, 2.65, 28.47, 28.53, 2.1); part(2.6, 2.65, 28.5, 30.0, 2.1); pan(2.1, 29.6, 1); basin(3.35, 28.3);
     for (const x of [2.95, 3.35]) b.box(x - 0.18, x + 0.18, 29.65, 29.98, 0.45, 1.05, M.bedWhite); b.box(3.13, 3.17, 29.4, 29.98, 0.5, 1.6, M.wallInt);
     // kiosk (1.6…3.6 × 25.1…27.15): counter
-    b.box(1.8, 3.4, 25.3, 25.75, 0, 1.05, M.teakLight);
+    b.box(1.8, 3.4, 24.3, 24.75, 0, 1.05, M.teakLight);
     // lockers F (3.6…5.5) / M (5.5…7.4): lockers + bench front, 2 showers behind grid 5
     for (const x0 of [3.6, 5.5]) {
       const x1 = x0 + 1.9;
@@ -1163,13 +1162,13 @@ export function buildModel(opts = {}) {
     }
     // gift shop: wall shelving + display tables + counter
     b.box(7.45, 7.9, 26.0, 29.9, 0, 2.2, M.teakLight); b.box(7.45, 10.15, 29.55, 29.95, 0, 2.2, M.teakLight); b.box(9.7, 10.15, 26.0, 29.5, 0, 2.2, M.teakLight);
-    for (const y of [27.2, 28.4]) b.box(8.3, 9.3, y, y + 0.7, 0, 0.85, M.teak); b.box(9.5, 10.1, 25.3, 25.8, 0, 1.05, M.teak);
+    for (const y of [27.2, 28.4]) b.box(8.3, 9.3, y, y + 0.7, 0, 0.85, M.teak); b.box(9.5, 10.1, 24.3, 24.8, 0, 1.05, M.teak);
     // clinic: reception counter + bench, 2 exam rooms with plinth beds and basins
-    b.box(10.6, 11.4, 25.35, 25.85, 0, 1.05, M.teakLight); b.box(13.2, 15.0, 25.35, 25.85, 0, 0.45, M.teakLight);
+    b.box(10.6, 11.4, 24.35, 24.85, 0, 1.05, M.teakLight); b.box(13.2, 15.0, 24.35, 24.85, 0, 0.45, M.teakLight);
     for (const x of [10.45, 12.9]) { b.box(x, x + 0.5, 28.2, 29.6, 0.45, 0.75, M.bedWhite); b.box(x, x + 0.5, 28.2, 29.6, 0.0, 0.45, M.charcoal); }
     basin(12.3, 29.75); basin(14.85, 29.75);
     // lease L1 / L2: empty shells, demountable split line
-    b.box(17.68, 17.72, 25.2, 30.0, 0, 0.02, M.charcoal);
+    b.box(17.68, 17.72, 24.2, 30.0, 0, 0.02, M.charcoal);
     // staff WC (existing) at 4–5/E: 2 WC back-to-back, doors inward, basin on the door wall, 2 urinals on the grid-5 wall + screen
     part(20.25, 21.15, 26.6, 26.66, 2.2); part(20.25, 21.18, 28.07, 28.13, 2.2); part(21.12, 21.18, 25.9, 27.35, 2.2); part(21.12, 21.18, 28.13, 29.1, 1.8);
     pan(20.7, 26.15, 1); pan(20.7, 27.1, -1); basin(21.4, 26.63);
@@ -1196,27 +1195,31 @@ export function buildModel(opts = {}) {
 
     // level 2 wellness (R42): rooms full depth on the court side, 1.20 m corridor at the back --------------
     const c = L2r, Hz = Z3 - 0.3, yC = 28.8;
-    c.box(SLAB.x0, SLAB.x1, SLAB.y0, SLAB.y1, Z2, Z2 + 0.06, M.floorInt);
+    c.box(SLAB.x0, SLAB.x1, 23.1, SLAB.y1, Z2, Z2 + 0.06, M.floorInt);
+    // R53: NEW 1.0 m slab strip y 23.10…24.10 in front of the existing slab, carried by steel cantilever beams fixed to the row-4 columns (existing slab not cored)
+    c.box(SLAB.x0, SLAB.x1, 23.1, 24.1, Z2 - 0.22, Z2, M.concrete);
+    for (const x of [0.2, 5.2, 10.2, 15.2, 20.2]) c.box(x - 0.1, x + 0.1, 23.1, 25.25, Z2 - 0.62, Z2 - 0.22, M.charcoal);
+    c.box(SLAB.x0, SLAB.x1, 23.1, 23.25, Z2 - 0.62, Z2 - 0.22, M.charcoal); // edge beam
     c.box(0.4, 22.2, yC, 30.0, Z2 + 0.06, Z2 + 0.15, M.floorWet); // raised corridor floor (pipe void)
-    c.box(SLAB.x0, SLAB.x1, 24.0, 24.12, Z2 - 0.5, Z2, M.plaster); // slab edge fascia
+    c.box(SLAB.x0, SLAB.x1, 23.0, 23.12, Z2 - 0.62, Z2, M.plaster); // slab edge fascia (new edge)
     // court-side façade y = 24.1: clear glass at reception/lounge and quiet lounge, frosted at treatment rooms
-    for (const [a, e, m] of [[-1.8, 3.6, M.glass], [3.6, 17.6, M.glassFrost], [17.6, 20.2, M.glass], [21.15, 22.2, M.glassFrost]]) c.box(a, e, 24.06, 24.14, Z2 + 0.06, Hz, m);
-    for (let x = SLAB.x0; x <= SLAB.x1 + 0.01; x += 1.2) c.box(x - 0.03, x + 0.03, 24.02, 24.18, Z2, Hz, M.charcoal);
+    for (const [a, e, m] of [[-1.8, 3.6, M.glass], [3.6, 17.6, M.glassFrost], [17.6, 20.2, M.glass], [21.15, 22.2, M.glassFrost]]) c.box(a, e, 23.06, 23.14, Z2 + 0.06, Hz, m);
+    for (let x = SLAB.x0; x <= SLAB.x1 + 0.01; x += 1.2) c.box(x - 0.03, x + 0.03, 23.02, 23.18, Z2, Hz, M.charcoal);
     // north façade y = 30.1 (corridor glass), door to S1 landing x 1.85…3.1
     c.box(SLAB.x0, 1.85, 30.05, 30.15, Z2 + 0.06, Hz, M.glassFrost); c.box(3.1, SLAB.x1, 30.05, 30.15, Z2 + 0.06, Hz, M.glass);
     c.box(1.85, 3.1, 30.05, 30.15, Z2 + 2.25, Hz, M.plaster); c.box(1.88, 3.07, 30.07, 30.13, Z2 + 0.15, Z2 + 2.2, M.glass);
     for (let x = SLAB.x0; x <= SLAB.x1 + 0.01; x += 1.2) c.box(x - 0.03, x + 0.03, 30.0, 30.18, Z2, Hz, M.charcoal);
     // west wall with the door from the west-wing bridge (y 24.6…25.8); east wall with the corridor-end door (y 28.9…29.9)
-    c.box(-1.8, -1.7, 24.1, 30.1, Z2, Hz, M.plaster); // REV R45: no west-wing bridge any more → solid west wall
-    c.box(22.1, 22.3, 24.1, 30.1, Z2, Hz, M.plaster); // REV R47: east wall solid (exit is now the catwalk link)
+    c.box(-1.8, -1.7, 23.1, 30.1, Z2, Hz, M.plaster); // REV R45: no west-wing bridge any more → solid west wall
+    c.box(22.1, 22.3, 23.1, 30.1, Z2, Hz, M.plaster); // REV R47: east wall solid (exit is now the catwalk link)
     // partitions + corridor wall (door leaves teak)
-    for (const x of [3.6, 5.8, 8.0, 10.6, 13.2, 17.6, 20.2]) c.box(x - 0.05, x + 0.05, 24.15, yC, Z2 + 0.06, Hz, M.wallInt);
+    for (const x of [3.6, 5.8, 8.0, 10.6, 13.2, 17.6, 20.2]) c.box(x - 0.05, x + 0.05, 23.15, yC, Z2 + 0.06, Hz, M.wallInt);
     const dC = [[4.3, 5.1], [6.5, 7.3], [8.9, 9.8], [11.5, 12.4], [15.7, 16.5], [18.4, 19.3], [20.3, 21.1], [21.4, 22.0]];
     { let x = 0.4; for (const [a, e] of dC) { c.box(x, a, yC - 0.05, yC + 0.05, Z2 + 0.06, Hz, M.wallInt); c.box(a, e, yC - 0.05, yC + 0.05, Z2 + 2.2, Hz, M.wallInt); c.box(a + 0.03, e - 0.03, yC - 0.03, yC + 0.03, Z2 + 0.15, Z2 + 2.15, M.teak); x = e; } c.box(x, 22.1, yC - 0.05, yC + 0.05, Z2 + 0.06, Hz, M.wallInt); }
     c.box(-1.8, 0.4, 27.85, 27.95, Z2 + 0.06, Hz, M.wallInt); c.box(0.35, 0.45, 27.95, 30.0, Z2 + 0.06, Hz, M.wallInt); // WC
     // reception + lounge: counter, sofas facing the courts
     c.box(1.0, 2.6, 27.6, 28.1, Z2 + 0.06, Z2 + 1.1, M.teakLight);
-    for (const [a, e] of [[-1.5, 0.0], [1.2, 3.3]]) { c.box(a, e, 24.4, 25.0, Z2 + 0.06, Z2 + 0.45, M.bedBlue); c.box(a, e, 24.85, 25.0, Z2 + 0.45, Z2 + 0.85, M.bedBlue); }
+    for (const [a, e] of [[-1.5, 0.0], [1.2, 3.3]]) { c.box(a, e, 23.4, 24.0, Z2 + 0.06, Z2 + 0.45, M.bedBlue); c.box(a, e, 23.85, 24.0, Z2 + 0.45, Z2 + 0.85, M.bedBlue); }
     c.box(-1.3, -0.9, 29.4, 29.9, Z2 + 0.06, Z2 + 0.48, M.bedWhite); c.box(-0.8, -0.4, 29.75, 29.95, Z2 + 0.7, Z2 + 0.85, M.bedWhite); // WC
     // red light ×2: bed + full-height red panel
     for (const x0 of [3.6, 5.8]) { c.box(x0 + 0.6, x0 + 1.4, 25.9, 27.9, Z2 + 0.06, Z2 + 0.6, M.bedWhite); c.box(x0 + 0.2, x0 + 2.0, 28.6, 28.7, Z2 + 0.3, Z2 + 2.2, M.holdR); }
@@ -1225,40 +1228,41 @@ export function buildModel(opts = {}) {
     // contrast room: sauna 2.2 × 2.2 at the corridor wall, cold plunge, rinse shower, bench
     c.box(13.3, 15.5, 26.5, 28.7, Z2 + 0.06, Z2 + 2.3, M.teak); c.box(13.9, 14.6, 26.47, 26.5, Z2 + 0.1, Z2 + 2.0, M.glass);
     c.box(15.7, 17.5, 27.3, 28.7, Z2 + 0.06, Z2 + 0.8, M.plunge); c.box(16.7, 17.5, 26.3, 27.15, Z2 + 0.06, Z2 + 0.09, M.floorWet); c.cyl(17.1, 26.7, Z2 + 2.1, Z2 + 2.2, 0.1, 0.1, M.ss316, 10);
-    c.box(13.6, 15.2, 24.5, 24.9, Z2 + 0.06, Z2 + 0.45, M.teakLight);
+    c.box(13.6, 15.2, 23.5, 23.9, Z2 + 0.06, Z2 + 0.45, M.teakLight);
     // quiet lounge: 2 recliners; massage: bed
-    for (const y of [26.3, 27.4]) c.box(17.9, 19.9, y, y + 0.6, Z2 + 0.06, Z2 + 0.55, M.bedBlue);
+    // R53: x 17.6…20.2 = rentable wellness suite (tenant fit-out, e.g. physio / aesthetics) — left empty; massage chairs move to the lounge
+    c.box(-1.4, -0.6, 26.0, 27.0, Z2 + 0.06, Z2 + 1.0, M.bedBlue);
     // REV R47: east bay = 0.90 m link passage from the +3.50 catwalk to the back corridor (x 20.25…21.15) + linen store (x 21.2…22.1)
-    c.box(21.15, 21.25, 24.15, 28.8, Z2 + 0.06, Hz, M.wallInt); c.box(21.3, 22.0, 24.4, 28.6, Z2 + 0.06, Z2 + 2.2, M.teakLight);
-    c.box(20.25, 21.15, 24.02, 24.2, Z2 + 2.25, Hz, M.plaster); c.box(20.28, 21.12, 24.08, 24.12, Z2 + 0.06, Z2 + 2.2, M.glass);
+    c.box(21.15, 21.25, 23.15, 28.8, Z2 + 0.06, Hz, M.wallInt); c.box(21.3, 22.0, 23.4, 28.6, Z2 + 0.06, Z2 + 2.2, M.teakLight);
+    c.box(20.25, 21.15, 23.02, 23.2, Z2 + 2.25, Hz, M.plaster); c.box(20.28, 21.12, 23.08, 23.12, Z2 + 0.06, Z2 + 2.2, M.glass);
 
     // level 3 --------------------------------------------------------
     const d = L3r;
-    d.box(-1.8, 22.2, 24.1, 30.1, Z3 - 0.25, Z3, M.concrete); // L3 slab
-    d.box(4.2, 22.2, 24.1, 30.1, Z3, Z3 + 0.04, M.teakLight);
-    d.box(-1.8, 4.2, 24.1, 30.1, Z3, Z3 + 0.04, M.floorInt);
+    d.box(-1.8, 22.2, 23.1, 30.1, Z3 - 0.25, Z3, M.concrete); // L3 slab (R53: to y 23.10)
+    d.box(4.2, 22.2, 23.1, 30.1, Z3, Z3 + 0.04, M.teakLight);
+    d.box(-1.8, 4.2, 23.1, 30.1, Z3, Z3 + 0.04, M.floorInt);
     // studio glazing (south toward courts, north toward pool)
-    d.box(4.2, 17.2, 24.06, 24.14, Z3, ZR - 0.2, M.glass);
+    d.box(4.2, 17.2, 23.06, 23.14, Z3, ZR - 0.2, M.glass);
     d.box(4.2, 17.2, 30.06, 30.14, Z3, ZR - 0.2, M.glass);
-    for (let x = 4.2; x <= 17.21; x += 1.3) { d.box(x - 0.04, x + 0.04, 24.0, 24.2, Z3, ZR, M.charcoal); d.box(x - 0.04, x + 0.04, 30.0, 30.2, Z3, ZR, M.charcoal); }
-    d.box(4.1, 4.3, 24.1, 26.5, Z3, ZR - 0.2, M.plaster); d.box(4.1, 4.3, 28.1, 30.1, Z3, ZR - 0.2, M.plaster); d.box(4.1, 4.3, 26.5, 28.1, Z3 + 2.3, ZR - 0.2, M.plaster);
+    for (let x = 4.2; x <= 17.21; x += 1.3) { d.box(x - 0.04, x + 0.04, 23.0, 23.2, Z3, ZR, M.charcoal); d.box(x - 0.04, x + 0.04, 30.0, 30.2, Z3, ZR, M.charcoal); }
+    d.box(4.1, 4.3, 23.1, 26.5, Z3, ZR - 0.2, M.plaster); d.box(4.1, 4.3, 28.1, 30.1, Z3, ZR - 0.2, M.plaster); d.box(4.1, 4.3, 26.5, 28.1, Z3 + 2.3, ZR - 0.2, M.plaster);
     d.box(4.17, 4.23, 26.55, 28.05, Z3 + 0.04, Z3 + 2.25, M.glass); // glass double door lobby → studio
     // L3 west (R41): lobby x 0.4…4.2 (S1 door in the north wall), WC + shower and tenant store x −1.8…0.4
-    d.box(-1.8, -1.7, 24.1, 30.1, Z3, ZR - 0.2, M.plaster); d.box(-1.8, 0.4, 24.06, 24.14, Z3, ZR - 0.2, M.plaster); d.box(0.4, 4.1, 24.06, 24.14, Z3, ZR - 0.2, M.glass);
+    d.box(-1.8, -1.7, 23.1, 30.1, Z3, ZR - 0.2, M.plaster); d.box(-1.8, 0.4, 23.06, 23.14, Z3, ZR - 0.2, M.plaster); d.box(0.4, 4.1, 23.06, 23.14, Z3, ZR - 0.2, M.glass);
     d.box(-1.8, 1.85, 30.06, 30.14, Z3, ZR - 0.2, M.glassFrost); d.box(3.1, 4.1, 30.06, 30.14, Z3, ZR - 0.2, M.glass); d.box(1.85, 3.1, 30.06, 30.14, Z3 + 2.25, ZR - 0.2, M.plaster); d.box(1.88, 3.07, 30.07, 30.13, Z3 + 0.04, Z3 + 2.2, M.glass);
-    d.box(0.35, 0.45, 24.1, 30.0, Z3, ZR - 0.2, M.wallInt); d.box(-1.8, 0.4, 27.55, 27.65, Z3, ZR - 0.2, M.wallInt);
+    d.box(0.35, 0.45, 23.1, 30.0, Z3, ZR - 0.2, M.wallInt); d.box(-1.8, 0.4, 27.55, 27.65, Z3, ZR - 0.2, M.wallInt);
     d.box(-1.5, -1.1, 29.35, 29.95, Z3 + 0.04, Z3 + 0.45, M.bedWhite); d.box(-0.55, 0.35, 29.05, 29.95, Z3 + 0.04, Z3 + 0.07, M.floorWet); d.box(-0.55, 0.35, 29.03, 29.06, Z3 + 0.04, Z3 + 2.0, M.glassFrost); d.box(-1.6, -1.1, 27.8, 28.1, Z3 + 0.65, Z3 + 0.82, M.bedWhite);
-    for (let k = 0; k < 3; k++) d.box(-1.7, -0.2, 24.3 + k * 1.0, 24.7 + k * 1.0, Z3 + 0.04, Z3 + 2.0, M.holdB); // tenant store shelving
+    for (let k = 0; k < 4; k++) d.box(-1.7, -0.2, 23.3 + k * 1.0, 23.7 + k * 1.0, Z3 + 0.04, Z3 + 2.0, M.holdB); // tenant store shelving
     d.box(0.7, 2.0, 25.6, 26.1, Z3 + 0.04, Z3 + 1.05, M.teakLight); d.box(3.6, 4.05, 26.0, 28.4, Z3 + 0.04, Z3 + 1.2, M.teak); d.box(0.6, 1.4, 28.9, 29.3, Z3 + 0.04, Z3 + 1.1, M.bedWhite);
-    d.box(17.1, 17.3, 24.1, 30.1, Z3, ZR - 0.2, M.glass);
+    d.box(17.1, 17.3, 23.1, 30.1, Z3, ZR - 0.2, M.glass);
     // studio equipment: cardio row along grid A, machines, reformers
     for (let x = 5.0; x < 10; x += 1.2) d.box(x, x + 0.8, 24.8, 26.4, Z3 + 0.04, Z3 + 1.3, M.charcoal);
     for (let k = 0; k < 4; k++) d.box(10.8 + k * 1.5, 11.3 + k * 1.5, 26.5, 29.0, Z3 + 0.04, Z3 + 0.45, M.bedWhite); // reformers
     d.box(5.0, 9.0, 27.5, 29.8, Z3 + 0.04, Z3 + 0.06, M.holdB); // mats
     // yoga terrace: balustrade, pergola, planters, retractable canopy
-    d.box(17.2, 22.2, 24.0, 24.1, Z3, Z3 + 1.1, M.glass);
+    d.box(17.2, 22.2, 23.0, 23.1, Z3, Z3 + 1.1, M.glass);
     d.box(17.2, 22.2, 30.1, 30.2, Z3, Z3 + 1.1, M.glass);
-    d.box(22.1, 22.2, 24.1, 30.1, Z3, Z3 + 1.1, M.glass); // east edge closed (Sky Trail removed in R44)
+    d.box(22.1, 22.2, 23.1, 30.1, Z3, Z3 + 1.1, M.glass); // east edge closed (Sky Trail removed in R44)
     for (const x of [17.7, 22.0]) for (const y of [24.3, 29.9]) d.box(x - 0.08, x + 0.08, y - 0.08, y + 0.08, Z3, ZR - 0.4, M.teak);
     for (let x = 17.7; x <= 22.0; x += 0.45) d.box(x - 0.05, x + 0.05, 24.3, 29.9, ZR - 0.4, ZR - 0.3, M.teak);
     d.box(17.7, 22.0, 26.0, 28.4, ZR - 0.28, ZR - 0.25, M.glassFrost); // canopy sheet (retractable)
@@ -1276,7 +1280,7 @@ export function buildModel(opts = {}) {
     d.box(17.1, 17.3, 26.5, 27.9, Z3, ZR - 0.2, M.glassFrost); // sliding door leaf to the indoor studio (parked open: frosted)
 
     // roof of rear complex
-    RFr.box(4.0, 17.4, 23.95, 30.3, ZR - 0.25, ZR + 0.05, M.concrete);
+    RFr.box(4.0, 17.4, 22.95, 30.3, ZR - 0.25, ZR + 0.05, M.concrete); // R53: roof to the new front line y 23.10
     RFr.box(-1.9, 4.0, 22.0, 30.3, ZR, ZR + 0.3, M.concrete);
     // roof PV (rear complex part of the 60-75 kWp microgrid)
     for (let k = 0; k < 6; k++) RFr.quad(M.solar, [4.6 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 25.0, ZR + 0.25], [6.5 + k * 2.1, 27.6, ZR + 0.25], [4.6 + k * 2.1, 27.6, ZR + 0.25], [1, 2]);

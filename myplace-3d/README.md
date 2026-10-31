@@ -181,3 +181,8 @@ Check: new buildings (≈ 70 m² + core) need foundations, set-backs and permit;
 - **L2**: new 1.0 m slab strip y 23.10…24.10 on steel cantilever beams fixed to the row-4 columns (existing slab not cored); rooms 5.70 m deep; x 17.6…20.2 becomes a rentable wellness suite (14.8 m²), massage moves to the lounge.
 - **L3**: floor to 23.10 → studio 91 m² (was 78), terrace 35 m² (was 30). Hall roof / trusses now end at 23.10; rear roof extended.
 - Rentable total ≈ 158 m² (GF L1 14.8 + L2 14.8 + gift 16.5 + kiosk 6.1, L2 suite 14.8, L3 studio 91) vs ≈ 120 m² before. Summary sheets `plans/summary_{GF,L2,L3}_R53`.
+
+### REV R54 — detailed rear plans per floor, entrance 2.0 m, L2 corridor on the court side
+- Front row courts moved so the entrance wall → court edge = **2.00 m** (y −8.15…5.25, 2.10 m to grid 2); rear row unchanged (1.20 m off grid 2).
+- **L2**: corridor / viewing walkway moved to the **court side** (y 23.10…24.30, mostly on the new 1.0 m slab), clear glass + lean rail; rooms 5.70 m deep against the north wall (wet rooms drain straight out north); catwalk enters the corridor directly; wellness suite for lease 20.5 m² (x 17.6…21.2) + linen; old link passage / east exit removed.
+- Detailed sheets: `plans/rear_GF_R54` (`plan_gf_r54.mjs`), `plans/rear_L2_R54`, `plans/rear_L3_R54` (`plan_upper_r54.mjs 2|3`); summary sheets `plans/summary_{GF,L2,L3}_R54`. Exports `MyPlace_Master_vR54`.
